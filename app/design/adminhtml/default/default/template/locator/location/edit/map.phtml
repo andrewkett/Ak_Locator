@@ -1,0 +1,157 @@
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC3eomi0y3QszLz_86-pity80xxSqFGtco&amp;sensor=false&amp;m5xzts"></script>
+
+<div id="edit_map" style="position: absolute; top: 10px; left: 580px; width: 300px; height: 300px;"></div>
+
+<script>
+
+  var geocoder = new google.maps.Geocoder();
+  var markers = Array();
+  addressTab = $$('#location_info_tabs_location_address_content .fieldset');
+  History = window.History;
+
+  document.observe("dom:loaded", function() {
+    mapCont =$('edit_map');
+    
+    //temporarily move map into fieldset until I can figure out how to do it with templates
+    addressTab[0].insert(mapCont).setStyle({position: 'relative'});
+
+    initLocator();
+    map = new google.maps.Map(mapCont, Locator.settings.defaultMapOptions);
+
+    
+    initGeoSearch();
+
+    latField = $('latitude');
+    longField = $('longitude');
+
+    latVal = latField.getValue();
+    lngVal = longField.getValue();
+
+
+    if(latVal!=''&&lngVal!=''){
+      latlng = new google.maps.LatLng(latVal,lngVal);
+      mapAddress(latlng);
+    }
+
+    $('geocode').observe('click', geoCodeAddress);
+
+  });
+
+
+  initGeoSearch = function(){
+      var addressSearch = '<form><input type="text" id="search" style="width:364px; margin: 10px 0 10px 5px;" /><button id="geocode">Geocode Address</button></form>';
+      new Insertion.Top(addressTab[0], addressSearch)
+  }
+
+
+  geoCodeAddress = function(event){
+
+     event.stop();
+
+     address = $('search').getValue();
+
+     if('' == address){
+      alert('please enter an address to geocede');
+      return;
+     }
+
+     geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+
+        result = results[0];
+
+        // if(result.geometry.location_type == 'APPROXIMATE'){
+        //   return;
+        // }
+
+        latField.setValue(result.geometry.location.lat());
+        longField.setValue(result.geometry.location.lng());
+
+         $('address').setValue(result.formatted_address);
+
+         //@todo need to clear old values first so they aren't carried through to new address
+        components = result.address_components
+        $('geocoded').setValue(1);
+
+        for(typeIndex in components ){
+
+          if(components.hasOwnProperty(typeIndex)){
+            switch(components[typeIndex].types[0]){
+
+              case "subpremise":
+                $('sub_premise').setValue(components[typeIndex].long_name);
+              break;
+
+              case "street_number":
+                $('premise').setValue(components[typeIndex].long_name);
+              break;
+
+              case "route":
+                $('thoroughfare').setValue(components[typeIndex].long_name);
+              break;
+
+              case "locality":
+                $('locality').setValue(components[typeIndex].long_name);
+              break;
+
+              case "sublocality":
+                $('dependent_locality').setValue(components[typeIndex].long_name);
+              break;
+
+              case "administrative_area_level_1":
+                $('administrative_area').setValue(components[typeIndex].long_name);
+              break;
+
+              case "administrative_area_level_2":
+                $('sub_administrative_area').setValue(components[typeIndex].long_name);
+              break;
+
+              case 'country':
+                $('country').setValue(components[typeIndex].long_name);
+              break;
+
+              case "postal_code":
+                $('postal_code').setValue(components[typeIndex].long_name);
+              break;
+
+            }
+          }
+        }
+
+        mapAddress(result.geometry.location);
+
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+
+    });
+  }
+
+  mapAddress = function(latlng){
+    clearOverlays(markers);
+    addMarker(latlng);
+  }
+
+  clearOverlays = function(markersArray) {
+    if (markersArray) {
+      for (var i = 0; i < markersArray.length; i++ ) {
+        markersArray[i].setMap(null);
+      }
+    }
+  }
+
+  addMarker = function(latlng){
+    latlngbounds = new google.maps.LatLngBounds( );
+
+      markers[0] = new google.maps.Marker({
+        position: latlng,
+        map: map,
+      });
+
+     latlngbounds.extend( latlng );
+
+    map.fitBounds( latlngbounds );
+  }
+
+</script>
+

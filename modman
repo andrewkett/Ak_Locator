@@ -1,0 +1,24 @@
+#extension files
+app/etc/modules/*                                           app/etc/modules/
+app/code/local/DigiBrews/Locator                            app/code/local/DigiBrews/Locator 
+
+#template files
+app/design/adminhtml/default/default/layout/locator.xml     app/design/adminhtml/default/default/layout/locator.xml
+app/design/adminhtml/default/default/template/locator       app/design/adminhtml/default/default/template/locator
+app/design/frontend/enterprise/default/layout/locator.xml   app/design/frontend/enterprise/default/layout/locator.xml
+app/design/frontend/enterprise/default/template/locator     app/design/frontend/enterprise/default/template/locator
+app/design/frontend/enterprise/iphone/layout/locator.xml    app/design/frontend/enterprise/iphone/layout/locator.xml
+app/design/frontend/enterprise/iphone/template/locator      app/design/frontend/enterprise/iphone/template/locator
+
+#js
+js/locator                                                  js/locator
+
+#third party libs - maybe include these somehow instead of having in code base
+#lib/geoPHP                                                  lib/geoPHP
+#lib/gogeocode                                               lib/gogeocode
+
+#skin files
+skin/adminhtml/default/default/Locator                      skin/adminhtml/default/default/locator
+skin/frontend/enterprise/default/css/locator.css            skin/frontend/enterprise/default/css/locator.css
+skin/frontend/enterprise/default/images/Locator             skin/frontend/enterprise/default/images/locator
+skin/frontend/enterprise/iphone/css/locator-mobile.css      skin/frontend/enterprise/iphone/css/locator-mobile.css 

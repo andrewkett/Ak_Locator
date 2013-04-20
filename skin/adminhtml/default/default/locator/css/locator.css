@@ -1,0 +1,12 @@
+.head-adminhtml-location, .head-adminhtml-location-attribute{
+    background-image: url(../images/map.png);
+}
+
+
+.adminhtml-locator-edit .head-adminhtml-location{
+    background-image: url(../images/map_edit.png);   
+}
+
+.location-new .head-adminhtml-location{
+    background-image: url(../images/map_add.png);   
+}

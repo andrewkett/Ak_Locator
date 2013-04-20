@@ -1,0 +1,16 @@
+{
+    "name": "andrewkett/digibrews_locator",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "description": "Magento Store Locator Extension",
+    "homepage": "http://www.andrewkett.com/magento/locator",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*",
+        "phayes/geophp": "dev-master"
+    },
+    "authors":[
+        {
+            "name":"Andrew Kett"
+        }
+    ]
+}

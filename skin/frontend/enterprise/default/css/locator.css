@@ -1,0 +1,107 @@
+
+
+.locator-search-form{
+  background: #eee; padding: 20px; margin-bottom: 20px;
+}
+  .locator-search-form h4{
+    margin: 0;
+  }
+
+  input.loc-srch-s{
+    width: 200px; padding: 5px;
+  }
+
+  input.loc-srch-dis{
+    width: 40px; padding: 5px;
+  }
+
+#locator-results{
+
+}
+
+  #search-info{
+    float: left; width: 298px;  padding: 20px 0;
+  }
+    .loc-teaser{
+      -webkit-transition: .5s background ease-in; padding: 10px 0 10px 20px; margin-left:-20px;
+    }
+    .loc-teaser:hover{
+      background: #efefef;
+    }
+
+      .loc-teaser h3{
+        margin-top: 0; margin-bottom: 0.6em;
+      }
+
+  #location-map{
+    margin-right: -10px; -webkit-transform: translate3d(0, 0, 0);
+  }
+
+#locator-results.is-no-results #search-info{
+  display:none;
+}
+
+#locator-results.is-no-results #location-map{
+  display:none;
+}
+
+#locator-results .empty-search{
+  display:none;
+}
+
+#locator-results.is-no-results .empty-search{
+  display:block;
+}
+
+
+#location-details{
+  float:left;
+}
+
+#location-details{
+  float:left; width: 100%; clear:both;
+  margin-bottom: 20px;
+}
+  #location-details h2{
+    margin-bottom: 10px;
+  }
+
+  #location-details .info{
+    float: left; width: 400px;
+  }
+
+  #location-details .map{
+    float:left;
+  }
+    #location-details  #location-map{
+      width: 500px; height: 400px;
+    }
+
+
+.locations{
+  padding: 0; margin: 0; list-style:none;
+}
+
+#other-locations .location-info{
+  position: relative; width: 200px; margin-right: 20px; float: left;
+}
+  #other-locations .location-info a{
+    position: absolute; display: block; top: 0; left: 0; width: 100%; height: 100%; text-indent: -9999px;
+  }
+
+
+
+#location-map{
+  width: 600px; height: 600px;
+}
+
+
+
+.loader { display: none; width: 24px; height: 24px; }
+.loader.is-loading { display: inline-block; background: url(../images/locator/loader/loader-med.gif) center no-repeat; }
+.loader-tiny { width: 10px; height: 10px; }
+.loader-tiny.is-loading { background-image: url(../images/locator/loader/loader-tiny.gif); }
+.loader-sml { width: 16px; height: 16px; }
+.loader-sml.is-loading { background-image: url(../images/locator/loader/loader-sml.gif); }
+.loader-lrg { width: 48px; height: 48px; }
+.loader-lrg.is-loading { background-image: url(../images/locator/loader/loader-lrg.gif); }

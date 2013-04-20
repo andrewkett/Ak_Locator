@@ -1,0 +1,91 @@
+<layout version="0.1.0">
+  <default>
+
+      <reference name="head">
+
+          <action method="addJs"><script>locator/locator.js</script></action>
+          <!-- <action method="addJs"><script>locator/locator-jquery.js</script></action> -->
+          <action method="addJs"><script>locator/plugins.js</script></action>
+
+          <!-- <action method="addCss"><script>css/locator.css</script></action> -->
+
+          <action method="addCss"><script>css/locator-mobile.css</script></action>
+
+          <!-- <block type="core/text" name="locator.init.search" template="locator/page/html/head.phtml"></block> -->
+      </reference>
+
+   <!--    <reference name="left">
+          <block type="digibrews_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
+      </reference> -->
+
+   </default>
+
+    <locator_search_index>
+
+<!--
+        <reference name="root">
+          <action method="setTemplate">
+            <template>page/1column.phtml</template>
+          </action>
+        </reference> -->
+
+        <reference name="content">
+          <block type="digibrews_locator/search_search" name="search" as="search" />
+        </reference>
+
+
+    </locator_search_index>
+
+    <locator_search_adminarea>
+
+       <!--  <reference name="root">
+          <action method="setTemplate">
+            <template>page/1column.phtml</template>
+          </action>
+        </reference>
+
+        <reference name="content">
+          <block type="digibrews_locator/search_search_adminarea" name="search" as="search">
+          </block>
+        </reference> -->
+    </locator_search_adminarea>
+
+
+    <locator_search_noresults>
+
+<!--
+       <reference name="root">
+          <action method="setTemplate">
+            <template>page/1column.phtml</template>
+          </action>
+        </reference> -->
+
+        <reference name="content">
+          <remove name="search" />
+          <block type="digibrews_locator/search_noresults" name="noresults" as="noresults" />
+        </reference>
+
+    </locator_search_noresults>
+
+
+    <locator_location_index>
+      <!-- <reference name="root">
+        <action method="setTemplate">
+          <template>page/1column.phtml</template>
+        </action>
+      </reference> -->
+      <reference name="head">
+
+      </reference>
+       <reference name="content">
+     <!--    <block type="digibrews_locator/data" name="data" as="data"></block>
+
+ -->
+          <block type="digibrews_locator/location_view" name="view" as="view">
+
+          </block>
+        </reference>
+
+    </locator_location_index>
+
+</layout>

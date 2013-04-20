@@ -1,0 +1,26 @@
+<div class="locator-search-form">
+  <form id='locator-search' action="<?php echo Mage::getURL('') ?>locator/search/">
+    <?php if($this->showSearchFilter()): ?>
+      <input name="s" type="text" class="input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
+    <?php endif; ?>
+   <!--  <?php if($this->showDistanceFilter()): ?>
+      within <input style="width:30px" name="distance" type="number" value="<?php echo $this->getCurrentDistance($this->getRequest()); ?>" />Km
+     <?php endif; ?> -->
+    <button type="submit" class="btn">submit</button>
+  </form>
+
+  <span id="locator-loader" class="loader loader-med"></span>
+
+  or
+
+  <span class="search-areas">
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=victoria">VIC</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=new south wales">NSW</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=queensland">QLD</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=western australia">WA</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=tasmania">TAS</a>
+  </span>
+</div>
+<script type="text/javascript">
+    var dataForm = new VarienForm('locator-search', true);
+</script>

@@ -1,0 +1,36 @@
+<div class="locator-search-form">
+  <h4>Search</h4>
+  <form id='locator-search' action="<?php echo Mage::getURL('') ?>locator/search/">
+    <?php if($this->showSearchFilter()): ?>
+      Postcode or suburb: <input id='locator-autocomplete' name="s" type="text" class="loc-srch-s input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
+    <?php endif; ?>
+         <!--  <?php if($this->showSearchFilter()): ?>
+      Postcode: <input name="s" type="text" class="input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
+    <?php endif; ?> -->
+
+    <?php if($this->showDistanceFilter()): ?>
+      within <input name="distance" type="number" value="<?php echo $this->getCurrentDistance($this->getRequest()); ?>" class="loc-srch-dis" />Km
+     <?php endif; ?>
+    <button type="submit" class="btn">submit</button>
+  </form>
+
+  <span id="locator-loader" class="loader loader-med"></span>
+
+  or
+  <?php 
+  // This is just an example of how the theme level can be used to link to different types of searches
+  ?>
+  <span class="search-areas">
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=victoria">VIC</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=new south wales">NSW</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=queensland">QLD</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=western australia">WA</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?a=tasmania">TAS</a>
+    <a href="<?php echo Mage::getURL('') ?>locator/search/?country=australia">All Australia</a>
+  </span>
+  <br />
+
+</div>
+<script type="text/javascript">
+    var dataForm = new VarienForm('locator-search', true);
+</script>

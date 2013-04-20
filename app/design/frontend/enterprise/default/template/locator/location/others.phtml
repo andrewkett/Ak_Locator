@@ -1,0 +1,21 @@
+
+<?php if($this->getLocations()): ?>
+
+    <h2>Others Nearby</h2>
+    <ul class="locations">
+      <?php foreach($this->getLocations() as $location): ?>
+        <li class="location-info" data-id="<?php echo $location->getId(); ?>">
+
+          <h2><?php echo $location->getTitle(); ?></h2>
+          <p><?php echo $location->getAddress(); ?></p>
+          <p>Approx <?php echo round($location->getDistance(),1); ?>km from here</p>
+          <a href="<?php echo $location->getUrl(); ?>">More</a>
+
+        </li>
+      <?php endforeach; ?>
+    </ul>
+
+<?php else: ?>
+  No results found
+<?php endif; ?>
+
