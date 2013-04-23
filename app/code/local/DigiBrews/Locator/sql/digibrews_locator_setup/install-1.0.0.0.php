@@ -280,7 +280,7 @@ $table = $installer->getConnection()
         'nullable'  => false,
         'default'   => '0',
         ), 'Entity Id')
-    ->addColumn('value', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
+    ->addColumn('value', Varien_Db_Ddl_Table::TYPE_TEXT,'64k', array(
         ), 'Value')
     ->addIndex(
         $installer->getIdxName(

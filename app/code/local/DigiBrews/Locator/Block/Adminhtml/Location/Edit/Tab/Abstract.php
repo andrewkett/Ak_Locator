@@ -3,35 +3,10 @@
 class Digibrews_Locator_Block_Adminhtml_Location_Edit_Tab_Abstract extends Mage_Adminhtml_Block_Widget_Form
 {
 
-    protected $tabStructure = array(
-        'location_address' => array(
-            'address',
-            'administrative_area',
-            'sub_administrative_area',
-            'locality',
-            'dependent_locality',
-            'postal_code',
-            'thoroughfare',
-            'premise',
-            'sub_premise',
-            'country',
-            'data',
-            'geocoded',
-            'latitude',
-            'longitude'
-        ),
-
-        'location_details' => array(
-            'title',
-            'is_enabled',
-            'url_key'
-        )
-    );
-
     protected function getTabStructure(){
         $used = array();
-        $tabStructure = $this->tabStructure;
-        foreach($this->tabStructure as $tab){
+        $tabStructure = $this->getData('tab_structure');
+        foreach($tabStructure as $tab){
             foreach($tab as $att){
                 $used[$att] = $att;
             }
@@ -88,8 +63,9 @@ class Digibrews_Locator_Block_Adminhtml_Location_Edit_Tab_Abstract extends Mage_
     {
         $structure = $this->getTabStructure();
         
-        $addressAttributeCodes = $structure[$this->tabAttrs];
-     
+        $addressAttributeCodes = @$structure[$this->tabAttrs];
+        
+        
 
         //get location form
         $locationForm = $this->getLocationForm();
@@ -100,8 +76,10 @@ class Digibrews_Locator_Block_Adminhtml_Location_Edit_Tab_Abstract extends Mage_
 
         $attributes = $locationForm->getAttributes();
 
-        foreach($addressAttributeCodes as $attributeCode){
-            $addressAttributes[$attributeCode] = $attributes[$attributeCode];
+        if($addressAttributeCodes){
+            foreach($addressAttributeCodes as $attributeCode){
+                $addressAttributes[$attributeCode] = $attributes[$attributeCode];
+            }
         }
 
         $fieldset = $form->addFieldset('base_fieldset', array(
@@ -113,7 +91,5 @@ class Digibrews_Locator_Block_Adminhtml_Location_Edit_Tab_Abstract extends Mage_
         $this->setForm($form);
         return $this;
     }
-
-
 
 }
