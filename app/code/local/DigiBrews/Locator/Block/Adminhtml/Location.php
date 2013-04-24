@@ -21,6 +21,7 @@ class DigiBrews_Locator_Block_Adminhtml_Location extends Mage_Adminhtml_Block_Wi
     {
         parent::__construct();
         $this->_controller = 'adminhtml_location';
+        $this->_headerText = Mage::helper('digibrews_locator')->__('Locations');
         $this->_blockGroup = 'digibrews_locator';
     }
 }
