@@ -13,7 +13,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class DigiBrews_Locator_Helper_Location extends Enterprise_Eav_Helper_Data
+class DigiBrews_Locator_Helper_Location extends Mage_Core_Helper_Abstract
 {
     /**
      * Default attribute entity type code

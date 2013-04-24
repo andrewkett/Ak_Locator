@@ -98,10 +98,10 @@
 
 
 .loader { display: none; width: 24px; height: 24px; }
-.loader.is-loading { display: inline-block; background: url(../images/locator/loader/loader-med.gif) center no-repeat; }
+.loader.is-loading { display: inline-block; background: url(../images/loader/loader-med.gif) center no-repeat; }
 .loader-tiny { width: 10px; height: 10px; }
-.loader-tiny.is-loading { background-image: url(../images/locator/loader/loader-tiny.gif); }
+.loader-tiny.is-loading { background-image: url(../images/loader/loader-tiny.gif); }
 .loader-sml { width: 16px; height: 16px; }
-.loader-sml.is-loading { background-image: url(../images/locator/loader/loader-sml.gif); }
+.loader-sml.is-loading { background-image: url(../images/loader/loader-sml.gif); }
 .loader-lrg { width: 48px; height: 48px; }
-.loader-lrg.is-loading { background-image: url(../images/locator/loader/loader-lrg.gif); }
+.loader-lrg.is-loading { background-image: url(../images/loader/loader-lrg.gif); }

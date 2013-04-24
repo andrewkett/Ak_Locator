@@ -13,7 +13,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class DigiBrews_Locator_Helper_Data extends Enterprise_Eav_Helper_Data
+class DigiBrews_Locator_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
      * Return available location attribute form as select options
@@ -57,27 +57,27 @@ class DigiBrews_Locator_Helper_Data extends Enterprise_Eav_Helper_Data
 
 
 
-        /**
-     * Return data array of available attribute Input Types
-     *
-     * @param string|null $inputType
-     * @return array
-     */
-    public function getAttributeInputTypes($inputType = null)
-    {
-        $inputTypes = parent::getAttributeInputTypes($inputType);
+    // /**
+    //  * Return data array of available attribute Input Types
+    //  *
+    //  * @param string|null $inputType
+    //  * @return array
+    //  */
+    // public function getAttributeInputTypes($inputType = null)
+    // {
+    //     $inputTypes = parent::getAttributeInputTypes($inputType);
 
-        // -- Multiline currently showing on form but not saving
-        unset($inputTypes['multiline']);
+    //     // -- Multiline currently showing on form but not saving
+    //     unset($inputTypes['multiline']);
 
-        // -- Boolean causes whole page to error
-        unset($inputTypes['boolean']);
+    //     // -- Boolean causes whole page to error
+    //     unset($inputTypes['boolean']);
 
-        // file and input both not saving
-        unset($inputTypes['file']);
-        unset($inputTypes['image']);
+    //     // file and input both not saving
+    //     unset($inputTypes['file']);
+    //     unset($inputTypes['image']);
 
-        return $inputTypes;
-    }
+    //     return $inputTypes;
+    // }
 
 }

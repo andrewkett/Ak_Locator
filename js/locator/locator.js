@@ -79,14 +79,14 @@ function renderMap(map, locations){
   map.setMapTypeId('locator');
 
   var image = new google.maps.MarkerImage(
-    '/skin/frontend/enterprise/default/images/locator/pin.png',
+    '/skin/frontend/base/default/locator/images/pin.png',
     new google.maps.Size(40,50),
     new google.maps.Point(0,0),
     new google.maps.Point(0,50)
   );
 
   // var shadow = new google.maps.MarkerImage(
-  //   '/training/practice/skin/frontend/enterprise/default/images/locator/shadow.png',
+  //   '/training/practice/skin/frontend/base/default/locator/images/shadow.png',
   //   new google.maps.Size(62,35),
   //   new google.maps.Point(0, 0),
   //   new google.maps.Point(0,35)

@@ -4,23 +4,7 @@
       <reference name="head">
           <action method="addJs"><script>locator/locator.js</script></action>
           <action method="addJs"><script>locator/plugins.js</script></action>
-
           <action method="addCss"><script>css/locator.css</script></action>
-
-          <!-- <block type="core/text" name="locator.init.search" template="locator/page/html/head.phtml"></block> -->
-
-<!--           <block type="core/text" name="locator.init.search">
-              <action method="setText">
-                  <text><![CDATA[
-                    <script type="text/javascript">
-                      document.observe("dom:loaded", function() {
-                        initSearchPage();
-                      });
-                    </script>
-                  ]]></text>
-              </action>
-          </block>
- -->
       </reference>
 
       <reference name="left">
