@@ -53,7 +53,7 @@ class DigiBrews_Locator_Block_Adminhtml_Location_Edit extends Mage_Adminhtml_Blo
     {
         if (Mage::registry('location_data') && Mage::registry('location_data')->getId())
         {
-            return Mage::helper('digibrews_locator')->__('Edit Location "%s"', $this->htmlEscape(Mage::registry('location_data')->getTitle()));
+            return Mage::helper('digibrews_locator')->__('%s', $this->htmlEscape(Mage::registry('location_data')->getTitle()));
         } else {
             return Mage::helper('digibrews_locator')->__('New Location');
         }
