@@ -15,13 +15,13 @@
 
 class DigiBrews_Locator_Block_Adminhtml_Location extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-    protected $_addButtonLabel = 'Add New Location';
-
     public function __construct()
     {
-        parent::__construct();
         $this->_controller = 'adminhtml_location';
-        $this->_headerText = Mage::helper('digibrews_locator')->__('Locations');
+        $this->_headerText = Mage::helper('digibrews_locator')->__('Manage Locations');
         $this->_blockGroup = 'digibrews_locator';
+        $this->_addButtonLabel = Mage::helper('digibrews_locator')->__('Add New Location');
+
+        parent::__construct();
     }
 }
