@@ -96,7 +96,17 @@
             </locator_url>
         </indexer>
     </index>
-
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <locator_loadlib>
+                        <type>model</type>
+                        <class>digibrews_locator/observer</class>
+                        <method>loadLibraries</method>
+                    </locator_loadlib>
+                </observers>
+            </controller_front_init_before>
+        </events>
   </global>
   <adminhtml>
      <menu>

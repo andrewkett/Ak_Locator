@@ -45,7 +45,6 @@ class DigiBrews_Locator_Model_Search_Point_String extends DigiBrews_Locator_Mode
      */
     protected function stringToPoint($query)
     {
-        include_once(Mage::getBaseDir('lib').'/geoPHP/geoPHP.inc');
         $cache = $this->getCache();
 
         $countryCode = (Mage::getStoreConfig('locator_settings/search/append_country_code'))?' '.Mage::getStoreConfig('locator_settings/search/country_code'):'';

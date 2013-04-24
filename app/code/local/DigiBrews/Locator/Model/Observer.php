@@ -23,12 +23,25 @@ class DigiBrews_Locator_Model_Observer
             Mage::getSingleton('core/session')->addError('Warning: You haven\'t yet set a Google API key in locator configuration, the locator module requires the Google Maps API to function. You can sign up for a key <a href="https://code.google.com/apis/console/" target="_blank">here</a>.');
     
         }
-    
-        include_once(Mage::getBaseDir('lib').'/geoPHP/geoPHP.inc');
 
         if(!class_exists('geoPHP')){
             Mage::getSingleton('core/session')->addError('Warning: The geoPHP library could not be detected, this is a requirement of the Locator extension. Please <a href=" https://github.com/downloads/phayes/geoPHP/geoPHP.tar.gz">download</a> the library and add it to the lib directory');
         }
+    }
+
+
+    public function loadLibraries()
+    {
+        try{
+            include_once(Mage::getBaseDir('lib').'/geoPHP/geoPHP.inc');
+        }catch(Exception $e){
+            try{
+                include_once(Mage::getBaseDir().'/vendor/phayes/geophp/geoPHP.inc');
+            }catch(Exception $e){
+                throw new Exception('Failed to load geoPHP library');
+            }
+        }
+
     }
 
 }

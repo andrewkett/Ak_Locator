@@ -49,7 +49,6 @@ class DigiBrews_Locator_Model_Search_Point_Latlong
      */
     public function latLongToPoint($lat, $long)
     {
-        include_once(Mage::getBaseDir('lib').'/geoPHP/geoPHP.inc');
         $result = new Point($long, $lat);
         return $result;
     }   
