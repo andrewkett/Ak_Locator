@@ -136,7 +136,7 @@ function renderMap(map, locations){
 
   //}
 
-
+  google.maps.event.trigger(map, 'resize');
 
 }
 
