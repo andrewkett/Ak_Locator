@@ -35,6 +35,10 @@
 
     $('geocode').observe('click', geoCodeAddress);
 
+    setInterval(function(){
+      google.maps.event.trigger(map, 'resize');
+    }, 2000);
+
   });
 
 
