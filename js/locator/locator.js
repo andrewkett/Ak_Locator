@@ -82,11 +82,11 @@ function renderMap(map, locations){
     '/skin/frontend/base/default/locator/images/pin.png',
     new google.maps.Size(40,50),
     new google.maps.Point(0,0),
-    new google.maps.Point(0,50)
+    new google.maps.Point(20,50)
   );
 
   // var shadow = new google.maps.MarkerImage(
-  //   '/training/practice/skin/frontend/base/default/locator/images/shadow.png',
+  //   '/skin/frontend/base/default/locator/images/shadow.png',
   //   new google.maps.Size(62,35),
   //   new google.maps.Point(0, 0),
   //   new google.maps.Point(0,35)
@@ -179,16 +179,16 @@ function parseLocationsJson(string){
 
 function initRollovers(){
 
+
   $$('.loc-teaser').invoke('observe', 'mouseover', function(event) {
-      id = this.readAttribute('data-id');
-       markers[id].setAnimation(google.maps.Animation.BOUNCE);
+      var id = this.readAttribute('data-id');
+      if(markers[id].getAnimation() === null){
+        markers[id].setAnimation(google.maps.Animation.BOUNCE);
+        stoppers[id] = setTimeout(function(){
+          markers[id].setAnimation(null);
+        }, 720);
+      }
   });
-
-  $$('.loc-teaser').invoke('observe', 'mouseout', function(event) {
-      id = this.readAttribute('data-id');
-      markers[id].setAnimation(null);
-  });
-
 
   $$('.loc-teaser').invoke('observe', 'click', function(event) {
       id = this.readAttribute('data-id');
