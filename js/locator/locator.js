@@ -179,6 +179,7 @@ function parseLocationsJson(string){
 
 function initRollovers(){
 
+  var stoppers = Array();
 
   $$('.loc-teaser').invoke('observe', 'mouseover', function(event) {
       var id = this.readAttribute('data-id');
