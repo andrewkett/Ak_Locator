@@ -83,7 +83,7 @@ class DigiBrews_Locator_Block_Search_Search extends Mage_Core_Block_Template
      * 
      * @return DigiBrews_Locator_Model_Resource_Location_Collection
      */
-    protected function getSearchClass($params = array())
+    protected function getSearchClass()
     {
         $params = $this->getRequest()->getParams();
         
