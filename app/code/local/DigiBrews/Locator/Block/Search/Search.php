@@ -57,8 +57,8 @@ class DigiBrews_Locator_Block_Search_Search extends Mage_Core_Block_Template
     public function getLocations()
     {
         if (!Mage::registry('locator_locations')) {
-            $results = $this->getSearchClass()
-                            ->search($this->getRequest()->getParams());
+            $results = Mage::getModel('digibrews_locator/search')
+                        ->search($this->getRequest()->getParams());
             Mage::register('locator_locations', $results);
         }
         return Mage::registry('locator_locations');
@@ -76,32 +76,6 @@ class DigiBrews_Locator_Block_Search_Search extends Mage_Core_Block_Template
         $obj->setLocations($this->getLocations()->toJson());
         $obj->setOutput($this->getListBlock()->setData('locations', $this->getLocations())->toHtml());
         return $obj->toJson();
-    }
-
-    /**
-     * Find appropriate search class based on params passed 
-     * 
-     * @return DigiBrews_Locator_Model_Resource_Location_Collection
-     */
-    protected function getSearchClass($params = array())
-    {
-        $params = $this->getRequest()->getParams();
-        
-        if(isset($params['s']))
-        {
-            return Mage::getModel('digibrews_locator/search_point_string');
-        }
-        else if(isset($params['lat']) && isset($params['long']))
-        {
-            return Mage::getModel('digibrews_locator/search_point_latlong');
-        }
-        else if(isset($params['a']) || isset($params['country']) || isset($params['postcode']))
-        {
-            return Mage::getModel('digibrews_locator/search_area');
-        }
-        else{
-            return Mage::getModel('digibrews_locator/search_default');
-        }
     }
 
     // get the child block which will render the list of locations
