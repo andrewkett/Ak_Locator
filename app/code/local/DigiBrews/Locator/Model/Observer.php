@@ -32,16 +32,18 @@ class DigiBrews_Locator_Model_Observer
 
     public function loadLibraries()
     {
-        try{
-            include_once(Mage::getBaseDir('lib').'/geoPHP/geoPHP.inc');
-        }catch(Exception $e){
-            try{
-                include_once(Mage::getBaseDir().'/vendor/phayes/geophp/geoPHP.inc');
-            }catch(Exception $e){
-                throw new Exception('Failed to load geoPHP library');
+        $files = array(
+            Mage::getBaseDir('lib').'/geoPHP/geoPHP.inc',
+            Mage::getBaseDir().'/vendor/phayes/geophp/geoPHP.inc'
+        );
+        //try to find the geoPHP library
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                require $file;
+                return;
             }
         }
-
+        //throw new Exception('Failed to load geoPHP library');
     }
 
 }
