@@ -78,6 +78,7 @@ class DigiBrews_Locator_Block_Search_Search extends Mage_Core_Block_Template
         return $obj->toJson();
     }
 
+
     // get the child block which will render the list of locations
     protected function getListBlock()
     {
