@@ -36,7 +36,7 @@ class DigiBrews_Locator_Model_Search extends DigiBrews_Locator_Model_Search_Abst
      * Find appropriate search class based on params passed
      *
      * @param array $params
-     * @return DigiBrews_Locator_Model_Resource_Location_Collection
+     * @return DigiBrews_Locator_Model_Search_Abstract
      */
     protected function getSearchClass($params = array())
     {

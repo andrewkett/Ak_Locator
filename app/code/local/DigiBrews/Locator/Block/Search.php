@@ -13,7 +13,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class DigiBrews_Locator_Block_Search_Search extends Mage_Core_Block_Template
+class DigiBrews_Locator_Block_Search extends Mage_Core_Block_Template
 {
     protected function _prepareLayout()
     {   
