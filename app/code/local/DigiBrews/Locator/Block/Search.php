@@ -15,6 +15,9 @@
 
 class DigiBrews_Locator_Block_Search extends Mage_Core_Block_Template
 {
+    /**
+     * @return Mage_Core_Block_Abstract
+     */
     protected function _prepareLayout()
     {   
         $this->setTemplate('locator/search/search.phtml');
@@ -61,15 +64,26 @@ class DigiBrews_Locator_Block_Search extends Mage_Core_Block_Template
                         ->search($this->getRequest()->getParams());
             Mage::register('locator_locations', $results);
         }
+
+
+
         return Mage::registry('locator_locations');
     }
 
+    /**
+     *
+     * @return DigiBrews_Locator_Model_Location
+     */
     public function getLocation()
     {
       $locations = $this->getLocations()->getItems();
       $location = reset($locations);
     }
 
+
+    /**
+     * @return string
+     */
     public function asJson()
     {
         $obj = new Varien_Object();
@@ -79,10 +93,15 @@ class DigiBrews_Locator_Block_Search extends Mage_Core_Block_Template
     }
 
 
-    // get the child block which will render the list of locations
+    /**
+     * get the child block which will render the list of locations
+     *
+     * @return Mage_Core_Block_Abstract
+     */
     protected function getListBlock()
     {
-        if($this->getSearchClass() instanceof DigiBrews_Locator_Model_Search_Area){
+        //if the collection contains distance data render accordingly otherwise just list normally
+        if(!$this->getLocations()->getFirstItem()->getDistance()){
             return $this->getLayout()->createBlock('digibrews_locator/search_list_area');
         }else{
             return $this->getLayout()->createBlock('digibrews_locator/search_list_point');
