@@ -35,16 +35,9 @@ abstract class DigiBrews_Locator_Model_Search_Point_Abstract
             $radius = (int)Mage::getStoreConfig('locator_settings/search/default_search_distance');
         }
 
-        $collection = $this->getSearchCollection()
-                            ->addAttributeToSelect('*')
-                            ->addExpressionAttributeToSelect('distance', sprintf("(3959 * acos(cos(radians('%s')) * cos(radians(latitude)) * cos(radians(longitude) - radians('%s')) + sin(radians('%s')) * sin( radians(latitude))))", $point->coords[1], $point->coords[0], $point->coords[1], $radius), array('entity_id'));
-
-        if ($radius !== 0) {
-            $collection->getSelect()->having('distance < ?', $radius);
-        }
-
-        $collection->setOrder('distance');
-
-        return $collection;
+        return  $this->getSearchCollection()
+                        ->addAttributeToSelect('*')
+                        ->nearPoint($point, $radius)
+                        ->setOrder('distance');
     }
 }

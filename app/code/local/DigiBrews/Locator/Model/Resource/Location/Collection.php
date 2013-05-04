@@ -74,4 +74,17 @@ class DigiBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
     {
         return $this->_toOptionArray($valueField, $labelField, $additional);
     }
+
+
+    public function nearPoint(Point $point, $radius = 0){
+
+        $this->addExpressionAttributeToSelect('distance', sprintf("(3959 * acos(cos(radians('%s')) * cos(radians(latitude)) * cos(radians(longitude) - radians('%s')) + sin(radians('%s')) * sin( radians(latitude))))", $point->coords[1], $point->coords[0], $point->coords[1], $radius), array('entity_id'));
+
+        if ($radius !== 0) {
+            $this->getSelect()->having('distance < ?', $radius);
+        }
+
+        return $this;
+
+    }
 }
