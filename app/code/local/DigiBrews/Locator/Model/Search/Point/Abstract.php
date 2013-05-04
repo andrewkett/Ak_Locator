@@ -35,32 +35,15 @@ abstract class DigiBrews_Locator_Model_Search_Point_Abstract
             $radius = (int)Mage::getStoreConfig('locator_settings/search/default_search_distance');
         }
 
-        //$cache = $this->getCache();
+        $collection = $this->getSearchCollection()
+                            ->addAttributeToSelect('*')
+                            ->addExpressionAttributeToSelect('distance', sprintf("(3959 * acos(cos(radians('%s')) * cos(radians(latitude)) * cos(radians(longitude) - radians('%s')) + sin(radians('%s')) * sin( radians(latitude))))", $point->coords[1], $point->coords[0], $point->coords[1], $radius), array('entity_id'));
 
-        //if(!$collection = unserialize($cache->load('locator_point_to_locations_'.$point->coords[1].'_'.$point->coords[0]))){
-            $collection = $this->getSearchCollection();
+        if ($radius !== 0) {
+            $collection->getSelect()->having('distance < ?', $radius);
+        }
 
-            $collection->addAttributeToSelect('latitude', 'left')
-                    ->addAttributeToSelect('longitude', 'left')
-                    ->addAttributeToSelect('*') // @todo maybe * isn't needed
-                    ->addExpressionAttributeToSelect('distance', sprintf("(3959 * acos(cos(radians('%s')) * cos(radians(at_latitude.value)) * cos(radians(at_longitude.value) - radians('%s')) + sin(radians('%s')) * sin( radians(at_latitude.value))))", $point->coords[1], $point->coords[0], $point->coords[1], $radius), array('entity_id'));
-
-            if ($radius !== 0) {
-                $collection->getSelect()->having('distance < ?', $radius);
-            }
-
-            $collection->setOrder('distance');
-
-            // shouldn't be done here as calling getItems causes the collection to be loaded meaning it can't be modified after calling this function
-            // @todo write an observer to do this the first time it is loaded from db
-            // foreach($collection->getItems() as $location){
-            //     $location->setDirectionsLink(array('start'=>$point));
-            // }
-
-            //@todo can't seem to cache collections, must be some way around this
-           // $cache->save(serialize($collection), 'locator_point_to_locations_'.$point->coords[1].'_'.$point->coords[0]);
-
-       // }
+        $collection->setOrder('distance');
 
         return $collection;
     }
