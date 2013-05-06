@@ -35,21 +35,7 @@ class DigiBrews_Locator_Model_Search_Point_Latlong
             throw new Exception('Both latitude and longitude values are required to do a lat/long search');
         }
 
-        $point = $this->latLongToPoint($params['lat'],$params['long']);
+        $point = new Point($params['long'],$params['lat']);
         return $this->pointToLocations($point, @$params['distance']);
     }
-
-
-    /**
-     * Convert a lat/long value into a point object
-     *
-     * @param Point $point
-     * @param int $distance
-     * @return Point
-     */
-    public function latLongToPoint($lat, $long)
-    {
-        $result = new Point($long, $lat);
-        return $result;
-    }   
 }

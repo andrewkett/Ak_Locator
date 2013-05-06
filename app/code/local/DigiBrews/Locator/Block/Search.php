@@ -15,37 +15,22 @@
 
 class DigiBrews_Locator_Block_Search extends Mage_Core_Block_Template
 {
+
+
     /**
      * @return Mage_Core_Block_Abstract
      */
     protected function _prepareLayout()
-    {   
-        $this->setTemplate('locator/search/search.phtml');
-
+    {
         $layout = $this->getLayout();
-        //$this->loadLayout();
 
         if ($headBlock = $layout->getBlock('head')) {
-
-          $headBlock->setTitle('Search Results');
-          // $headBlock->setDescription('Locations near ');
-          // $headBlock->setKeywords('');
+            $headBlock->setTitle('Search Results');
+            $headBlock->getChild('init-search')->setData('locations', $this->getLocations());
         }
 
-        $initLocator = $layout->createBlock('core/template');
-        $initLocator->setTemplate('locator/page/html/head/init-locator.phtml');
-
-        $initSearch = $layout->createBlock('core/template');
-        $initSearch->setTemplate('locator/page/html/head/init-search.phtml')->setData('locations', $this->getLocations());
-
-        $headBlock->append($initLocator);
-        $headBlock->append($initSearch);
-
         // @todo init these in layout xml so they can be modified easier
-        $formBlock = $this->getLayout()->createBlock('digibrews_locator/search_form');
         $listBlock = $this->getListBlock()->setData('locations', $this->getLocations());
-
-        $this->setChild('form', $formBlock);
         $this->setChild('list', $listBlock);
 
         return parent::_prepareLayout();
@@ -60,25 +45,24 @@ class DigiBrews_Locator_Block_Search extends Mage_Core_Block_Template
     public function getLocations()
     {
         if (!Mage::registry('locator_locations')) {
-            $results = Mage::getModel('digibrews_locator/search')
+            $locations = Mage::getModel('digibrews_locator/search')
                         ->search($this->getRequest()->getParams());
-            Mage::register('locator_locations', $results);
+            Mage::register('locator_locations', $locations);
+        }else{
+            $locations = Mage::registry('locator_locations');
         }
 
-
-
-        return Mage::registry('locator_locations');
+        return $locations;
     }
 
     /**
      *
      * @return DigiBrews_Locator_Model_Location
      */
-    public function getLocation()
-    {
-      $locations = $this->getLocations()->getItems();
-      $location = reset($locations);
-    }
+//    public function getLocation()
+//    {
+//      $locations = $this->getLocations()->getFirstItem();
+//    }
 
 
     /**

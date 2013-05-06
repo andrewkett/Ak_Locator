@@ -39,12 +39,11 @@ class DigiBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
 
         $this->loadLayout();
 
-
+        //if there are no locations returned go to the noresults action now
         if(!count($this->getLayout()->getBlock('search')->getLocations()->getItems())){
           $this->_forward('noresults');
           return;
         }
-
 
         if($this->getRequest()->isXmlHttpRequest()){
           echo $this->getLayout()->getBlock('search')->asJson();

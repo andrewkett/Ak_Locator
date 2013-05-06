@@ -21,8 +21,14 @@
             </action>
         </reference>
 
+        <reference name="head">core/template
+            <block type="core/template" name="init-locator" as="init-locator" template="locator/page/html/head/init-locator.phtml" />
+            <block type="core/template" name="init-search" as="init-search" template="locator/page/html/head/init-search.phtml" />
+        </reference>
+
         <reference name="content">
-            <block type="digibrews_locator/search" name="search" as="search">
+            <block type="digibrews_locator/search" name="search" as="search" template="locator/search/search.phtml">
+                <block type="digibrews_locator/search_form" name="form" as="form" />
                 <block type="digibrews_locator/search_noresults" name="empty" as="empty" />
             </block>
         </reference>

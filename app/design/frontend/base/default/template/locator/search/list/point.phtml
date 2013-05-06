@@ -16,14 +16,14 @@
 
 <?php
   $locations = $this->getLocations()->getItems();
-  $closest = $location = reset($locations);
+  $closest = $this->getLocations()->getFirstItem();
 ?>
 
 
 <?php if($locations): ?>
   <h2>Closest Store</h2>
   <div class="closest location-info">
-      <article class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
+      <article class="loc loc-teaser" data-id="<?php echo $closest->getId(); ?>">
         <h3><?php echo $closest->getTitle(); ?></h3>
         <address><?php echo $closest->getAddress() ?></address>
         <p>Approx <?php echo round($closest->getDistance(),1); ?>km from you</p>
@@ -55,7 +55,4 @@
       <?php endforeach; ?>
     </ul>
     <?php endif; ?>
-<?php else: ?>
-  No results found
 <?php endif; ?>
-

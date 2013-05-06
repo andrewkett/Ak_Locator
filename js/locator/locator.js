@@ -97,6 +97,8 @@ function renderMap(map, locations){
   //   type: 'poly'
   // };
 
+  var show = 0;
+
   for (var key in locations) {
     if (locations.hasOwnProperty(key)) {
 
@@ -127,11 +129,18 @@ function renderMap(map, locations){
         });
 
         latlngbounds.extend( loc );
+        show = 1;
     }
   }
 
+    if(!show){
+        $('locator-results').addClassName('is-no-results');
+    }
+
+
   //if(locations.length > 1){
     map.fitBounds( latlngbounds );
+
   //}else{
 
   //}

@@ -15,13 +15,11 @@
 
 class DigiBrews_Locator_Block_Search_Noresults extends Mage_Core_Block_Template
 {
-  protected function _prepareLayout()
-  {
-    $this->setTemplate('locator/search/no-results.phtml');
-    $formBlock = $this->getLayout()->createBlock('digibrews_locator/search_form');
-    $this->setChild('form', $formBlock);
 
-    return parent::_prepareLayout();
-  }
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setTemplate('locator/search/no-results.phtml');
+    }
 
 }
