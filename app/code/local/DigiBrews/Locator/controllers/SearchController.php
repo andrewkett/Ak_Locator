@@ -22,21 +22,6 @@ class DigiBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
  public function indexAction()
   {
       try{
-
-        //if customer is logged in and they have an address use that when there is no search
-        if(!$this->getRequest()->getParams()){
-          $session = Mage::getSingleton('customer/session');
-          if($session->isLoggedIn()){
-            $addressId = $session->getCustomer()->getDefaultBilling();
-
-            $address = Mage::getModel('customer/address')->load($addressId);
-            $street = $address->getStreet();
-
-            $search = @$street[0].' '.@$street[1].', '.$address->getCity().', '.$address->getRegion().', '.$address->getPostcode().', '.$address->getCountry();
-            $this->getRequest()->setQuery('s',$search);
-          }
-        }
-
         $this->loadLayout();
 
         //if there are no locations returned go to the noresults action now

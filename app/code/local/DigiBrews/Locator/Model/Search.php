@@ -20,6 +20,8 @@
  */
 class DigiBrews_Locator_Model_Search extends DigiBrews_Locator_Model_Search_Abstract
 {
+    var $params = array();
+
     /**
      * Perform search based on params passed
      *
@@ -28,7 +30,8 @@ class DigiBrews_Locator_Model_Search extends DigiBrews_Locator_Model_Search_Abst
      */
     public function search(Array $params = null)
     {
-        return $this->getSearchClass($params)->search($params);
+        $this->params = $params;
+        return $this->getSearchClass($this->params)->search($this->params);
     }
 
 
@@ -53,6 +56,27 @@ class DigiBrews_Locator_Model_Search extends DigiBrews_Locator_Model_Search_Abst
             return Mage::getModel('digibrews_locator/search_area');
         }
         else{
+
+            //if customer is logged in and they have an address use that
+            $session = Mage::getSingleton('customer/session');
+            if($session->isLoggedIn()){
+                $addressId = $session->getCustomer()->getDefaultBilling();
+
+                $address = Mage::getModel('customer/address')->load($addressId);
+                $street = $address->getStreet();
+
+                $search = @$street[0].' '.@$street[1].', '.$address->getCity().', '.$address->getRegion().', '.$address->getPostcode().', '.$address->getCountry();
+                $searchModel = Mage::getModel('digibrews_locator/search_point_string');
+                $newParams = array('s'=>$search, 'distance'=>500);
+
+                //if thre are results close to the customer use that
+                //otherwise just fallback to default search
+                if($searchModel->search($newParams)->getItems()){
+                    $this->params = array_merge($newParams, $this->params);
+                    return $searchModel;
+                }
+            }
+
             return Mage::getModel('digibrews_locator/search_default');
         }
     }
