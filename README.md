@@ -6,7 +6,7 @@ This extension can be installed a few different ways:
 
 ### Using modman
         
-    modman clone git://github.com/andrewkett/Digibrews_Locator.git
+    modman clone git://github.com/andrewkett/MageBrews_Locator.git
 
 ### Using composer 
     
@@ -21,7 +21,7 @@ add a composer.json file to your root directory
             },
             {
                 "type": "git",
-                "url": "git@github.com:andrewkett/Digibrews_Locator.git"
+                "url": "git@github.com:andrewkett/MageBrews_Locator.git"
             },
             {
                 "type": "git",
@@ -45,7 +45,7 @@ If you are using composer and your dependencies are not being installed to the l
 
 ### Download and install manually.
 
-[https://github.com/andrewkett/Digibrews_Locator/archive/master.zip](https://github.com/andrewkett/Digibrews_Locator/archive/master.zip)
+[https://github.com/andrewkett/MageBrews_Locator/archive/master.zip](https://github.com/andrewkett/MageBrews_Locator/archive/master.zip)
 
 You will also need to add the [geoPHP](https://github.com/phayes/geoPHP) library to the lib directory
 
