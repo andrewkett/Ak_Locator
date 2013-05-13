@@ -3,7 +3,7 @@
     "license": "OSL-3.0",
     "type": "magento-module",
     "description": "Magento Store Locator Extension",
-    "homepage": "https://github.com/andrewkett/Digibrews_Locator",
+    "homepage": "http://andrewkett.github.io/MageBrews_Locator/",
     "require": {
         "magento-hackathon/magento-composer-installer": "*",
         "phayes/geophp": "dev-master"
