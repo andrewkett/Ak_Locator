@@ -13,7 +13,7 @@
           <action method="addJs"><script>locator/locator.js</script></action>
         </reference>
         <reference name="content">
-            <block type="digibrews_locator/adminhtml_location" name="location" />
+            <block type="magebrews_locator/adminhtml_location" name="location" />
         </reference>
 
         <!-- <reference name="content">
@@ -33,13 +33,13 @@
 
         <update handle="editor"/>
         <reference name="content">
-            <block type="digibrews_locator/adminhtml_location_edit" name="location_edit"></block>
-            <block type="digibrews_locator/adminhtml_location_edit_map" name="location_edit_map"></block>
+            <block type="magebrews_locator/adminhtml_location_edit" name="location_edit"></block>
+            <block type="magebrews_locator/adminhtml_location_edit_map" name="location_edit_map"></block>
         </reference>
 
         <reference name="left">
             <!-- <block type="adminhtml/store_switcher" name="store_switcher" before="-"></block> -->
-            <block type="digibrews_locator/adminhtml_location_edit_tabs" name="product_tabs"></block>
+            <block type="magebrews_locator/adminhtml_location_edit_tabs" name="product_tabs"></block>
         </reference>
     </adminhtml_locator_edit>
 

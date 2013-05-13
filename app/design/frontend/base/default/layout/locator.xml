@@ -8,7 +8,7 @@
         </reference>
 
         <reference name="left">
-            <block type="digibrews_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
+            <block type="magebrews_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
         </reference>
 
     </default>
@@ -27,9 +27,9 @@
         </reference>
 
         <reference name="content">
-            <block type="digibrews_locator/search" name="search" as="search" template="locator/search/search.phtml">
-                <block type="digibrews_locator/search_form" name="form" as="form" />
-                <block type="digibrews_locator/search_noresults" name="empty" as="empty" />
+            <block type="magebrews_locator/search" name="search" as="search" template="locator/search/search.phtml">
+                <block type="magebrews_locator/search_form" name="form" as="form" />
+                <block type="magebrews_locator/search_noresults" name="empty" as="empty" />
             </block>
         </reference>
 
@@ -44,7 +44,7 @@
         </reference>
 
         <reference name="content">
-            <block type="digibrews_locator/location_view" name="view" as="view"></block>
+            <block type="magebrews_locator/location_view" name="view" as="view"></block>
         </reference>
 
     </locator_location_index>

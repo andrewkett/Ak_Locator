@@ -1,6 +1,6 @@
 #extension files
 app/etc/modules/*                                           app/etc/modules/
-app/code/local/DigiBrews/Locator                            app/code/local/DigiBrews/Locator 
+app/code/local/MageBrews/Locator                            app/code/local/MageBrews/Locator 
 
 #template files
 app/design/adminhtml/default/default/layout/locator.xml     app/design/adminhtml/default/default/layout/locator.xml
