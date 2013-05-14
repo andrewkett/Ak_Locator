@@ -42,7 +42,7 @@ FROM digibrews_locator_location_entity_text;
 ';
 
 
-$installer->getConnection()->query($query);
+//$installer->getConnection()->query($query);
 
 
 $installer->endSetup();
