@@ -2,28 +2,9 @@ var Locator = Locator || { 'settings': {}, 'map': {'zoom_level':15, 'markers':[]
 
 function initLocator(){
 
-
-  Locator.settings.theme = [
-    {
-      featureType: "road",
-      elementType: "geometry",
-      stylers: [
-        { lightness: 100 },
-        { visibility: "simplified" }
-      ]
-    },{
-      featureType: "road",
-      elementType: "labels",
-      stylers: [
-        { visibility: "off" }
-      ]
-    }
-  ];
-
   Locator.settings.defaultMapOptions = {
     zoom: 15,
     scrollwheel: false,
-
 
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
@@ -71,12 +52,13 @@ function renderMap(map, locations){
   infowindows = Array();
   clearOverlays();
   markers = Locator.map.markers;
-  console.log(Locator.settings.theme);
 
-  var styledMap = new google.maps.StyledMapType(Locator.settings.theme,{name: "Locator"});
+  if(Locator.settings.theme){
+    var styledMap = new google.maps.StyledMapType(Locator.settings.theme,{name: "Locator"});
+    map.mapTypes.set('locator', styledMap);
+    map.setMapTypeId('locator');
+  }
 
-  map.mapTypes.set('locator', styledMap);
-  map.setMapTypeId('locator');
 
   var image = new google.maps.MarkerImage(
     '/skin/frontend/base/default/locator/images/pin.png',
@@ -137,13 +119,17 @@ function renderMap(map, locations){
         $('locator-results').addClassName('is-no-results');
     }
 
-
-  //if(locations.length > 1){
     map.fitBounds( latlngbounds );
 
-  //}else{
+    if(Locator.settings.maxZoom){
+      //when the map loads, make sure it hasn't zoomed in to far, if it has zoom out
+      //@todo, configure the zoom level in admin
+      var listener = google.maps.event.addListener(map, "idle", function() {
+          if (map.getZoom() > Locator.settings.maxZoom) map.setZoom(Locator.settings.maxZoom);
+          google.maps.event.removeListener(listener);
+      });
+    }
 
-  //}
 
   google.maps.event.trigger(map, 'resize');
 
@@ -156,7 +142,6 @@ function hideInfoWindows(){
     }
   }
 }
-
 
 
 function parseSearchJson(string){

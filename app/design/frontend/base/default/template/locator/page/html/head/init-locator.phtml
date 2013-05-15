@@ -2,7 +2,28 @@
 <script>
 
 document.observe("dom:loaded", function() {
-  initLocator();
+  
+   Locator.settings.maxZoom = 16;
+
+//  Uncomment this line to start customizing the look of the google map displayed
+//    Locator.settings.theme = [
+//        {
+//            featureType: "road",
+//            elementType: "geometry",
+//            stylers: [
+//                { lightness: 100 },
+//                { visibility: "simplified" }
+//            ]
+//        },{
+//            featureType: "road",
+//            elementType: "labels",
+//            stylers: [
+//                { visibility: "off" }
+//            ]
+//        }
+//    ];
+
+    initLocator();
 });
 
 </script>
