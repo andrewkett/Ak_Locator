@@ -20,6 +20,8 @@
  */
 class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abstract
 {
+    const XML_SEARCH_OVERRIDES_PATH = "locator_settings/search/overrides_enabled";
+
     var $params = array();
 
     /**
@@ -31,20 +33,33 @@ class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abst
     public function search(Array $params = null)
     {
         $this->params = $params;
-        return $this->getSearchClass($this->params)->search($this->params);
+        $this->depth = 0;
+
+        return $this->getSearchClass()->search($this->params);
     }
 
 
     /**
      * Find appropriate search class based on params passed
      *
-     * @param array $params
      * @return MageBrews_Locator_Model_Search_Abstract
      */
-    protected function getSearchClass($params = array())
+    protected function getSearchClass()
     {
+        $params = $this->params;
+
         if(isset($params['s']))
         {
+            if(Mage::getStoreConfig(self::XML_SEARCH_OVERRIDES_PATH)){
+                //check db for custom searches matching this one
+                $override = Mage::getModel('magebrews_locator/search_override')->load($params['s']);
+                if($override->getParams() && $this->depth < 1){
+                    $this->depth++;
+                    $this->params = $this->parseQuery($override->getParams());
+                    return $this->getSearchClass($params);
+                }
+            }
+
             return Mage::getModel('magebrews_locator/search_point_string');
         }
         else if(isset($params['lat']) && isset($params['long']))
@@ -79,5 +94,18 @@ class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abst
 
             return Mage::getModel('magebrews_locator/search_default');
         }
+    }
+
+
+    protected function parseQuery($query) {
+        $queryParts = explode('&', $query);
+
+        $params = array();
+        foreach ($queryParts as $param) {
+            $item = explode('=', $param);
+            $params[$item[0]] = $item[1];
+        }
+
+        return $params;
     }
 }

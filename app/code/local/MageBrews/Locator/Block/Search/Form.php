@@ -28,7 +28,7 @@ class MageBrews_Locator_Block_Search_Form extends Mage_Core_Block_Template
 
     public function showSearchFilter()
     {
-        return Mage::getStoreConfig(self::XML_PATH_SHOW_SEARCH);;
+        return Mage::getStoreConfig(self::XML_PATH_SHOW_SEARCH);
     }
 
     public function showDistanceFilter()

@@ -17,7 +17,7 @@
 <config>
   <modules>
     <MageBrews_Locator>
-        <version>0.0.0.4</version>
+        <version>0.0.0.5</version>
     </MageBrews_Locator>
   </modules>
   <global>
@@ -44,6 +44,10 @@
                     <location_entity_datetime>
                         <table>magebrews_locator_location_entity_datetime</table>
                     </location_entity_datetime>
+
+                    <search_override>
+                        <table>magebrews_locator_search_override</table>
+                    </search_override>
 
                     <eav_attribute>
                         <table>magebrews_locator_eav_attribute</table>
@@ -202,6 +206,7 @@
                 <default_search_distance>5</default_search_distance>
                 <show_search_filter>1</show_search_filter>
                 <show_distance_filter>1</show_distance_filter>
+                <overrides_enabled>1</overrides_enabled>
             </search>
         </locator_settings>
     </default>
