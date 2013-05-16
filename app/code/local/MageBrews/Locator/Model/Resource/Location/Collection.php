@@ -67,7 +67,11 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
 
           $locations[(int)$location->getEntityId()] = $loc;
         }
-        return Zend_Json::encode($locations);
+        
+        $json = Zend_Json::encode($locations);
+        //zend_json doesn't encode single quotes but they break in the browser
+        $json = str_replace('\'', '&#39;', $json);
+        return $json;
     }
 
     public function toOptionArray($valueField='entity_id', $labelField='title', $additional=array())
