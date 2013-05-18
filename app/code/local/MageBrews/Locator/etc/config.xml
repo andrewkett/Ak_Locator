@@ -128,9 +128,9 @@
         </menu>
     <layout>
             <updates>
-                <locator>
+                <magebrews_locator>
                     <file>locator.xml</file>
-                </locator>
+                </magebrews_locator>
             </updates>
         </layout>
 
