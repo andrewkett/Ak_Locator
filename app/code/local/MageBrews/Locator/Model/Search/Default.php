@@ -29,7 +29,12 @@ class MageBrews_Locator_Model_Search_Default
      */
     public function search(Array $params = null)
     {
-        $params['s'] = Mage::getStoreConfig('locator_settings/search/default_search_string');
+        $params = Mage::getStoreConfig('locator_settings/search/default_search_params');
+
+
+
+        $params = Mage::helper('magebrews_locator/search')->parseQueryString($params);
+
         return Mage::getModel('magebrews_locator/search_point_string')->search($params);
 
         //@todo rework this so that the database config can define what type of search is performed for default search

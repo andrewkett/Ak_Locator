@@ -20,6 +20,10 @@
  */
 class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Model_Search_Point_Abstract
 {
+    const XML_SEARCH_APIKEY_PATH = "locator_settings/google_maps/api_key";
+    const XML_SEARCH_SHOULDAPPEND_PATH = "locator_settings/search/append_string_to_search";
+    const XML_SEARCH_APPENDTEXT_PATH = "locator_settings/search/append_string";
+
     /**
      * Geocode a search string into a Lat/Long Point
      *
@@ -47,13 +51,13 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
     {
         $cache = $this->getCache();
 
-        $countryCode = (Mage::getStoreConfig('locator_settings/search/append_country_code'))?' '.Mage::getStoreConfig('locator_settings/search/country_code'):'';
+        $appendText = (Mage::getStoreConfig(self::XML_SEARCH_SHOULDAPPEND_PATH))?Mage::getStoreConfig(self::XML_SEARCH_APPENDTEXT_PATH):'';
 
-        $query = $query.' '.$countryCode;
+        $query = $query.' '.$appendText;
 
         if(!$result = unserialize($cache->load('locator_string_to_point_'.$query))){
 
-            $key = Mage::getStoreConfig('locator_settings/google_maps/api_key');
+            $key = Mage::getStoreConfig(self::XML_SEARCH_APIKEY_PATH);
 
             try{
                 $geocoder = new GoogleGeocode($key);

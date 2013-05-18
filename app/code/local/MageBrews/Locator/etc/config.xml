@@ -200,10 +200,10 @@
     <default>
         <locator_settings>
             <search>
-                <append_country_code>1</append_country_code>
-                <country_code>AU</country_code>
-                <default_search_string>Melbourne, Australia</default_search_string>
-                <default_search_distance>5</default_search_distance>
+                <append_string_to_search>1</append_string_to_search>
+                <append_string>australia</append_string>
+                <use_default_search>1</use_default_search>
+                <default_search_params>country=australia</default_search_params>
                 <show_search_filter>1</show_search_filter>
                 <show_distance_filter>1</show_distance_filter>
                 <overrides_enabled>1</overrides_enabled>

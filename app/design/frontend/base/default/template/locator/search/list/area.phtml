@@ -19,7 +19,7 @@
 ?>
 
 <?php if($locations): ?>
-  <?php if(count($locations) > 1): ?>
+  <?php if(count($locations) > 0): ?>
     <h2>Locations</h2>
     <ul class="locations">
       <?php
@@ -31,7 +31,6 @@
           <article class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
             <h3><?php echo $location->getTitle(); ?></h3>
             <address><?php echo $location->getAddress() ?></address>
-            <p>Approx <?php echo round($location->getDistance(),1); ?>km from you</p>
             <a href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
           </article>
         </li>

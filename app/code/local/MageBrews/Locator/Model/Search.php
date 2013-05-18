@@ -21,6 +21,7 @@
 class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abstract
 {
     const XML_SEARCH_OVERRIDES_PATH = "locator_settings/search/overrides_enabled";
+    const XML_SEARCH_USEDEFAULT_PATH = "locator_settings/search/use_default_search";
 
     var $params = array();
 
@@ -35,7 +36,13 @@ class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abst
         $this->params = $params;
         $this->depth = 0;
 
-        return $this->getSearchClass()->search($this->params);
+
+
+        if($this->getSearchClass()){
+            return $this->getSearchClass()->search($this->params);
+        }else{
+            //@todo show search form with no results
+        }
     }
 
 
@@ -74,7 +81,7 @@ class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abst
 
             //if customer is logged in and they have an address use that
             $session = Mage::getSingleton('customer/session');
-            if($session->isLoggedIn()){
+            if($session->isLoggedIn() && $session->getCustomer()->getDefaultBilling()){
                 $addressId = $session->getCustomer()->getDefaultBilling();
 
                 $address = Mage::getModel('customer/address')->load($addressId);
@@ -84,7 +91,7 @@ class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abst
                 $searchModel = Mage::getModel('magebrews_locator/search_point_string');
                 $newParams = array('s'=>$search, 'distance'=>500);
 
-                //if thre are results close to the customer use that
+                //if there are results close to the customer use that
                 //otherwise just fallback to default search
                 if($searchModel->search($newParams)->getItems()){
                     $this->params = array_merge($newParams, $this->params);
@@ -92,20 +99,14 @@ class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abst
                 }
             }
 
-            return Mage::getModel('magebrews_locator/search_default');
+            if(Mage::getStoreConfig(self::XML_SEARCH_USEDEFAULT_PATH)){
+                $params = Mage::getStoreConfig('locator_settings/search/default_search_params');
+                $this->params = Mage::helper('magebrews_locator/search')->parseQueryString($params);
+                return $this->getSearchClass($params);
+            }
+
+            return false;
         }
     }
 
-
-    protected function parseQuery($query) {
-        $queryParts = explode('&', $query);
-
-        $params = array();
-        foreach ($queryParts as $param) {
-            $item = explode('=', $param);
-            $params[$item[0]] = $item[1];
-        }
-
-        return $params;
-    }
 }
