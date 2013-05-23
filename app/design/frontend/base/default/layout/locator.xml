@@ -2,7 +2,7 @@
     <default>
 
         <reference name="head">
-            <action method="addJs"><script>locator/locator.js</script></action>
+            <action method="addJs"><script>locator/locator-new.js</script></action>
             <action method="addJs"><script>locator/plugins.js</script></action>
             <action method="addCss"><script>locator/css/locator.css</script></action>
         </reference>

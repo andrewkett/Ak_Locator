@@ -1,10 +1,10 @@
 <?php echo $this->getChildHtml('form'); ?>
 
-<div id="locator-results">
-  <div id="search-info">
+<div id="locator-results" class="loc-results">
+  <div id="search-info" class="loc-list">
     <?php echo $this->getChildHtml('list') ?>
   </div>
-  <div id="location-map"></div>
+  <div id="location-map" class="loc-map"></div>
   <div class="empty-search"><?php echo $this->getChildHtml('empty') ?></div>
 </div>
 
