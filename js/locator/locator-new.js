@@ -72,6 +72,12 @@
                     new google.maps.Point(20, 50)
                 )
             };
+
+            this.stoppers = [];
+
+            this.settings = {
+                maxZoom : 15
+            };
         },
 
         renderLocations: function (locations) {
@@ -82,11 +88,11 @@
 
             this.clearOverlays();
 
-            if (this.settings.theme) {
-                var styledMap = new google.maps.StyledMapType(this.settings.theme, { name: "Locator" });
-                self.map.mapTypes.set('locator', styledMap);
-                self.map.setMapTypeId('locator');
-            }
+//            if (this.settings.theme) {
+//                var styledMap = new google.maps.StyledMapType(this.settings.theme, { name: "Locator" });
+//                self.map.mapTypes.set('locator', styledMap);
+//                self.map.setMapTypeId('locator');
+//            }
 
             for (var key in locations) {
                 if (locations.hasOwnProperty(key)) {
@@ -120,20 +126,16 @@
                 }
             }
 
-            if(!show){
-                //$('locator-results').addClassName('is-no-results');
-            }
-
             self.map.fitBounds( latlngbounds );
 
-//            if(Locator.settings.maxZoom){
-//                //when the map loads, make sure it hasn't zoomed in to far, if it has zoom out
-//                //@todo, configure the zoom level in admin
-//                var listener = gmaps.event.addListener(self.map, "idle", function() {
-//                    if (map.getZoom() > Locator.settings.maxZoom) map.setZoom(Locator.settings.maxZoom);
-//                    google.maps.event.removeListener(listener);
-//                });
-//            }
+            if(self.settings.maxZoom){
+                //when the map loads, make sure it hasn't zoomed in to far, if it has zoom out
+                //@todo, configure the zoom level in admin
+                var listener = google.maps.event.addListener(self.map, "idle", function() {
+                    if (self.map.getZoom() > self.settings.maxZoom) self.map.setZoom(self.settings.maxZoom);
+                    google.maps.event.removeListener(listener);
+                });
+            }
 
 
             google.maps.event.trigger(self.map, 'resize');
@@ -155,6 +157,11 @@
             }
         },
 
+        showInfoWindow: function(id){
+            this.hideInfoWindows();
+            this.infowindows[id].open(this.map,this.markers[id]);
+        },
+
         renderMarker: function(l){
             return '<div id="content">'+
                 '<div id="siteNotice">'+
@@ -165,6 +172,18 @@
                 '</div>'+
                 '<p><a href="'+l.directions+'" target="_blank">Get Directions</a></p>'+
                 '</div>';
+        },
+
+        highlightMarker: function(id){
+            var self = this;
+            console.log('here');
+            if(self.markers[id].getAnimation() === null){
+                console.log('setting animation');
+                self.markers[id].setAnimation(google.maps.Animation.BOUNCE);
+                self.stoppers[id] = setTimeout(function(){
+                    self.markers[id].setAnimation(null);
+                }, 720);
+            }
         }
     });
 
@@ -206,39 +225,27 @@
             });
 
 
-            $$(this.settings.selectors.teaser).invoke('observe', 'mouseover', function(event) {
-                alert('here');
-//                var id = this.readAttribute('data-id');
-//                console.log(self.map.markers);
-//                if(self.map.markers[id].getAnimation() === null){
-//                    self.map.markers[id].setAnimation(google.maps.Animation.BOUNCE);
-//                    stoppers[id] = setTimeout(function(){
-//                        self.map.markers[id].setAnimation(null);
-//                    }, 720);
-//                }
+            $$(this.settings.selectors.trigger).invoke('observe', 'click', function(event){
+                var href = Event.element(event).readAttribute('href');
+
+                self.forms[0].startLoader();
+                self.findLocations( href.toQueryParams(), function () {
+                    self.forms[0].stopLoader();
+                });
+                Event.stop(event);
             });
 
-//            $$(this.settings.selectors.teaser).each(function(){
-//                alert('here1123');
-//            });
 
-            //Bind to StateChange Event
+            //Bind map rendering to StateChange Event
             window.History.Adapter.bind(window, 'statechange', function () {
-                console.log('statechange');
+
                 var State = History.getState();
 
                 if (State.data.locations.length) {
-                    console.log('show results');
                     self.list.update(State.data.output);
                     self.map.renderLocations(State.data.locations);
-                    //$('locator-results').removeClassName('is-no-results');
-                } else {
-                    //renderMap(map, {});
-                    //$('search-info').update(State.data.output);
-                    //location.reload();
+                    self.initEvents();
                 }
-                //initRollovers();
-
             });
         },
 
@@ -247,8 +254,15 @@
             var href = window.location.href+'&rand='+Math.random();
             var locations = this.parseLocationsJson(locations);
 
-            console.log(locations);
-            History.replaceState({locations: locations, output: this.list.el.innerHTML, search: href.toQueryParams()}, "Search", window.location.search);
+            History.replaceState(
+                {
+                    locations: locations,
+                    output: this.list.el.innerHTML,
+                    search: href.toQueryParams()
+                 },
+                this.getSearchTitle(locations),
+                window.location.search
+            );
         },
 
         findLocations: function (query, callback) {
@@ -280,7 +294,7 @@
                             alert(result.message);
                         }
                     } else if (result.locations.length) {
-                        History.pushState(result, "Search: " + result.locations.length + " Locations", '?' + query);
+                        History.pushState(result, self.getSearchTitle(result.locations), '?' + query);
                     }else{
                         alert('an error occured');
                     }
@@ -316,16 +330,31 @@
         toggleNoResults: function (show) {
             var els = $$('.loc-results');
             if(show){
-                console.log('show no results');
                 els.each(function(el){
                     el.addClassName('is-no-results');
                 });
             }else{
-                console.log('hide no results');
                 els.each(function(el){
                     el.removeClassName('is-no-results');
                 });
             }
+        },
+
+        initEvents: function(){
+            var self = this;
+            $$(this.settings.selectors.teaser).invoke('observe', 'click', function(event){
+                var id = this.readAttribute('data-id');
+                self.map.showInfoWindow(id);
+            });
+
+            $$(this.settings.selectors.teaser).invoke('observe', 'mouseover', function(event) {
+                var id = this.readAttribute('data-id');
+                self.map.highlightMarker(id);
+            });
+        },
+
+        getSearchTitle:function (locations){
+            return "Search: " + locations.length + " Locations";
         }
     });
 
