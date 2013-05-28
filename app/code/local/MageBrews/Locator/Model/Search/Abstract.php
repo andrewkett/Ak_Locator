@@ -21,9 +21,16 @@
 abstract class MageBrews_Locator_Model_Search_Abstract extends Mage_Core_Model_Abstract
 {
 
+    protected $_collection;
+    protected $_model;
+    protected $_cache;
+
     protected abstract function search(Array $params);
 
-
+    /**
+     *
+     * @return mixed
+     */
     protected function getCache()
     {
         if(!$this->_cache){
@@ -38,10 +45,65 @@ abstract class MageBrews_Locator_Model_Search_Abstract extends Mage_Core_Model_A
      * Get the location collection used to search
      *
      * @return MageBrews_Locator_Model_Resource_Location_Collection
+     * @deprecated use getCollection
      */
     protected function getSearchCollection()
     {
-        return Mage::getModel('magebrews_locator/location')->getCollection()->addAttributeToFilter('is_enabled','1');
+        return $this->getCollection();
+    }
+
+
+    /**
+     * Get the collection class that will be used to find locations
+     *
+     * @return Mage_Eav_Model_Entity_Collection_Abstract
+     */
+    public function getCollection()
+    {
+        if(!$this->_collection){
+             $this->setCollection($this->getModel()->getCollection()->addAttributeToFilter('is_enabled','1'));
+        }
+
+        return $this->_collection;
+    }
+
+    /**
+     *
+     *
+     * @return Mage_Core_Model_Abstract
+     */
+    public function getModel()
+    {
+        if(!$this->_model){
+            $this->setModel($this->getModel()->getCollection());
+        }
+
+        return $this->_model;
+    }
+
+    /**
+     * Set the collection class that will be used to find locations
+     *
+     * @param Mage_Eav_Model_Entity_Collection_Abstract $collection
+     * @return $this
+     */
+    public function setCollection(Mage_Eav_Model_Entity_Collection_Abstract $collection)
+    {
+        $this->_collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param Mage_Core_Model_Abstract $model
+     * @return $this
+     */
+    public function setModel(Mage_Core_Model_Abstract $model)
+    {
+        $this->_model = $model;
+
+        return $this;
     }
 
 }
