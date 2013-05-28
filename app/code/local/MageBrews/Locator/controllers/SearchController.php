@@ -48,6 +48,11 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
       }
   }
 
+  public function infowindowAction(){
+      $this->loadLayout();
+      $this->renderLayout();
+  }
+
   public function noresultsAction(){
 
     if($this->getRequest()->isXmlHttpRequest()){

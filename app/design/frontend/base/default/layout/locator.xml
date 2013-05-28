@@ -35,6 +35,10 @@
 
     </locator_search_index>
 
+    <locator_search_infowindow>
+        <block type="magebrews_locator/search_infowindow" name="root" template="locator/search/infowindow.phtml"/>
+    </locator_search_infowindow>
+
     <locator_location_index>
 
         <reference name="root">

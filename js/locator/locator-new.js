@@ -101,7 +101,7 @@
                     var loc = new google.maps.LatLng(l.latitude, l.longitude);
 
                     self.infowindows[l.id] = new google.maps.InfoWindow({
-                        content: self.renderMarker(l)
+                        content: '<div id="content"><span class="loader is-loading">loading</span></div>'
                     });
                     self.markers[l.id] = new google.maps.Marker({
                         position: loc,
@@ -117,8 +117,7 @@
                     self.markers[l.id].id = l.id;
 
                     google.maps.event.addListener(self.markers[l.id], 'click', function() {
-                        self.hideInfoWindows();
-                        self.infowindows[this.id].open( self.map, self.markers[this.id]);
+                        self.showInfoWindow(this.id);
                     });
 
                     latlngbounds.extend( loc );
@@ -158,27 +157,28 @@
         },
 
         showInfoWindow: function(id){
-            this.hideInfoWindows();
-            this.infowindows[id].open(this.map,this.markers[id]);
-        },
+            var self = this;
 
-        renderMarker: function(l){
-            return '<div id="content">'+
-                '<div id="siteNotice">'+
-                '</div>'+
-                '<h2 id="firstHeading" class="firstHeading">'+l.title+'</h2>'+
-                '<div id="bodyContent">'+
-                '<p>Approx '+l.distance+'km from you</p>'+
-                '</div>'+
-                '<p><a href="'+l.directions+'" target="_blank">Get Directions</a></p>'+
-                '</div>';
+            self.hideInfoWindows();
+            self.infowindows[id].open(self.map,self.markers[id]);
+            if(!self.infowindows[id].isLoaded){
+                new Ajax.Request('/locator/search/infowindow/id/'+id, {
+                    method : 'get',
+                    onFailure: function () {
+                        alert('failed');
+                    },
+                    onSuccess: function (t) {
+                        self.infowindows[id].setContent(t.responseText);
+                        self.infowindows[id].isLoaded = 1;
+                    }
+                }); 
+            }
+           
         },
 
         highlightMarker: function(id){
             var self = this;
-            console.log('here');
             if(self.markers[id].getAnimation() === null){
-                console.log('setting animation');
                 self.markers[id].setAnimation(google.maps.Animation.BOUNCE);
                 self.stoppers[id] = setTimeout(function(){
                     self.markers[id].setAnimation(null);
