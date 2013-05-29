@@ -75,7 +75,7 @@ abstract class MageBrews_Locator_Model_Search_Abstract extends Mage_Core_Model_A
     public function getModel()
     {
         if(!$this->_model){
-            $this->setModel($this->getModel()->getCollection());
+            $this->setModel(Mage::getModel('magebrews_locator/location'));
         }
 
         return $this->_model;

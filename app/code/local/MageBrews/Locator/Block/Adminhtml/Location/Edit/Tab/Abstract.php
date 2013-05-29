@@ -95,4 +95,11 @@ class MageBrews_Locator_Block_Adminhtml_Location_Edit_Tab_Abstract extends Mage_
         return $this;
     }
 
+    protected function _getAdditionalElementTypes()
+    {
+        return array(
+            'image' => Mage::getConfig()->getBlockClassName('magebrews_locator/adminhtml_location_helper_image')
+        );
+    }
+
 }

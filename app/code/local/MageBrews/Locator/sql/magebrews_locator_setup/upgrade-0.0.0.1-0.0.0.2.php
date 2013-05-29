@@ -19,10 +19,10 @@ $installer = $this;
 $installer->startSetup();
 
 //remove old is_active attribute
-$installer->removeAttribute('magebrews_locator_location', 'is_active');
+$installer->removeAttribute(MageBrews_Locator_Model_Location::ENTITY, 'is_active');
 
 //add new enabled attribute
-$installer->addAttribute('magebrews_locator_location', 'is_enabled', array(
+$installer->addAttribute(MageBrews_Locator_Model_Location::ENTITY, 'is_enabled', array(
     'input'             => 'select',
     'type'              => 'int',
     'label'             => 'Enabled',
@@ -45,7 +45,7 @@ $formAttributes = array(
 );
 
 foreach($formAttributes as $code){
-    $attribute = $eavConfig->getAttribute('magebrews_locator_location', $code);
+    $attribute = $eavConfig->getAttribute(MageBrews_Locator_Model_Location::ENTITY, $code);
     $attribute->setData('used_in_forms', array('location_edit','location_create'));
     $attribute->save();
 }

@@ -19,8 +19,8 @@ $installer = $this;
 $installer->startSetup();
 
 
-$installer->updateAttribute('magebrews_locator_location', 'latitude', array('attribute_code' => 'latitude_bak'));
-$installer->updateAttribute('magebrews_locator_location', 'longitude', array('attribute_code' => 'longitude_bak'));
+$installer->updateAttribute(MageBrews_Locator_Model_Location::ENTITY, 'latitude', array('attribute_code' => 'latitude_bak'));
+$installer->updateAttribute(MageBrews_Locator_Model_Location::ENTITY, 'longitude', array('attribute_code' => 'longitude_bak'));
 
 
 $installer->getConnection()

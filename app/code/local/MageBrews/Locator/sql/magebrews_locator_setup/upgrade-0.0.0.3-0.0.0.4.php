@@ -19,11 +19,11 @@ $installer = $this;
 $installer->startSetup();
 
 
-$installer->updateAttribute('magebrews_locator_location', 'latitude_bak', array('is_visible' => 0));
-$installer->updateAttribute('magebrews_locator_location', 'longitude_bak', array('is_visible' => 0));
+$installer->updateAttribute(MageBrews_Locator_Model_Location::ENTITY, 'latitude_bak', array('is_visible' => 0));
+$installer->updateAttribute(MageBrews_Locator_Model_Location::ENTITY, 'longitude_bak', array('is_visible' => 0));
 
 //add new enabled attribute
-$installer->addAttribute('magebrews_locator_location', 'latitude', array(
+$installer->addAttribute(MageBrews_Locator_Model_Location::ENTITY, 'latitude', array(
     'input'             => 'text',
     'type'              => 'static',
     'label'             => 'Latitude',
@@ -34,7 +34,7 @@ $installer->addAttribute('magebrews_locator_location', 'latitude', array(
     'global'            => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
 ));
 
-$installer->addAttribute('magebrews_locator_location', 'longitude', array(
+$installer->addAttribute(MageBrews_Locator_Model_Location::ENTITY, 'longitude', array(
     'input'             => 'text',
     'type'              => 'static',
     'label'             => 'Longitude',
@@ -55,7 +55,7 @@ $formAttributes = array(
 );
 
 foreach($formAttributes as $code){
-    $attribute = $eavConfig->getAttribute('magebrews_locator_location', $code);
+    $attribute = $eavConfig->getAttribute(MageBrews_Locator_Model_Location::ENTITY, $code);
     $attribute->setData('used_in_forms', array('location_edit','location_create'));
     $attribute->save();
 }
