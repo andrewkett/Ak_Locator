@@ -15,12 +15,36 @@
 ?>
 
 <?php
-  $locations = $this->getLocations()->getItems();
-  $location = reset($locations);
+  $loc = $this->getLocations()->getFirstItem();
 ?>
 
-<h2><?php echo $location->getTitle();?></h2>
+<h2 itemprop="name"><?php echo $loc->title; ?></h2>
 
-<p>Address: <?php echo $location->getAddress();?></p>
-<p>Email: <?php echo $location->getEmail();?></p>
-<p>Phone: <?php echo $location->getPhone();?></p>
+<!-- todo: this is wrong, do like next example -->
+<p>Address: <address itemprop="address"><?php echo $loc->address;?></address></p>
+<!--
+<address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+    <span itemprop="streetAddress">1901 Lemur Ave</span>
+    <span itemprop="addressLocality"><?php echo $loc->locality; ?></span>,
+    <span itemprop="addressRegion"><?php echo $loc->administrative_area; ?></span> <span itemprop="postalCode"><?php echo $loc->postal_code; ?></span>
+</address>
+-->
+
+
+<?php if($loc->email):?>
+    <p class="loc-data-email">Email: <?php echo $loc->email;?></p>
+<?php endif; ?>
+<?php if($loc->phone):?>
+    <p class="loc-data-phone">Phone: <?php echo $loc->phone;?></p>
+<?php endif; ?>
+<?php if($loc->fax):?>
+    <p class="loc-data-fax">Fax: <?php echo $loc->fax;?></p>
+<?php endif; ?>
+<?php if($loc->website):?>
+    <p class="loc-data-website">Website: <a  itemprop="url" href="<?php echo $loc->website;?>"><?php echo $loc->website;?></a></p>
+<?php endif; ?>
+
+<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+    <meta itemprop="latitude" content="<?php echo $loc->getLatitude(); ?>" />
+    <meta itemprop="longitude" content="<?php echo $loc->getLongitude(); ?>" />
+</div>

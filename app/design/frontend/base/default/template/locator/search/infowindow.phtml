@@ -1,0 +1,8 @@
+<?php $loc = $this->getLocation(); ?>
+<div class="loc-infowindow">
+    <h3><?php echo $loc->title; ?></h3>
+    <div>
+        <address><?php echo $loc->getAddress() ?></address>
+        <a href="<?php echo $loc->getUrl(); ?>">View More</a> | <a href="<?php echo $loc->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
+    </div>
+</div>

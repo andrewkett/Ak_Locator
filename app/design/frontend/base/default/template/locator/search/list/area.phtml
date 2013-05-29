@@ -17,25 +17,24 @@
 <?php
   $locations = $this->getLocations()->getItems();
 ?>
-
 <?php if($locations): ?>
-  <?php if(count($locations) > 0): ?>
-    <h2>Locations</h2>
-    <ul class="locations">
-      <?php
-          $i = 0;
-          foreach($locations as $location):
-            $i++;
-      ?>
-        <li class="location-info">
-          <article class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
-            <h3><?php echo $location->getTitle(); ?></h3>
-            <address><?php echo $location->getAddress() ?></address>
-            <a href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
-          </article>
-        </li>
-      <?php endforeach; ?>
-    </ul>
+    <?php if(count($locations) > 0): ?>
+        <h2>Locations</h2>
+        <ul class="locations">
+        <?php
+            $i = 0;
+            foreach($locations as $location):
+                $i++;
+        ?>
+            <li class="location-info">
+                <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
+                    <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
+                    <address itemprop="address"><?php echo $location->getAddress() ?></address>
+                    <a itemprop="url" href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
+                </article>
+            </li>
+        <?php endforeach; ?>
+        </ul>
     <?php endif; ?>
 <?php else: ?>
   No results found

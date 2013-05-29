@@ -1,36 +1,44 @@
 var Locator = Locator || { 'settings': {}, 'map': {'zoom_level':15, 'markers':[]}};
+var gmaps;
 
 function initLocator(){
 
-  Locator.settings.defaultMapOptions = {
-    zoom: 15,
-    scrollwheel: false,
+    gmaps = google.maps;
 
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      mapTypeControl: false,
-      mapTypeControlOptions: {
-          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-          position: google.maps.ControlPosition.BOTTOM_CENTER,
-          mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'locator']
-      },
+    Locator.settings.defaultMapOptions = {
+        zoom: 15,
+        scrollwheel: false,
+        mapTypeId: gmaps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        mapTypeControlOptions: {
+            style: gmaps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: gmaps.ControlPosition.BOTTOM_CENTER,
+            mapTypeIds: [gmaps.MapTypeId.ROADMAP, 'locator']
+        },
+        streetViewControl: false,
+        streetViewControlOptions: {
+            position: gmaps.ControlPosition.LEFT_TOP
+        }
+    };
 
-      streetViewControl: false,
-      streetViewControlOptions: {
-          position: google.maps.ControlPosition.LEFT_TOP
-      }
-  };
+    Locator.settings.markers = [];
 
-  Locator.firstLoad = true;
+    Locator.settings.markers['default'] = new gmaps.MarkerImage(
+        '/skin/frontend/base/default/locator/images/pin.png',
+        new gmaps.Size(40, 50),
+        new gmaps.Point(0, 0),
+        new gmaps.Point(20, 50)
+    );
 
+    Locator.firstLoad = true;
 }
 
 function clearOverlays() {
-  for (var key in Locator.map.markers) {
-    if (Locator.map.markers.hasOwnProperty(key)) {
-      Locator.map.markers[key].setMap(null);
+    for (var key in Locator.map.markers) {
+        if (Locator.map.markers.hasOwnProperty(key)) {
+            Locator.map.markers[key].setMap(null);
+        }
     }
-
-  }
 }
 
 function renderMarker(l){
@@ -47,25 +55,20 @@ function renderMarker(l){
 
 function renderMap(map, locations){
 
-  var latlngbounds = new google.maps.LatLngBounds();
+  var latlngbounds = new gmaps.LatLngBounds();
 
   infowindows = Array();
   clearOverlays();
   markers = Locator.map.markers;
 
   if(Locator.settings.theme){
-    var styledMap = new google.maps.StyledMapType(Locator.settings.theme,{name: "Locator"});
+    var styledMap = new gmaps.StyledMapType(Locator.settings.theme,{name: "Locator"});
     map.mapTypes.set('locator', styledMap);
     map.setMapTypeId('locator');
   }
 
 
-  var image = new google.maps.MarkerImage(
-    '/skin/frontend/base/default/locator/images/pin.png',
-    new google.maps.Size(40,50),
-    new google.maps.Point(0,0),
-    new google.maps.Point(20,50)
-  );
+
 
   // var shadow = new google.maps.MarkerImage(
   //   '/skin/frontend/base/default/locator/images/shadow.png',
@@ -86,26 +89,25 @@ function renderMap(map, locations){
 
       var l = locations[key];
 
-        loc = new google.maps.LatLng(l.latitude, l.longitude);
+        loc = new gmaps.LatLng(l.latitude, l.longitude);
 
-        infowindows[l.id] = new google.maps.InfoWindow({
+        infowindows[l.id] = new gmaps.InfoWindow({
             content: renderMarker(l)
         });
 
-        markers[l.id] = new google.maps.Marker({
+        markers[l.id] = new gmaps.Marker({
           position: loc,
           map: map,
           title: l.title,
-          icon: image,
+          icon: Locator.settings.markers['default'],
           // shadow: shadow,
           // shape: shape,
-          //animation: google.maps.Animation.BOUNCE,
-          animation: google.maps.Animation.DROP
+          animation: gmaps.Animation.DROP
         });
 
          markers[l.id].id = l.id;
 
-        google.maps.event.addListener(markers[l.id], 'click', function() {
+        gmaps.event.addListener(markers[l.id], 'click', function() {
           hideInfoWindows();
           infowindows[this.id].open(map,markers[this.id]);
         });
@@ -124,14 +126,14 @@ function renderMap(map, locations){
     if(Locator.settings.maxZoom){
       //when the map loads, make sure it hasn't zoomed in to far, if it has zoom out
       //@todo, configure the zoom level in admin
-      var listener = google.maps.event.addListener(map, "idle", function() {
+      var listener = gmaps.event.addListener(map, "idle", function() {
           if (map.getZoom() > Locator.settings.maxZoom) map.setZoom(Locator.settings.maxZoom);
-          google.maps.event.removeListener(listener);
+          gmaps.event.removeListener(listener);
       });
     }
 
 
-  google.maps.event.trigger(map, 'resize');
+    gmaps.event.trigger(map, 'resize');
 
 }
 
@@ -194,7 +196,7 @@ function initRollovers(){
 }
 
 function initStorePage(){
-  map = new google.maps.Map(document.getElementById("location-map"), Locator.settings.defaultMapOptions);
+  map = new gmaps.Map(document.getElementById("location-map"), Locator.settings.defaultMapOptions);
   renderMap(map, Locator.locations);
 }
 
@@ -229,7 +231,7 @@ function initSearchPage(){
   //@todo for some reason the stat object is not being passed to the state change event on initial load when there is only one location
   History.replaceState({locations: Locator.locations, output: $('search-info').innerHTML, search: searchForm.serialize().toQueryParams()}, "Search", window.location.search);
 
-  map = new google.maps.Map(document.getElementById("location-map"), Locator.settings.defaultMapOptions);
+  map = new gmaps.Map(document.getElementById("location-map"), Locator.settings.defaultMapOptions);
   renderMap(map, Locator.locations);
   initRollovers();
 
@@ -321,7 +323,7 @@ function findLocations(query){
 // Location autocomplete
 
 function initializeAutocomplete() {
-    autocomplete = new google.maps.places.Autocomplete(document.getElementById('locator-autocomplete'), { types: [ 'geocode' ],componentRestrictions: {country: Locator.settings.country_code} });
+    autocomplete = new gmaps.places.Autocomplete(document.getElementById('locator-autocomplete'), { types: [ 'geocode' ],componentRestrictions: {country: Locator.settings.country_code} });
     // google.maps.event.addListener(autocomplete, 'place_changed', function() {
     //   alert('handle response');
     //   //fillInAddress();

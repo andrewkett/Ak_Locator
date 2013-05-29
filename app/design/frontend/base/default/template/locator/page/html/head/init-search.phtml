@@ -1,14 +1,17 @@
 <script type="text/javascript">
   document.observe("dom:loaded", function() {
-    mapJson = '<?php echo $this->getLocations()->toJson(); ?>';
-    Locator.locations = parseLocationsJson(mapJson);
-    Locator.settings.country_code = "<?php echo Mage::getStoreConfig("locator_settings/search/country_code"); ?>";
-    Locator.settings.useAutocomplete = <?php echo Mage::getStoreConfig("locator_settings/search/use_places_autocomplete"); ?>;
-    initSearchPage();
+      var locations = '<?php echo $this->getLocations()->toJson(); ?>';
 
-    if(Locator.settings.useAutocomplete){
-        initializeAutocomplete();
-    }
-    
+<!--    Locator.settings.country_code = "--><?php //echo Mage::getStoreConfig("locator_settings/search/country_code"); ?><!--";-->
+<!--    Locator.settings.useAutocomplete = --><?php //echo Mage::getStoreConfig("locator_settings/search/use_places_autocomplete"); ?><!--;-->
+
+
+    var search = new Locator.Search().initState(locations);
+
+
+//    if(Locator.settings.useAutocomplete){
+//        initializeAutocomplete();
+//    }
+
   });
 </script>
