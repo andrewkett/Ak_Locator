@@ -1,17 +1,11 @@
 <script type="text/javascript">
-  document.observe("dom:loaded", function() {
-      var locations = '<?php echo $this->getLocations()->toJson(); ?>';
+    document.observe("dom:loaded", function() {
+        var locations = '<?php echo $this->getLocations()->toJson(); ?>';
+        var search = new Locator.Search().initState(locations);
 
-<!--    Locator.settings.country_code = "--><?php //echo Mage::getStoreConfig("locator_settings/search/country_code"); ?><!--";-->
-<!--    Locator.settings.useAutocomplete = --><?php //echo Mage::getStoreConfig("locator_settings/search/use_places_autocomplete"); ?><!--;-->
-
-
-    var search = new Locator.Search().initState(locations);
-
-
-//    if(Locator.settings.useAutocomplete){
-//        initializeAutocomplete();
-//    }
-
-  });
+        <?php if(Mage::getStoreConfig("locator_settings/search/use_places_autocomplete")){
+            //initializeAutocomplete();
+        }; ?>
+        <!--    Locator.settings.country_code = "--><?php //echo Mage::getStoreConfig("locator_settings/search/country_code"); ?><!--";-->
+    });
 </script>

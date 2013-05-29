@@ -22,7 +22,7 @@
 
 <?php if($locations): ?>
     <h2>Closest Store</h2>
-    <div class="closest location-info">
+    <div class="closest loc-ls-item">
         <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $closest->getId(); ?>">
             <h3 itemprop="name"><?php echo $closest->getTitle(); ?></h3>
             <address itemprop="address"><?php echo $closest->getAddress() ?></address>
@@ -48,7 +48,7 @@
                     continue;
                 }
         ?>
-        <li class="location-info">
+        <li class="loc-ls-item">
             <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
                 <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
                 <address itemprop="address"><?php echo $location->getAddress() ?></address>

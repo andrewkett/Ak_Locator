@@ -1,10 +1,10 @@
 <script type="text/javascript">
-  document.observe("dom:loaded", function() {
-      var locations = '<?php echo $this->getLocations()->toJson(); ?>';
-      var search = new Locator.Search();
-      var map = new Locator.Map($$('.loc-map').first());
+    document.observe("dom:loaded", function() {
+        var locations = '<?php echo $this->getLocations()->toJson(); ?>';
+        var search = new Locator.Search();
+        var map = new Locator.Map($$('.loc-page-map').first());
 
-      locations = search.parseLocationsJson(locations);
-      map.renderLocations(locations);
-  });
+        locations = search.parseLocationsJson(locations);
+        map.renderLocations(locations);
+    });
 </script>

@@ -1,4 +1,4 @@
-(function (window, $$) {
+(function () {
     "use strict";
 
     var Locator = window.Locator = {};
@@ -16,6 +16,7 @@
             this.el = el;
             this.search = search;
             var self = this;
+
 
             Event.observe(el, 'submit', function (event) {
                 if ("" !== el.serialize().toQueryParams().s) {
@@ -101,7 +102,7 @@
                     var loc = new google.maps.LatLng(l.latitude, l.longitude);
 
                     self.infowindows[l.id] = new google.maps.InfoWindow({
-                        content: '<div id="content"><span class="loader is-loading">loading</span></div>'
+                        content: '<div id="content"><span class="loader loc-infowindow-loader is-loading">loading</span></div>'
                     });
                     self.markers[l.id] = new google.maps.Marker({
                         position: loc,
@@ -135,7 +136,6 @@
                     google.maps.event.removeListener(listener);
                 });
             }
-
 
             google.maps.event.trigger(self.map, 'resize');
         },
@@ -203,22 +203,30 @@
         initialize: function(el) {
             this.settings = {
                 selectors : {
-                    map : '.loc-map',
-                    list : '.loc-list',
+                    map : '.loc-srch-res-map',
+                    list : '.loc-srch-res-list',
                     teaser : '.loc-teaser',
                     form : '.loc-srch-form',
                     loader : '.loc-loader',
                     trigger : '.loc-trigger',
-                    results : '.loc-results'
+                    results : '.loc-srch-res'
                 }
             };
 
             this.el = el;
-            this.map = new Locator.Map($$(this.settings.selectors.map).first());
-            this.list = new Locator.List($$(this.settings.selectors.list).first());
+            if($$(this.settings.selectors.map).first()){
+                this.map = new Locator.Map($$(this.settings.selectors.map).first());
+            }
+            if($$(this.settings.selectors.list).first()){
+                this.list = new Locator.List($$(this.settings.selectors.list).first());
+            }
+
             this.forms = [];
 
             var self = this;
+
+
+            this.initScroll();
 
             $$(this.settings.selectors.form).each(function (el) {
                 self.forms.push(new Locator.Form(el, self));
@@ -254,15 +262,20 @@
             var href = window.location.href+'&rand='+Math.random();
             var locations = this.parseLocationsJson(locations);
 
+            if(!locations.length){
+                this.toggleNoResults(1);
+            }
+
             History.replaceState(
                 {
                     locations: locations,
                     output: this.list.el.innerHTML,
                     search: href.toQueryParams()
-                 },
+                },
                 this.getSearchTitle(locations),
                 window.location.search
             );
+
         },
 
         findLocations: function (query, callback) {
@@ -327,9 +340,9 @@
             return temp;
         },
 
-        toggleNoResults: function (show) {
-            var els = $$('.loc-results');
-            if(show){
+        toggleNoResults: function (empty) {
+            var els = $$(this.settings.selectors.results);
+            if(empty){
                 els.each(function(el){
                     el.addClassName('is-no-results');
                 });
@@ -355,8 +368,21 @@
 
         getSearchTitle:function (locations){
             return "Search: " + locations.length + " Locations";
+        },
+
+        initScroll: function(){
+            var map = $$('.loc-srch-res-map-wrap').first();
+            var results = $$(this.settings.selectors.results).first();
+            var self = this;
+
+            Event.observe(document, "scroll", function() {
+                if (results.viewportOffset().top < 1){
+                    map.addClassName('is-fixed');
+                }else{
+                    map.removeClassName('is-fixed');
+                }
+            });
         }
     });
 
-})(window, $$);
-
+})();

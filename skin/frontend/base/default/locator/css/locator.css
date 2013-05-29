@@ -1,103 +1,115 @@
-
-
-.locator-search-form{
-  background: #eee; padding: 20px; margin-bottom: 20px;
-}
-  .locator-search-form h4{
-    margin: 0;
-  }
-
-  input.loc-srch-s{
-    width: 200px; padding: 5px;
-  }
-
-  input.loc-srch-dis{
-    width: 40px; padding: 5px;
-  }
-
-#locator-results{
-
+/* Base style for location map */
+.loc-map{
+    -webkit-transform: translate3d(0, 0, 0);
 }
 
-  #search-info{
-    float: left; width: 298px;  padding: 20px 0;
-  }
-    .loc-teaser{
-      -webkit-transition: .5s background ease-in; padding: 10px 0 10px 20px; margin-left:-20px;
+    .loc-infowindow-loader.is-loading{
+        width: 100%; height:50px;
     }
+
+/* Base style for location teasers */
+.loc-teaser{
+    -webkit-transition: .5s background ease-in; padding: 10px 0 10px 20px; margin-left:-20px;
+}
     .loc-teaser:hover{
-      background: #efefef;
+        background: #efefef;
     }
 
-      .loc-teaser h3{
+    .loc-teaser h3{
         margin-top: 0; margin-bottom: 0.6em;
-      }
-
-  #location-map{
-    margin-right: -10px; -webkit-transform: translate3d(0, 0, 0);
-  }
-
-#locator-results.is-no-results #search-info{
-  display:none;
-}
-
-#locator-results.is-no-results #location-map{
-  display:none;
-}
-
-#locator-results .empty-search{
-  display:none;
-}
-
-#locator-results.is-no-results .empty-search{
-  display:block;
-}
-
-
-#location-details{
-  float:left;
-}
-
-#location-details{
-  float:left; width: 100%; clear:both;
-  margin-bottom: 20px;
-}
-  #location-details h2{
-    margin-bottom: 10px;
-  }
-
-  #location-details .info{
-    float: left; width: 400px;
-  }
-
-  #location-details .map{
-    float:left;
-  }
-    #location-details  #location-map{
-      width: 500px; height: 400px;
     }
 
+/* Locator search form */
+.loc-srch{
+    background: #eee; padding: 20px; margin-bottom: 20px;
+}
+    .loc-srch h4{
+        margin: 0;
+    }
 
-.locations{
-  padding: 0; margin: 0; list-style:none;
+    .loc-srch-form{
+
+    }
+        .loc-srch-s{
+            width: 200px; padding: 5px;
+        }
+
+        .loc-srch-dis{
+            width: 40px; padding: 5px;
+        }
+
+
+/* Locator search results */
+.loc-srch-res{
+
+}
+    /* hide no results page by default */
+    .loc-srch-res-noresults{
+        display:none;
+    }
+
+    /* when no results are shown show no results and hide search; */
+    .loc-srch-res.is-no-results .loc-srch-res-list, .loc-srch-res.is-no-results .loc-srch-res-map{
+        display:none;
+    }
+    .loc-srch-res.is-no-results .loc-srch-res-noresults{
+        display:block;
+    }
+
+    /* Map */
+    .loc-srch-res-map-wrap{
+        float:left;
+        background: #fefefe; border: #ccc 1px solid; padding: 5px; margin-right: -10px;
+    }
+    .loc-srch-res-map-wrap.is-fixed{
+        position:fixed; top:0; margin-left: 298px;
+    }
+        .loc-srch-res-map{
+            width: 588px; height: 588px;
+        }
+
+
+    /* Teaser List */
+    .loc-srch-res-list{
+        float: left; width: 298px;  padding: 20px 0;
+    }
+
+/* Individual Location Page */
+.loc-page{
+    float:left; width: 100%; clear:both;
+    margin-bottom: 20px;
 }
 
-#other-locations .location-info{
-  position: relative; width: 200px; margin-right: 20px; float: left;
+    .loc-page-data{
+        float: left; width: 385px;
+    }
+        .loc-page-data h2{
+            margin-bottom: 10px;
+        }
+    .loc-page-map-wrap{
+        float:left; background: #fefefe; border: #ccc 1px solid; padding: 5px;
+    }
+        .loc-page-map{
+            width: 500px; height: 400px;
+        }
+
+/* Nearby Locations */
+.loc-nearby{
+    float:left; margin-top: 20px;
 }
-  #other-locations .location-info a{
-    position: absolute; display: block; top: 0; left: 0; width: 100%; height: 100%; text-indent: -9999px;
-  }
+    .loc-nearby-item{
+        display:inline-block; position: relative; vertical-align: top;
+        width: 207px; margin-right: 20px; margin-bottom: 10px;
+    }
+        .loc-nearby-item .loc-teaser{
+            padding-right: 20px;
+        }
+    .loc-nearby-item:nth-child(4n){
+        margin-right:0;
+    }
 
-
-
-#location-map{
-  width: 600px; height: 600px;
-}
-
-
-
-.loader { display: none; width: 24px; height: 24px; }
+/* Loader styles */
+.loader { display: none; width: 24px; height: 24px; text-indent: -9999px;}
 .loader.is-loading { display: inline-block; background: url(../images/loader/loader-med.gif) center no-repeat; }
 .loader-tiny { width: 10px; height: 10px; }
 .loader-tiny.is-loading { background-image: url(../images/loader/loader-tiny.gif); }

@@ -26,7 +26,7 @@
             foreach($locations as $location):
                 $i++;
         ?>
-            <li class="location-info">
+            <li class="loc-ls-item">
                 <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
                     <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
                     <address itemprop="address"><?php echo $location->getAddress() ?></address>

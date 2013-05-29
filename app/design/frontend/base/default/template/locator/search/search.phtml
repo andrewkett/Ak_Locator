@@ -1,11 +1,13 @@
 <?php echo $this->getChildHtml('form'); ?>
+<div class="loc-srch-res">
+    <div class="loc-srch-res-list">
+        <?php echo $this->getChildHtml('list') ?>
+    </div>
+    <div class="loc-srch-res-map-wrap">
+        <div class="loc-map loc-srch-res-map"></div>
+    </div>
 
-<div id="locator-results" class="loc-results">
-  <div id="search-info" class="loc-list">
-    <?php echo $this->getChildHtml('list') ?>
-  </div>
-  <div id="location-map" class="loc-map"></div>
-  <div class="empty-search"><?php echo $this->getChildHtml('empty') ?></div>
+    <div class="loc-srch-res-noresults"><?php echo $this->getChildHtml('empty') ?></div>
 </div>
 
 
