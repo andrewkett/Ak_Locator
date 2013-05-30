@@ -1,7 +1,11 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         var locations = '<?php echo $this->getLocations()->toJson(); ?>';
-        var search = new Locator.Search().initState(locations);
+
+        options = {
+            //fixedMap:0;
+        }
+        var search = new Locator.Search(options).initState(locations);
 
         <?php if(Mage::getStoreConfig("locator_settings/search/use_places_autocomplete")){
             //initializeAutocomplete();

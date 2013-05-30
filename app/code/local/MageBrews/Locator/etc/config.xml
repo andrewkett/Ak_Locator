@@ -207,6 +207,7 @@
                 <show_search_filter>1</show_search_filter>
                 <show_distance_filter>1</show_distance_filter>
                 <overrides_enabled>1</overrides_enabled>
+                <leverage_browser_caching>0</leverage_browser_caching>
             </search>
         </locator_settings>
     </default>

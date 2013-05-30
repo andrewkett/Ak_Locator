@@ -3,6 +3,19 @@
 
     var Locator = window.Locator = {};
 
+    Locator.defaultSearchSettings = {
+        selectors : {
+            map : '.loc-srch-res-map',
+            list : '.loc-srch-res-list',
+            teaser : '.loc-teaser',
+            form : '.loc-srch-form',
+            loader : '.loc-loader',
+            trigger : '.loc-trigger',
+            results : '.loc-srch-res'
+        },
+        stickyMap : 1
+    };
+
     Locator.Form = Class.create({
 
         initialize: function (el, search) {
@@ -138,6 +151,7 @@
             }
 
             google.maps.event.trigger(self.map, 'resize');
+            self.loadInfoWindows();
         },
 
         clearOverlays: function(){
@@ -161,19 +175,53 @@
 
             self.hideInfoWindows();
             self.infowindows[id].open(self.map,self.markers[id]);
-            if(!self.infowindows[id].isLoaded){
+            if(!self.infowindows[id].isSet){
                 new Ajax.Request('/locator/search/infowindow/id/'+id, {
                     method : 'get',
                     onFailure: function () {
                         alert('failed');
                     },
                     onSuccess: function (t) {
-                        self.infowindows[id].setContent(t.responseText);
-                        self.infowindows[id].isLoaded = 1;
+                        self.setInfoWindowContent(id, t.responseText);
                     }
-                }); 
+                });
             }
-           
+        },
+
+        setInfoWindowContent: function(id, content){
+            this.infowindows[id].setContent(content);
+            this.infowindows[id].isSet = 1;
+        },
+
+        loadInfoWindows: function(){
+            var self = this,
+            ids = [];
+
+            for (var key in self.infowindows) {
+                if (self.infowindows.hasOwnProperty(key)) {
+
+                    if(!self.infowindows[key].isSet && self.markers[key]){
+                        ids.push(key);
+                    }
+                }
+            }
+
+            new Ajax.Request('/locator/search/infowindows/?ids='+ids.join(), {
+                method : 'get',
+                onFailure: function () {
+                    alert('failed');
+                },
+                onSuccess: function (t) {
+                    var windows = JSON.parse(t.responseText);
+                    var temp = Array();
+
+                    for (var key in windows) {
+                        if (windows.hasOwnProperty(key) && windows[key] != 'undefined') {
+                            self.setInfoWindowContent(key,windows[key]);
+                        }
+                    }
+                }
+            });
         },
 
         highlightMarker: function(id){
@@ -200,23 +248,29 @@
 
     Locator.Search = Class.create({
 
-        initialize: function(el) {
-            this.settings = {
-                selectors : {
-                    map : '.loc-srch-res-map',
-                    list : '.loc-srch-res-list',
-                    teaser : '.loc-teaser',
-                    form : '.loc-srch-form',
-                    loader : '.loc-loader',
-                    trigger : '.loc-trigger',
-                    results : '.loc-srch-res'
-                }
-            };
+        initialize: function(options) {
 
-            this.el = el;
-            if($$(this.settings.selectors.map).first()){
+            if(options){
+                //if override settings are
+                if(options.settings){
+                    this.settings = $H(Locator.defaultSearchSettings).merge(options.settings);
+                }
+
+                if(options.map){
+                    this.map = options.map;
+                }
+            }
+
+            //if options were not passed to the search class, use locator default
+            if(!this.settings){
+                this.settings = Locator.defaultSearchSettings;
+            }
+
+            //if map has not already been set from options set it now
+            if(!this.map && $$(this.settings.selectors.map).first()){
                 this.map = new Locator.Map($$(this.settings.selectors.map).first());
             }
+
             if($$(this.settings.selectors.list).first()){
                 this.list = new Locator.List($$(this.settings.selectors.list).first());
             }
@@ -226,13 +280,14 @@
             var self = this;
 
 
+
             this.initScroll();
 
             $$(this.settings.selectors.form).each(function (el) {
                 self.forms.push(new Locator.Form(el, self));
             });
 
-
+            // Attach onclick events to search triggers
             $$(this.settings.selectors.trigger).invoke('observe', 'click', function(event){
                 var href = Event.element(event).readAttribute('href');
 
@@ -257,6 +312,7 @@
             });
         },
 
+        // Set initial history state when locations are not loaded from search, this will trigger map render
         initState: function(locations){
             //inject a random parameter to query string so state always changes on first load
             var href = window.location.href+'&rand='+Math.random();
@@ -289,7 +345,7 @@
 
             href = window.location.pathname + '?' + query;
 
-            new Ajax.Request(window.location.pathname + '?' + query, {
+            new Ajax.Request(window.location.pathname + '?' + query +'&ajax=1', {
 
                 method : 'get',
                 onFailure: function () {
@@ -339,7 +395,7 @@
             }
             return temp;
         },
-
+        //show or hide no results page based on boolean parameter
         toggleNoResults: function (empty) {
             var els = $$(this.settings.selectors.results);
             if(empty){
@@ -352,7 +408,7 @@
                 });
             }
         },
-
+        //attach events to search ui
         initEvents: function(){
             var self = this;
             $$(this.settings.selectors.teaser).invoke('observe', 'click', function(event){
@@ -371,17 +427,21 @@
         },
 
         initScroll: function(){
-            var map = $$('.loc-srch-res-map-wrap').first();
-            var results = $$(this.settings.selectors.results).first();
-            var self = this;
 
-            Event.observe(document, "scroll", function() {
-                if (results.viewportOffset().top < 1){
-                    map.addClassName('is-fixed');
-                }else{
-                    map.removeClassName('is-fixed');
-                }
-            });
+            if(this.settings.stickyMap){
+                var map = $$('.loc-srch-res-map-wrap').first();
+                var results = $$(this.settings.selectors.results).first();
+                var self = this;
+
+                Event.observe(document, "scroll", function() {
+                    if (results.viewportOffset().top < 1){
+                        map.addClassName('is-fixed');
+                    }else{
+                        map.removeClassName('is-fixed');
+                    }
+                });
+            }
+
         }
     });
 

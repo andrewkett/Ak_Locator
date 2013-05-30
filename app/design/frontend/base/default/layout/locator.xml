@@ -42,6 +42,12 @@
         <block type="magebrews_locator/search_infowindow" name="root" template="locator/search/infowindow.phtml"/>
     </locator_search_infowindow>
 
+    <locator_search_infowindows>
+        <block type="magebrews_locator/search_infowindows" name="root">
+            <block type="magebrews_locator/search_infowindow" name="infowindow" template="locator/search/infowindow.phtml"/>
+        </block>
+    </locator_search_infowindows>
+
     <locator_location_index>
 
         <reference name="root">
