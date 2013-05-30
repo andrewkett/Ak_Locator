@@ -71,10 +71,9 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
     public function infowindowsAction()
     {
         $this->loadLayout();
-
-//        if(Mage::helper('magebrews_locator')->browserCacheEnabled()){
-//            $this->setCacheHeaders();
-//        }
+        if(Mage::helper('magebrews_locator')->browserCacheEnabled()){
+            $this->setCacheHeaders();
+        }
         $this->renderLayout();
     }
 

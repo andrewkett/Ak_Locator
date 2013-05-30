@@ -77,16 +77,6 @@
             this.markers = [];
             this.infowindows = [];
 
-            this.markerTypes = {
-
-                'default': new google.maps.MarkerImage(
-                    '/skin/frontend/base/default/locator/images/pin.png',
-                    new google.maps.Size(40, 50),
-                    new google.maps.Point(0, 0),
-                    new google.maps.Point(20, 50)
-                )
-            };
-
             this.stoppers = [];
 
             this.settings = {
@@ -94,6 +84,7 @@
             };
         },
 
+        // render locations on the map and trigger actions
         renderLocations: function (locations) {
 
             var latlngbounds = new google.maps.LatLngBounds(),
@@ -121,7 +112,7 @@
                         position: loc,
                         map: self.map,
                         title: l.title,
-                        icon: self.markerTypes.default,
+                        icon: self.getMarkerImage(l),
                         // shadow: shadow,
                         // shape: shape,
                         animation: google.maps.Animation.DROP
@@ -162,6 +153,7 @@
             }
         },
 
+        //hide all currently visible info windows
         hideInfoWindows: function(){
             for (var key in this.infowindows) {
                 if (this.infowindows.hasOwnProperty(key)) {
@@ -170,6 +162,7 @@
             }
         },
 
+        //show an info window based on an id
         showInfoWindow: function(id){
             var self = this;
 
@@ -188,11 +181,13 @@
             }
         },
 
+        //set the content of an info window based on an id
         setInfoWindowContent: function(id, content){
             this.infowindows[id].setContent(content);
             this.infowindows[id].isSet = 1;
         },
 
+        //load content for all infowindows
         loadInfoWindows: function(){
             var self = this,
             ids = [];
@@ -224,6 +219,7 @@
             });
         },
 
+        //bounce a marker to highlight it
         highlightMarker: function(id){
             var self = this;
             if(self.markers[id].getAnimation() === null){
@@ -232,6 +228,15 @@
                     self.markers[id].setAnimation(null);
                 }, 720);
             }
+        },
+
+        getMarkerImage: function(l){
+            return new google.maps.MarkerImage(
+                '/skin/frontend/base/default/locator/images/pin.png',
+                new google.maps.Size(40, 50),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(20, 50)
+            );
         }
     });
 
@@ -334,6 +339,7 @@
 
         },
 
+        //make an ajax request to the server to find locations based on given query params
         findLocations: function (query, callback) {
 
             var self = this;
@@ -375,6 +381,7 @@
             });
         },
 
+        //parse result from server
         parseSearchJson: function (string) {
             var search = JSON.parse(string);
             if (search.locations) {
@@ -395,6 +402,7 @@
             }
             return temp;
         },
+
         //show or hide no results page based on boolean parameter
         toggleNoResults: function (empty) {
             var els = $$(this.settings.selectors.results);
@@ -408,6 +416,7 @@
                 });
             }
         },
+
         //attach events to search ui
         initEvents: function(){
             var self = this;
