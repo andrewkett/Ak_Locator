@@ -67,8 +67,13 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
 
           $locations[(int)$location->getEntityId()] = $loc;
         }
-        
-        $json = Zend_Json::encode($locations);
+
+        $obj = new Varien_Object();
+        $obj->setLocations($locations);
+
+        Mage::dispatchEvent('magebrews_locator_before_search_json_output', array('collection'=>$this, 'json_data'=>$obj));
+
+        $json = Zend_Json::encode($obj->getLocations());
         //zend_json doesn't encode single quotes but they break in the browser
         $json = str_replace('\'', '&#39;', $json);
         return $json;
