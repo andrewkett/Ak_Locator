@@ -1,14 +1,36 @@
 <script type="text/javascript">
-  document.observe("dom:loaded", function() {
-    mapJson = '<?php echo $this->getLocations()->toJson(); ?>';
-    Locator.locations = parseLocationsJson(mapJson);
-    Locator.settings.country_code = "<?php echo Mage::getStoreConfig("locator_settings/search/country_code"); ?>";
-    Locator.settings.useAutocomplete = <?php echo Mage::getStoreConfig("locator_settings/search/use_places_autocomplete"); ?>;
-    initSearchPage();
+    document.observe("dom:loaded", function() {
 
-    if(Locator.settings.useAutocomplete){
-        initializeAutocomplete();
-    }
-    
-  });
+        <?php
+        /*
+           //example of how to conditionally change the marker image
+            Locator.Map.addMethods({
+                getMarkerImage: function(l){
+                    if(l.distance < 3){
+                        return new google.maps.MarkerImage(
+                            '/skin/frontend/base/default/locator/images/pin.png',
+                            new google.maps.Size(40, 50),
+                            new google.maps.Point(0, 0),
+                            new google.maps.Point(20, 50)
+                        );
+                    }else{
+                        return null;
+                    }
+                }
+            });
+
+            //you can optionally parse an options object into Locator.Search, this will be merged with the default settings
+            options = {
+                fixedMap:0;
+            }
+        */
+        ?>
+
+        var locations = '<?php echo $this->getLocations()->toJson(); ?>';
+        var search = new Locator.Search().initState(locations);
+
+        <?php if(Mage::getStoreConfig("locator_settings/search/use_places_autocomplete")){
+            //initializeAutocomplete();
+        }; ?>
+    });
 </script>

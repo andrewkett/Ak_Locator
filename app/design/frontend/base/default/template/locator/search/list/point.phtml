@@ -21,38 +21,46 @@
 
 
 <?php if($locations): ?>
-  <h2>Closest Store</h2>
-  <div class="closest location-info">
-      <article class="loc loc-teaser" data-id="<?php echo $closest->getId(); ?>">
-        <h3><?php echo $closest->getTitle(); ?></h3>
-        <address><?php echo $closest->getAddress() ?></address>
-        <p>Approx <?php echo round($closest->getDistance(),1); ?>km from you</p>
-        <a href="<?php echo $closest->getUrl(); ?>">View More</a> | <a href="<?php echo $closest->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
-      </article>
-  </div>
-  <br />
+    <h2>Closest Store</h2>
+    <div class="closest loc-ls-item">
+        <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $closest->getId(); ?>">
+            <h3 itemprop="name"><?php echo $closest->getTitle(); ?></h3>
+            <address itemprop="address"><?php echo $closest->getAddress() ?></address>
+            <p>Approx <?php echo round($closest->getDistance(),1); ?>km from you</p>
+            <a itemprop="url" href="<?php echo $closest->getUrl(); ?>">View More</a> | <a href="<?php echo $closest->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
+            <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                <meta itemprop="latitude" content="<?php echo $closest->getLatitude(); ?>" />
+                <meta itemprop="longitude" content="<?php echo $closest->getLongitude(); ?>" />
+            </div>
+        </article>
+    </div>
+    <br />
 
-  <?php if(count($locations) > 1): ?>
+    <?php if(count($locations) > 1): ?>
 
     <h2>Others</h2>
     <ul class="locations">
-      <?php
-          $i = 0;
-          foreach($locations as $location):
-            $i++;
-            if($i==1){
-              continue;
-            }
-      ?>
-        <li class="location-info">
-          <article class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
-            <h3><?php echo $location->getTitle(); ?></h3>
-            <address><?php echo $location->getAddress() ?></address>
-            <p>Approx <?php echo round($location->getDistance(),1); ?>km from you</p>
-            <a href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
-          </article>
+        <?php
+            $i = 0;
+            foreach($locations as $location):
+                $i++;
+                if($i==1){
+                    continue;
+                }
+        ?>
+        <li class="loc-ls-item">
+            <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
+                <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
+                <address itemprop="address"><?php echo $location->getAddress() ?></address>
+                <p>Approx <?php echo round($location->getDistance(),1); ?>km from you</p>
+                <a itemprop="url" href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
+                <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                    <meta itemprop="latitude" content="<?php echo $location->getLatitude(); ?>" />
+                    <meta itemprop="longitude" content="<?php echo $location->getLongitude(); ?>" />
+                </div>
+            </article>
         </li>
-      <?php endforeach; ?>
+        <?php endforeach; ?>
     </ul>
     <?php endif; ?>
 <?php endif; ?>

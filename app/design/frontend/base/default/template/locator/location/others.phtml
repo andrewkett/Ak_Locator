@@ -1,20 +1,23 @@
-
 <?php if($this->getLocations()): ?>
 
-    <h2>Others Nearby</h2>
-    <ul class="locations">
-      <?php foreach($this->getLocations() as $location): ?>
-        <li class="location-info" data-id="<?php echo $location->getId(); ?>">
-
-          <h2><?php echo $location->getTitle(); ?></h2>
-          <p><?php echo $location->getAddress(); ?></p>
-          <p>Approx <?php echo round($location->getDistance(),1); ?>km from here</p>
-          <a href="<?php echo $location->getUrl(); ?>">More</a>
-
-        </li>
-      <?php endforeach; ?>
-    </ul>
-
+        <h2>Others Nearby</h2>
+        <ul>
+            <?php foreach($this->getLocations() as $location): ?>
+                <li class="loc-nearby-item">
+                    <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
+                        <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
+                        <address itemprop="address"><?php echo $location->getAddress() ?></address>
+                        <p>Approx <?php echo round($location->getDistance(),1); ?>km from this location</p>
+                        <a itemprop="url" href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
+                        <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                            <meta itemprop="latitude" content="<?php echo $location->getLatitude(); ?>" />
+                            <meta itemprop="longitude" content="<?php echo $location->getLongitude(); ?>" />
+                        </div>
+                    </article>
+                </li>
+            <?php endforeach; ?>
+         </ul>
+    </section>
 <?php else: ?>
   No results found
 <?php endif; ?>

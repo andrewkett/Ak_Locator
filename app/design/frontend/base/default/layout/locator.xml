@@ -7,9 +7,12 @@
             <action method="addCss"><script>locator/css/locator.css</script></action>
         </reference>
 
+        <!--
+        example of how to add a store locator to your layout, do this in local.xml, not here.
         <reference name="left">
             <block type="magebrews_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
         </reference>
+        -->
 
     </default>
 
@@ -34,6 +37,16 @@
         </reference>
 
     </locator_search_index>
+
+    <locator_search_infowindow>
+        <block type="magebrews_locator/search_infowindow" name="root" template="locator/search/infowindow.phtml"/>
+    </locator_search_infowindow>
+
+    <locator_search_infowindows>
+        <block type="magebrews_locator/search_infowindows" name="root">
+            <block type="magebrews_locator/search_infowindow" name="infowindow" template="locator/search/infowindow.phtml"/>
+        </block>
+    </locator_search_infowindows>
 
     <locator_location_index>
 

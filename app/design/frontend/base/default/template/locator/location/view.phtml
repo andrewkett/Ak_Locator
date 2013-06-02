@@ -1,8 +1,8 @@
-<div id="location-details">
-  <div class="info"><?php echo $this->getChildHtml('info') ?></div>
-  <div class="map"><?php echo $this->getChildHtml('map') ?></div>
-</div>
+<section class="loc-page" itemscope itemtype="http://data-vocabulary.org/Place">
+  <div class="loc-page-data"><?php echo $this->getChildHtml('info') ?></div>
+  <div class="loc-page-map-wrap"><?php echo $this->getChildHtml('map') ?></div>
+</section>
 
-<div id="other-locations">
+<section class="loc-nearby">
   <?php echo $this->getChildHtml('others') ?>
-</div>
+</section>

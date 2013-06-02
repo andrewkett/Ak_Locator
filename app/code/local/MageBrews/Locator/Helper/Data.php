@@ -15,6 +15,8 @@
 
 class MageBrews_Locator_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    const BROWSER_CACHE_CONFIG_PATH = 'locator_settings/search/leverage_browser_caching';
+
     /**
      * Return available location attribute form as select options
      *
@@ -79,5 +81,15 @@ class MageBrews_Locator_Helper_Data extends Mage_Core_Helper_Abstract
 
     //     return $inputTypes;
     // }
+
+    /**
+     * Is browser caching enabled for searches
+     *
+     * @return bool
+     */
+    public function browserCacheEnabled()
+    {
+        return (bool)Mage::getStoreConfig(self::BROWSER_CACHE_CONFIG_PATH);
+    }
 
 }
