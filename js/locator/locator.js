@@ -4,6 +4,7 @@
     var Locator = window.Locator = {};
 
     Locator.defaultSearchSettings = {
+        //css selectors search uses to attach its components too
         selectors : {
             map : '.loc-srch-res-map',
             list : '.loc-srch-res-list',
@@ -13,6 +14,7 @@
             trigger : '.loc-trigger',
             results : '.loc-srch-res'
         },
+        // if 1 map will be fixed to top of viewport when page is scrolled
         stickyMap : 1
     };
 
@@ -325,6 +327,11 @@
 
             if(!locations.length){
                 this.toggleNoResults(1);
+            }
+
+            //reset the hash for old browsers to stop history.js errors
+            if(History.getHash()){
+                window.location.hash = '';
             }
 
             History.replaceState(
