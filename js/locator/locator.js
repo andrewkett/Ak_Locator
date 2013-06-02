@@ -311,7 +311,7 @@
 
                 var State = History.getState();
 
-                if (State.data.locations.length) {
+                if (State.data.locations && State.data.locations.length) {
                     self.list.update(State.data.output);
                     self.map.renderLocations(State.data.locations);
                     self.initEvents();
