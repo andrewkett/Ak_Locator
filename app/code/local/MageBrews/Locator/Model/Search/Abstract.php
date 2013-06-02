@@ -18,14 +18,14 @@
  * @package    MageBrews_Locator
  * @author     Andrew Kett
  */
-abstract class MageBrews_Locator_Model_Search_Abstract extends Mage_Core_Model_Abstract
+abstract class MageBrews_Locator_Model_Search_Abstract
+         extends Mage_Core_Model_Abstract
+         implements MageBrews_Locator_Model_Search_Interface
 {
 
     protected $_collection;
     protected $_model;
     protected $_cache;
-
-    protected abstract function search(Array $params);
 
     /**
      *

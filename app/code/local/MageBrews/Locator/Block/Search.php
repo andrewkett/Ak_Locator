@@ -16,6 +16,7 @@
 class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
 {
 
+    protected $_searchModel;
 
     /**
      * @return Mage_Core_Block_Abstract
@@ -45,8 +46,7 @@ class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
     public function getLocations()
     {
         if (!Mage::registry('locator_locations')) {
-            $locations = Mage::getModel('magebrews_locator/search')
-                        ->search($this->getRequest()->getParams());
+            $locations = $this->getSearch()->search($this->getRequest()->getParams());
             Mage::register('locator_locations', $locations);
         }else{
             $locations = Mage::registry('locator_locations');
@@ -76,6 +76,19 @@ class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
         return $obj->toJson();
     }
 
+
+    public function setSearch($model)
+    {
+        $this->_searchModel = $model;
+    }
+
+    public function getSearch()
+    {
+        if($this->_searchModel === null){
+            $this->setSearch(Mage::getModel('magebrews_locator/search'));
+        }
+        return $this->_searchModel;
+    }
 
     /**
      * get the child block which will render the list of locations
