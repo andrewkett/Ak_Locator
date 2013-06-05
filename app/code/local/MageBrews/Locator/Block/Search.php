@@ -24,6 +24,8 @@ class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
     protected function _prepareLayout()
     {
         $layout = $this->getLayout();
+        
+        $this->getLayout()->createBlock('magebrews_locator/breadcrumbs');
 
         if ($headBlock = $layout->getBlock('head')) {
             $headBlock->setTitle('Search Results');
