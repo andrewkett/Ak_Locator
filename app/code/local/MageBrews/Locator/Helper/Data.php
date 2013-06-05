@@ -91,5 +91,49 @@ class MageBrews_Locator_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (bool)Mage::getStoreConfig(self::BROWSER_CACHE_CONFIG_PATH);
     }
+    
+    
+    public function getBreadcrumbPath()
+    {
+        $path = array();
+
+        //@note removed this for now as it only works for string searches and cant be used with varnish
+
+        // $backUrl = $_SESSION['core']['last_url'];
+        // $paramU = strpos($backUrl,'s=');
+        // $paramDistance = strpos($backUrl,'&distance');
+        // $modulename = Mage::app()->getRequest()->getModuleName();
+        // $controlername = Mage::app()->getRequest()->getControllerName();
+        
+        // if($modulename=='locator' && $controlername=='location' && isset($paramU) && isset($paramDistance)){
+        //     $path['location_search_result'] = array(
+        //         'label'=> 'results',
+        //         'link' => $backUrl
+        //     );
+        // }
+
+        // if($s=Mage::app()->getRequest()->getParam('s') && $distance=Mage::app()->getRequest()->getParam('distance') ){
+        //     $path['location_search_result'] = array(
+        //         'label'=> 'results',
+        //         'link' => null
+        //     );
+        // }
+
+        if($id=Mage::app()->getRequest()->getParam('id')){
+            $locations = Mage::getModel('magebrews_locator/location')->getCollection()
+                ->addAttributeToSelect('title')
+                ->addAttributeToFilter('entity_id',$id)
+                ->load();
+            $items = $locations->getItems();
+            $location = reset($items);
+            $path['location_detail'] = array(
+                'label'=> $location->getTitle(),
+                'link' => ''
+            );
+        }
+        return $path;
+    }
+
+
 
 }
