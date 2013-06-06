@@ -1,5 +1,5 @@
 {
-    "name": "andrewkett/magebrews_locator",
+    "name": "magebrews/locator",
     "license": "OSL-3.0",
     "type": "magento-module",
     "description": "Magento Store Locator Extension",
