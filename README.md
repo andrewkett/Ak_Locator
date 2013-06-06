@@ -60,4 +60,4 @@ After the extension is installed you will need to add a [google maps API key](ht
 ## Copyright
 (c) 2013 Andrew Kett
 
-Disclaimer: This extension is a work in progress and is provided "as is", it may be buggy or completely break your website. Use it at your own risk.
+Disclaimer: This extension under active development and is not yet at a stable release. It is provided "as is", it may be buggy or completely break your website. 
