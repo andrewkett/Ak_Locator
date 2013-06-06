@@ -19,8 +19,8 @@
 class MageBrews_Locator_LocationController extends Mage_Core_Controller_Front_Action
 {
 
-  function indexAction()
-  {
-    $this->loadLayout()->renderLayout();
-  }
+    function indexAction()
+    {
+        $this->loadLayout()->renderLayout();
+    }
 }

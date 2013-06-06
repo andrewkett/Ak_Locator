@@ -19,21 +19,10 @@
 class MageBrews_Locator_IndexController extends Mage_Core_Controller_Front_Action
 {
 
-  public function indexAction()
-  {
+    public function indexAction()
+    {
     $this->_forward('index','search');
 
-  }
-
-
-  function jsonAction(){
-    echo Mage::getModel('magebrews_locator/search')->pointToLocations($position,20)->toJson();
-  }
-
-
-  public function writeLocationUrlAction()
-  {
-      Mage::getModel('magebrews_locator/indexer_url')->reindexAll(1);
-  }
+    }
 
 }
