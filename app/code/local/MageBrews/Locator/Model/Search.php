@@ -62,8 +62,8 @@ class MageBrews_Locator_Model_Search extends MageBrews_Locator_Model_Search_Abst
                 $override = Mage::getModel('magebrews_locator/search_override')->load($params['s']);
                 if($override->getParams() && $this->depth < 1){
                     $this->depth++;
-                    $this->params = $this->parseQuery($override->getParams());
-                    return $this->getSearchClass($params);
+                    $this->params = Mage::helper('magebrews_locator/search')->parseQueryString($override->getParams());
+                    return $this->getSearchClass($this->params);
                 }
             }
 
