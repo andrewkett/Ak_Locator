@@ -52,13 +52,6 @@ class MageBrews_Locator_Block_Adminhtml_Location_Grid extends Mage_Adminhtml_Blo
             'index'     => 'title',
         ));
 
-        // @todo - this isn't working, is showing a blank column, why....?
-        // $this->addColumn('is_enabled', array(
-        //     'header'    => Mage::helper('magebrews_locator')->__('Enabled'),
-        //     'align'     => 'left',
-        //     'index'     => 'is_enabled',
-        // ));
-
         $this->addColumn('address', array(
             'header'    => Mage::helper('magebrews_locator')->__('Address'),
             'align'     =>'left',
@@ -72,22 +65,18 @@ class MageBrews_Locator_Block_Adminhtml_Location_Grid extends Mage_Adminhtml_Blo
         ));
 
         $this->addColumn('country', array(
-            'header'    => Mage::helper('magebrews_locator')->__('country'),
+            'header'    => Mage::helper('magebrews_locator')->__('Country'),
             'align'     => 'left',
             'index'     => 'country',
         ));
 
-        // $this->addColumn('latitude', array(
-        //     'header'    => Mage::helper('magebrews_locator')->__('Latitude'),
-        //     'align'     => 'left',
-        //     'index'     => 'latitude',
-        // ));
-
-        // $this->addColumn('longitude', array(
-        //     'header'    => Mage::helper('magebrews_locator')->__('Longitude'),
-        //     'align'     => 'left',
-        //     'index'     => 'longitude',
-        // ));
+        $this->addColumn('is_enabled', array(
+            'header'    => Mage::helper('magebrews_locator')->__('Enabled'),
+            'align'     => 'left',
+            'index'     => 'is_enabled',
+            'type'  => 'options',
+            'options' => array('1'=>'Yes','0'=>'No'),
+        ));
 
         return parent::_prepareColumns();
     }
