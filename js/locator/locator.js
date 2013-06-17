@@ -133,7 +133,14 @@
             }
 
             self.map.fitBounds( latlngbounds );
+            self.checkMaxZoom();
 
+            google.maps.event.trigger(self.map, 'resize');
+            self.loadInfoWindows();
+        },
+
+        checkMaxZoom: function(){
+            var self = this;
             if(self.settings.maxZoom){
                 //when the map loads, make sure it hasn't zoomed in to far, if it has zoom out
                 //@todo, configure the zoom level in admin
@@ -142,9 +149,6 @@
                     google.maps.event.removeListener(listener);
                 });
             }
-
-            google.maps.event.trigger(self.map, 'resize');
-            self.loadInfoWindows();
         },
 
         clearOverlays: function(){
