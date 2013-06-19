@@ -298,18 +298,6 @@
                 self.forms.push(new Locator.Form(el, self));
             });
 
-            // Attach onclick events to search triggers
-            $$(this.settings.selectors.trigger).invoke('observe', 'click', function(event){
-                var href = Event.element(event).readAttribute('href');
-
-                self.forms[0].startLoader();
-                self.findLocations( href.toQueryParams(), function () {
-                    self.forms[0].stopLoader();
-                });
-                Event.stop(event);
-            });
-
-
             //Bind map rendering to StateChange Event
             window.History.Adapter.bind(window, 'statechange', function () {
 
@@ -375,7 +363,7 @@
                     self.toggleNoResults(0);
                     if(result.error === true) {
                         if (result.error_type === 'noresults') {
-                            self.toggleNoResults(1)
+                            self.toggleNoResults(1);
                         } else {
                             alert(result.message);
                         }
@@ -431,14 +419,36 @@
         //attach events to search ui
         initEvents: function(){
             var self = this;
-            $$(this.settings.selectors.teaser).invoke('observe', 'click', function(event){
+            $$(self.settings.selectors.teaser).invoke('observe', 'click', function(event){
                 var id = this.readAttribute('data-id');
                 self.map.showInfoWindow(id);
             });
 
-            $$(this.settings.selectors.teaser).invoke('observe', 'mouseover', function(event) {
+            $$(self.settings.selectors.teaser).invoke('observe', 'mouseover', function(event) {
                 var id = this.readAttribute('data-id');
                 self.map.highlightMarker(id);
+            });
+
+            // Attach onclick events to search triggers
+            $$(self.settings.selectors.trigger).invoke('observe', 'click', function(event){
+                var el = Event.element(event);
+
+                if(!el.readAttribute('href')){
+                    for(var i=0;i<10;i++){
+                        el = el.up();
+                        if(el.readAttribute('href')){
+                            break;
+                        }
+                    }
+                }
+
+                var href = el.readAttribute('href');
+
+                self.forms[0].startLoader();
+                self.findLocations( href.toQueryParams(), function () {
+                    self.forms[0].stopLoader();
+                });
+                Event.stop(event);
             });
         },
 
