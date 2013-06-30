@@ -15,78 +15,34 @@
 
 class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Model_Entity_Collection_Abstract
 {
+
     protected function _construct()
     {
         $this->_init('magebrews_locator/location');
     }
 
+    /**
+     * Override parent method to remove entity_type_id filter
+     *
+     * @return $this
+     */
     protected function _initSelect()
     {
       $this->getSelect()->from(array('e' => $this->getEntity()->getEntityTable()));
 
-      if ($this->getEntity()->getTypeId()) {
-          /**
-           * We override the Mage_Eav_Model_Entity_Collection_Abstract->_initSelect()
-           * because we want to remove the call to addAttributeToFilter for 'entity_type_id'
-           * as it is causing invalid SQL select, thus making the User model load failing.
-           */
-          //$this->addAttributeToFilter('entity_type_id', $this->getEntity()->getTypeId());
-      }
       return $this;
     }
 
-    public function getJsonData()
+    /**
+     * Use Haversine formula to find locations within a given radius of a point
+     * http://en.wikipedia.org/wiki/Haversine_formula
+     *
+     * @param Point $point
+     * @param int $radius
+     * @return $this
+     */
+    public function nearPoint(Point $point, $radius = 0)
     {
-        foreach($this->getItems() as $location) 
-        {
-          $loc = new StdClass();
-          $loc->id = $location->getId();
-          $loc->title = $location->getTitle();
-          $loc->latitude = $location->getLatitude();
-          $loc->longitude = $location->getLongitude();
-          $loc->distance = round($location->getDistance(),2);
-
-          $locations[$location->getEntityId()] = $loc;
-        }
-    }
-
-
-    public function toJson(){
-
-        $locations = array();
-
-        foreach($this->getItems() as $location) 
-        {
-          $loc = array();
-          $loc['id'] = $location->getId();
-          $loc['title'] = $location->getTitle();
-          $loc['latitude'] = $location->getLatitude();
-          $loc['longitude'] = $location->getLongitude();
-          $loc['distance'] = (string)round($location->getDistance(),2);
-          $loc['directions'] = $location->getDirectionsLink();
-
-          $locations[(int)$location->getEntityId()] = $loc;
-        }
-
-        $obj = new Varien_Object();
-        $obj->setLocations($locations);
-
-        Mage::dispatchEvent('magebrews_locator_before_search_json_output', array('collection'=>$this, 'json_data'=>$obj));
-
-        $json = Zend_Json::encode($obj->getLocations());
-        //zend_json doesn't encode single quotes but they break in the browser
-        $json = str_replace('\'', '&#39;', $json);
-        return $json;
-    }
-
-    public function toOptionArray($valueField='entity_id', $labelField='title', $additional=array())
-    {
-        return $this->_toOptionArray($valueField, $labelField, $additional);
-    }
-
-
-    public function nearPoint(Point $point, $radius = 0){
-
         $this->addExpressionAttributeToSelect('distance', sprintf("(3959 * acos(cos(radians('%s')) * cos(radians(latitude)) * cos(radians(longitude) - radians('%s')) + sin(radians('%s')) * sin( radians(latitude))))", $point->coords[1], $point->coords[0], $point->coords[1], $radius), array('entity_id'));
 
         if ($radius !== 0) {
@@ -94,6 +50,50 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
         }
 
         return $this;
+    }
 
+    /**
+     * @param string $valueField
+     * @param string $labelField
+     * @param array $additional
+     * @return mixed
+     */
+    public function toOptionArray($valueField='entity_id', $labelField='title', $additional=array())
+    {
+        return $this->_toOptionArray($valueField, $labelField, $additional);
+    }
+
+    /**
+     * Output this collection as a json object to be used by search frontend
+     *
+     * @return mixed
+     */
+    public function toJson()
+    {
+        $locations = array();
+
+        foreach($this->getItems() as $location)
+        {
+            $loc = array();
+            $loc['id'] = $location->getId();
+            $loc['title'] = $location->getTitle();
+            $loc['latitude'] = $location->getLatitude();
+            $loc['longitude'] = $location->getLongitude();
+            $loc['distance'] = (string)round($location->getDistance(),2);
+            $loc['directions'] = $location->getDirectionsLink();
+
+            $locations[(int)$location->getEntityId()] = $loc;
+        }
+
+        $obj = new Varien_Object();
+        $obj->setLocations($locations);
+
+        //dispatch event to allow other modules to add to this json
+        Mage::dispatchEvent('magebrews_locator_before_search_json_output', array('collection'=>$this, 'json_data'=>$obj));
+
+        $json = Zend_Json::encode($obj->getLocations());
+        //zend_json doesn't encode single quotes but they break in the browser
+        $json = str_replace('\'', '&#39;', $json);
+        return $json;
     }
 }
