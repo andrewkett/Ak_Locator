@@ -16,23 +16,24 @@
 class MageBrews_Locator_Block_Location_View extends Mage_Core_Block_Template
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         $this->setTemplate('locator/location/view.phtml');
     }
 
+    /**
+     * Prepare the layout
+     *
+     * @return Mage_Core_Block_Abstract
+     */
     protected function _prepareLayout()
     {
-        $locations = $this->getLocations()->getItems();
-        $location = reset($locations);
+        $location = $this->getLocation();
         $layout = $this->getLayout();
 
         if ($headBlock = $layout->getBlock('head')) {
-
           $headBlock->setTitle($location->getTitle());
-          // $headBlock->setDescription('Locations near ');
-          // $headBlock->setKeywords('');
-
         }
 
         $initLocator = $layout->createBlock('core/template');
@@ -60,9 +61,9 @@ class MageBrews_Locator_Block_Location_View extends Mage_Core_Block_Template
 
 
     /**
-     * Retrieve current location model
+     * Retrieve a location collection containing the current location
      *
-     * @return MageBrews_Locator_Model_Location
+     * @return MageBrews_Locator_Model_Resource_Location_Collection
      */
     public function getLocations()
     {
@@ -72,8 +73,7 @@ class MageBrews_Locator_Block_Location_View extends Mage_Core_Block_Template
 
           $locations = Mage::getModel('magebrews_locator/location')->getCollection()
             ->addAttributeToSelect('*')
-            ->addAttributeToFilter('entity_id',$id)
-            ->load();
+            ->addAttributeToFilter('entity_id',$id);
 
             Mage::register('locator_locations', $locations);
         }
@@ -81,28 +81,35 @@ class MageBrews_Locator_Block_Location_View extends Mage_Core_Block_Template
     }
 
 
+    /**
+     * Get the location currently being viewed
+     *
+     * @return MageBrews_Locator_Model_Location
+     */
     public function getLocation()
     {
-      $locations = $this->getLocations()->getItems();
-      return reset($locations);
+      return $this->getLocations()->getFirstItem();
     }
 
+
+    /**
+     * Get locations near current location
+     *
+     * @return MageBrews_Locator_Model_Resource_Location_Collection
+     */
     public function getNearbyLocations()
     {
         $location = $this->getLocation();
+        $params = array(
+            'lat'=>$location->getLatitude(),
+            'long'=>$location->getLongitude(),
+            'limit' => 8
+        );
         
-        $results = Mage::getModel('magebrews_locator/search_point_latlong')->search(array('lat'=>$location->getLatitude(), 'long'=>$location->getLongitude()));
-        $results->addAttributeToFilter('entity_id', array('neq'=>$location->getId()));
+        $results = Mage::getModel('magebrews_locator/search')
+                        ->search($params)
+                        ->addAttributeToFilter('entity_id', array('neq'=>$location->getId()));
 
         return $results;
-    }
-
-
-    public function asJson()
-    {
-        $obj = new Varien_Object();
-        $obj->setLocations($this->getLocations()->toJson());
-        $obj->setOutput($this->getLayout()->createBlock('magebrews_locator/search_list')->setData('locations', $this->getLocations())->toHtml());
-        return $obj->toJson();
     }
 }
