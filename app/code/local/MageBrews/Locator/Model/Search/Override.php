@@ -13,12 +13,16 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * @category   MageBrews
+ * @package    MageBrews_Locator
+ * @author     Andrew Kett
+ */
 class MageBrews_Locator_Model_Search_Override extends Mage_Core_Model_Abstract
 {
 
     /**
-    * Init Resource Model
-    *
+    * Init resource model
     */
     protected function _construct()
     {

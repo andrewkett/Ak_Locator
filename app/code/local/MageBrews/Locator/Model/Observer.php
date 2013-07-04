@@ -16,7 +16,9 @@
 
 class MageBrews_Locator_Model_Observer
 {
-
+    /**
+     * Set admin messages if extension prerequisites haven't been meet
+     */
     public function setAdminMessage()
     {
         if('' == Mage::getStoreConfig('locator_settings/google_maps/api_key')){
@@ -29,7 +31,9 @@ class MageBrews_Locator_Model_Observer
         }
     }
 
-
+    /**
+     * Attempt to load geoPHP from lib and vendor directories
+     */
     public function loadLibraries()
     {
         $files = array(
@@ -43,7 +47,6 @@ class MageBrews_Locator_Model_Observer
                 return;
             }
         }
-        //throw new Exception('Failed to load geoPHP library');
     }
 
 }

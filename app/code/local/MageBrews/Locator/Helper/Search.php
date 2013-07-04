@@ -21,7 +21,8 @@ class MageBrews_Locator_Helper_Search extends Mage_Core_Helper_Abstract
      * @param $query query string to parse
      * @return array array or search parameters
      */
-    public function parseQueryString($query) {
+    public function parseQueryString($query)
+    {
         $queryParts = explode('&', $query);
 
         $params = array();

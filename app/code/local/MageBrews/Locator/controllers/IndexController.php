@@ -18,11 +18,12 @@
 */
 class MageBrews_Locator_IndexController extends Mage_Core_Controller_Front_Action
 {
-
+    /**
+     * Default controller simply forwards onto the search controller
+     */
     public function indexAction()
     {
-    $this->_forward('index','search');
-
+        $this->_forward('index','search');
     }
 
 }

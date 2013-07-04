@@ -15,7 +15,7 @@
 
 class MageBrews_Locator_Model_Location extends Mage_Core_Model_Abstract
 {
-   /**
+    /**
      * Entity code.
      * Can be used as part of method name for entity processing
      */
@@ -37,35 +37,50 @@ class MageBrews_Locator_Model_Location extends Mage_Core_Model_Abstract
     }
 
 
-
+    /**
+     * If directions_link isn't already set in data first generate it
+     *
+     * @return string
+     */
     public function getDirectionsLink()
     {
 
-        if(null == $this->getData('directionsLink')){
+        if(null == $this->getData('directions_link')){
             $this->setDirectionsLink();
         }
 
-        return $this->getData('directionsLink');
+        return $this->getData('directions_link');
     }
 
+
+    /**
+     * Create Google maps direction link and set in data
+     *
+     * @param array $options
+     */
     public function setDirectionsLink($options = array())
     {
-        $params = array();
+        $params = array(
+            'daddr' => $this->getLatitude().','.$this->getLongitude()
+        );
 
-        $params['daddr'] =$this->getLatitude().','.$this->getLongitude();
         if(isset($options['start'])){
-
             if($options['start'] instanceof Point){
                 $params['saddr']=$options['start']->coords[1].','.$options['start']->coords[0];
             }else{
                 $params['saddr']=$options['start'];
             }
-
         }
 
-        $this->setData('directionsLink', Mage::helper('core/url')->addRequestParam('http://maps.google.com/maps', $params));
+        $this->setData('directions_link', Mage::helper('core/url')->addRequestParam('http://maps.google.com/maps', $params));
     }
 
+
+    /**
+     * Get url to location
+     *
+     * @return string
+     */
     public function getUrl()
     {
         return $this->getUrlModel()->getUrl($this, null);
@@ -84,6 +99,7 @@ class MageBrews_Locator_Model_Location extends Mage_Core_Model_Abstract
         }
         return $this->_urlModel;
     }
+
 
     /**
      * Formats URL key

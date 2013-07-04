@@ -28,6 +28,7 @@ abstract class MageBrews_Locator_Model_Search_Point_Abstract
      * @param Point $point
      * @param int $radius
      * @return MageBrews_Locator_Model_Resource_Location_Collection
+     * @throws Exception
      */
     protected function pointToLocations(Point $point, $radius = null)
     {

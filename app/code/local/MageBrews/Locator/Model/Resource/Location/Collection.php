@@ -88,7 +88,7 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
         $obj = new Varien_Object();
         $obj->setLocations($locations);
 
-        //dispatch event to allow other modules to add to this json
+        //dispatch event to allow other modules to add to the json
         Mage::dispatchEvent('magebrews_locator_before_search_json_output', array('collection'=>$this, 'json_data'=>$obj));
 
         $json = Zend_Json::encode($obj->getLocations());

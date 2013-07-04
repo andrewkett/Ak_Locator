@@ -24,11 +24,13 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
     const XML_SEARCH_SHOULDAPPEND_PATH = "locator_settings/search/append_string_to_search";
     const XML_SEARCH_APPENDTEXT_PATH = "locator_settings/search/append_string";
 
+
     /**
-     * Geocode a search string into a Lat/Long Point
+     * Perform search
      *
-     * @param Array $params
+     * @param array $params
      * @return MageBrews_Locator_Model_Resource_Location_Collection
+     * @throws Exception
      */
     public function search(Array $params)
     {
@@ -44,8 +46,10 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
     /**
      * Geocode a search string into a Lat/Long Point
      *
-     * @param String $query
+     * @param $query
      * @return Point
+     * @throws MageBrews_Locator_Model_Exception_Geocode
+     * @throws Exception
      */
     protected function stringToPoint($query)
     {
@@ -69,10 +73,9 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
                 if(strpos($e->getMessage(), 'ZERO_RESULTS')){
                     throw new MageBrews_Locator_Model_Exception_Geocode($e->getMessage());
                 }
+
                 throw $e;
-
             }
-
         }
         
         return $result;

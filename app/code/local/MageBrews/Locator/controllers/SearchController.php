@@ -19,7 +19,7 @@
 class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Action
 {
     /**
-     * Handles all search requests
+     * Handles search requests
      */
     public function indexAction()
     {

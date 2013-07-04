@@ -27,6 +27,7 @@ class MageBrews_Locator_Model_Search_Point_Latlong
      *
      * @param Array $params
      * @return MageBrews_Locator_Model_Resource_Location_Collection
+     * @throws Exception
      */
     public function search(Array $params)
     {
