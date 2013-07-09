@@ -28,10 +28,12 @@ class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
         $this->getLayout()->createBlock('magebrews_locator/breadcrumbs');
 
         if ($headBlock = $layout->getBlock('head')) {
-            $headBlock->setTitle('Search Results');
+            $headBlock->setTitle(Mage::getStoreConfig(self::XML_PATH_SEARCH_META_TITLE));
+            $headBlock->setDescription(Mage::getStoreConfig(self::XML_PATH_SEARCH_META_DESC));
+            $headBlock->setKeywords(Mage::getStoreConfig(self::XML_PATH_SEARCH_META_KEY));
             $headBlock->getChild('init-search')->setData('locations', $this->getLocations());
         }
-
+        
         // @todo init these in layout xml so they can be modified easier
         $listBlock = $this->getListBlock()->setData('locations', $this->getLocations());
         $this->setChild('list', $listBlock);
