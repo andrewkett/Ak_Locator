@@ -271,6 +271,30 @@ class MageBrews_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_A
         //var_dump($rewriteData);
         try {
             $adapter->insertOnDuplicate($this->getMainTable(), $rewriteData);
+            
+            if($this->getTable('enterprise_urlrewrite/url_rewrite')){
+                
+                //@todo - this probably isn't an ideal way of achieving this, need to investigate 1.13 enterprise rewrites more
+                
+                $enterpriseData = array(
+                    'request_path' => $rewriteData['request_path'],
+                    'target_path' => $rewriteData['target_path'],
+                    'is_system' => $rewriteData['is_system'],
+                    'identifier' => $rewriteData['request_path'],
+                    'guid' => $rewriteData['request_path']
+                );
+
+                foreach($enterpriseData as $data){
+                    if($data == '' || $data == null){
+                        //can't save this one as the data isn't correct
+                        Mage::log('Cannot create rewrite as data is bad, data: '.print_r($enterpriseData,1));
+                        return;
+                    }
+                }
+
+                $adapter->insertOnDuplicate($this->getTable('enterprise_urlrewrite/url_rewrite'),$enterpriseData);
+            }
+            
         } catch (Exception $e) {
             echo $e->getMessage();
             Mage::logException($e);
