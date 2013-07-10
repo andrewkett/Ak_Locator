@@ -15,6 +15,10 @@
 
 class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
 {
+    
+    const XML_PATH_SEARCH_META_TITLE = "locator_settings/seo/search_meta_title";
+    const XML_PATH_SEARCH_META_DESC = "locator_settings/seo/search_meta_desc";
+    const XML_PATH_SEARCH_META_KEY = "locator_settings/seo/search_meta_key";
 
     protected $_searchModel;
 
