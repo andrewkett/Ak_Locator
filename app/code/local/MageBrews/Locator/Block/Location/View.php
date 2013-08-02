@@ -30,6 +30,11 @@ class MageBrews_Locator_Block_Location_View extends Mage_Core_Block_Template
     protected function _prepareLayout()
     {
         $location = $this->getLocation();
+
+        if(!$location){
+            return;
+        }
+
         $layout = $this->getLayout();
 
         if ($headBlock = $layout->getBlock('head')) {

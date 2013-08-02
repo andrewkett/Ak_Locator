@@ -24,6 +24,14 @@ class MageBrews_Locator_LocationController extends Mage_Core_Controller_Front_Ac
      */
     function indexAction()
     {
-        $this->loadLayout()->renderLayout();
+        $this->loadLayout();
+
+        //if there are no matching locations forward to the 404 page
+        if(!$this->getLayout()->getBlock('view')->getLocation()){
+            $this->_forward('noresults');
+            return;
+        }
+
+        $this->renderLayout();
     }
 }
