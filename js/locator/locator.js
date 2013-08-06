@@ -15,7 +15,7 @@
             results : '.loc-srch-res'
         },
         // if 1 map will be fixed to top of viewport when page is scrolled
-        stickyMap : 1
+        stickyMap : 0
     };
 
     Locator.Form = Class.create({
