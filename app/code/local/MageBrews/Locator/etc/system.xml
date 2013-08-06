@@ -18,12 +18,12 @@
     <tabs>
         <locator translate="label" module="magebrews_locator">
             <label>Locator</label>
-            <sort_order>0</sort_order>
+            <sort_order>320</sort_order>
         </locator>
     </tabs>
     <sections>
         <locator_settings translate="label" module="magebrews_locator">
-            <label>Locator Settings</label>
+            <label>Settings</label>
             <tab>locator</tab>
             <frontend_type>text</frontend_type>
             <sort_order>1000</sort_order>
