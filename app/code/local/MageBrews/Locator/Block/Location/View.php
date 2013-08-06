@@ -38,17 +38,19 @@ class MageBrews_Locator_Block_Location_View extends Mage_Core_Block_Template
         $layout = $this->getLayout();
 
         if ($headBlock = $layout->getBlock('head')) {
-          $headBlock->setTitle($location->getTitle());
+            $headBlock->setTitle($location->getTitle());
+
+            $initLocator = $layout->createBlock('core/template');
+            $initLocator->setTemplate('locator/page/html/head/init-locator.phtml');
+
+            $initSearch = $layout->createBlock('core/template');
+            $initSearch->setTemplate('locator/page/html/head/init-store.phtml')->setData('locations', $this->getLocations());
+
+            $headBlock->append($initLocator);
+            $headBlock->append($initSearch);
         }
 
-        $initLocator = $layout->createBlock('core/template');
-        $initLocator->setTemplate('locator/page/html/head/init-locator.phtml');
-
-        $initSearch = $layout->createBlock('core/template');
-        $initSearch->setTemplate('locator/page/html/head/init-store.phtml')->setData('locations', $this->getLocations());
-
-        $headBlock->append($initLocator);
-        $headBlock->append($initSearch);
+        
 
         $listBlock = $this->getLayout()->createBlock('magebrews_locator/location_info')->setData('locations', $this->getLocations());
         $mapBlock = $this->getLayout()->createBlock('magebrews_locator/location_map')->setData('locations', $this->getLocations());
