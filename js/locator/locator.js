@@ -1,6 +1,11 @@
+/*jshint browser:true, devel:true, prototypejs:true */
 (function () {
     "use strict";
 
+    /**
+     * @name Locator
+     * @namespace
+     */
     var Locator = window.Locator = {};
 
     Locator.defaultSearchSettings = {
@@ -257,8 +262,18 @@
         }
     });
 
+
+    /**
+     * @class
+     */
     Locator.Search = Class.create({
 
+        /**
+         * Construct the search class
+         *
+         * @constructor
+         * @param {Object} options
+         */
         initialize: function(options) {
 
             if(options){
@@ -311,7 +326,11 @@
             });
         },
 
-        // Set initial history state when locations are not loaded from search, this will trigger map render
+        /**
+         * Set initial history state when locations are not loaded from search, this will trigger map render
+         *
+         * @param locations
+         */
         initState: function(locations){
             //inject a random parameter to query string so state always changes on first load
             var href = window.location.href+'&rand='+Math.random();
@@ -338,7 +357,12 @@
 
         },
 
-        //make an ajax request to the server to find locations based on given query params
+        /**
+         * Make an ajax request to the server to find locations based on given query params
+         *
+         * @param {string} query
+         * @param callback
+         */
         findLocations: function (query, callback) {
 
             var self = this;
@@ -380,7 +404,12 @@
             });
         },
 
-        //parse result from server
+        /**
+         * Parse search result from server
+         *
+         * @param {string} string
+         * @returns {Object}
+         */
         parseSearchJson: function (string) {
             var search = JSON.parse(string);
             if (search.locations) {
@@ -389,6 +418,12 @@
             return search;
         },
 
+        /**
+         * Parse location json object
+         *
+         * @param {string} string
+         * @returns {Array}
+         */
         parseLocationsJson: function (string) {
 
             var locations = JSON.parse(string);
@@ -402,7 +437,11 @@
             return temp;
         },
 
-        //show or hide no results page based on boolean parameter
+        /**
+         * Show or hide no results page based on boolean parameter
+         *
+         * @param {boolean} empty
+         */
         toggleNoResults: function (empty) {
             var els = $$(this.settings.selectors.results);
             if(empty){
@@ -416,7 +455,9 @@
             }
         },
 
-        //attach events to search ui
+        /**
+         * Attach events to search UI
+         */
         initEvents: function(){
             var self = this;
             $$(self.settings.selectors.teaser).invoke('observe', 'click', function(event){
@@ -452,10 +493,19 @@
             });
         },
 
+        /**
+         * Create string to be displayed in the page title after a search has been performed
+         *
+         * @param locations
+         * @returns {string}
+         */
         getSearchTitle:function (locations){
             return "Search: " + locations.length + " Locations";
         },
 
+        /**
+         * Init scroll behaviour
+         */
         initScroll: function(){
 
             if(this.settings.stickyMap){
