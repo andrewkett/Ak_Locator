@@ -23,8 +23,16 @@
         stickyMap : 0
     };
 
+    /**
+     * @class Form
+     */
     Locator.Form = Class.create({
 
+        /**
+         * @constructor
+         * @param {HTMLElement} el
+         * @param {Locator.Search} search
+         */
         initialize: function (el, search) {
 
             this.settings = {
@@ -49,12 +57,18 @@
             });
         },
 
+        /**
+         * Make loader visible to user
+         */
         startLoader: function () {
             this.el.select(this.settings.selectors.loader).each(function (el) {
                 el.addClassName('is-loading');
             });
         },
 
+        /**
+         * Hide loader from user
+         */
         stopLoader: function () {
             this.el.select(this.settings.selectors.loader).each(function (el) {
                 el.removeClassName('is-loading');
@@ -62,7 +76,15 @@
         }
     });
 
+    /**
+     * @class Map
+     */
     Locator.Map = Class.create({
+
+        /**
+         * @constructor
+         * @param {HTMLElement} el
+         */
         initialize: function (el) {
             this.el = el;
             this.defaults = {
@@ -91,7 +113,11 @@
             };
         },
 
-        // render locations on the map and trigger actions
+        /**
+         * Render locations on the map and trigger actions
+         *
+         * @param locations
+         */
         renderLocations: function (locations) {
 
             var latlngbounds = new google.maps.LatLngBounds(),
@@ -144,6 +170,9 @@
             self.loadInfoWindows();
         },
 
+        /**
+         * Check that the map is not zoomed in to far
+         */
         checkMaxZoom: function(){
             var self = this;
             if(self.settings.maxZoom){
@@ -156,6 +185,9 @@
             }
         },
 
+        /**
+         * Clear current markers from map
+         */
         clearOverlays: function(){
             for (var key in this.markers) {
                 if (this.markers.hasOwnProperty(key)) {
@@ -164,7 +196,9 @@
             }
         },
 
-        //hide all currently visible info windows
+        /**
+         * Hide all currently visible info windows
+         */
         hideInfoWindows: function(){
             for (var key in this.infowindows) {
                 if (this.infowindows.hasOwnProperty(key)) {
@@ -173,7 +207,11 @@
             }
         },
 
-        //show an info window based on an id
+        /**
+         * Show an info window based on an id
+         *
+         * @param {int} id
+         */
         showInfoWindow: function(id){
             var self = this;
 
@@ -192,13 +230,20 @@
             }
         },
 
-        //set the content of an info window based on an id
+        /**
+         * Set the content of an info window for a given location
+         *
+         * @param {int} id
+         * @param {string} content
+         */
         setInfoWindowContent: function(id, content){
             this.infowindows[id].setContent(content);
             this.infowindows[id].isSet = 1;
         },
 
-        //load content for all infowindows
+        /**
+         * Load content for all infowindows
+         */
         loadInfoWindows: function(){
             var self = this,
             ids = [];
@@ -230,7 +275,11 @@
             });
         },
 
-        //bounce a marker to highlight it
+        /**
+         * Bounce a marker to highlight it
+         *
+         * @param {int} id
+         */
         highlightMarker: function(id){
             var self = this;
             if(self.markers[id].getAnimation() === null){
@@ -241,6 +290,12 @@
             }
         },
 
+        /**
+         * Get a google maps marker
+         *
+         * @param {Object} l object containing location data
+         * @returns {google.maps.MarkerImage}
+         */
         getMarkerImage: function(l){
             return new google.maps.MarkerImage(
                 '/skin/frontend/base/default/locator/images/pin.png',
@@ -251,12 +306,24 @@
         }
     });
 
+    /**
+     * @class List
+     */
     Locator.List = Class.create({
 
+        /**
+         * @constructor
+         * @param {HTMLElement} el
+         */
         initialize: function (el) {
             this.el = el;
         },
 
+        /**
+         * Update list content
+         *
+         * @param {string} text
+         */
         update: function (text) {
             this.el.update(text);
         }
@@ -264,7 +331,7 @@
 
 
     /**
-     * @class
+     * @class Search
      */
     Locator.Search = Class.create({
 
@@ -329,7 +396,7 @@
         /**
          * Set initial history state when locations are not loaded from search, this will trigger map render
          *
-         * @param locations
+         * @param {Array} locations
          */
         initState: function(locations){
             //inject a random parameter to query string so state always changes on first load
@@ -337,7 +404,7 @@
             var locations = this.parseLocationsJson(locations);
 
             if(!locations.length){
-                this.toggleNoResults(1);
+                this.toggleNoResults(true);
             }
 
             //reset the hash for old browsers to stop history.js errors
@@ -384,10 +451,10 @@
                     var result = self.parseSearchJson(t.responseText);
                     result.search = href.toQueryParams();
 
-                    self.toggleNoResults(0);
+                    self.toggleNoResults(false);
                     if(result.error === true) {
                         if (result.error_type === 'noresults') {
-                            self.toggleNoResults(1);
+                            self.toggleNoResults(true);
                         } else {
                             alert(result.message);
                         }
@@ -496,7 +563,7 @@
         /**
          * Create string to be displayed in the page title after a search has been performed
          *
-         * @param locations
+         * @param {Array} locations
          * @returns {string}
          */
         getSearchTitle:function (locations){
