@@ -17,7 +17,7 @@
 <config>
   <modules>
     <MageBrews_Locator>
-        <version>0.0.0.5</version>
+        <version>0.0.0.6</version>
     </MageBrews_Locator>
   </modules>
   <global>

@@ -427,7 +427,7 @@
         /**
          * Make an ajax request to the server to find locations based on given query params
          *
-         * @param {string} query
+         * @param {(string|Object)} query
          * @param callback
          */
         findLocations: function (query, callback) {

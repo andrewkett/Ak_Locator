@@ -30,7 +30,13 @@ class MageBrews_Locator_Block_Adminhtml_Location_Edit_Tabs extends Mage_Adminhtm
                 'title',
                 'is_enabled',
                 'url_key'
-            )
+            ),
+            'location_seo' => array(
+                'url_key',
+                'meta_title',
+                'meta_description',
+                'meta_keywords'
+            ),
         ));
     }
 
@@ -50,6 +56,15 @@ class MageBrews_Locator_Block_Adminhtml_Location_Edit_Tabs extends Mage_Adminhtm
             'label'     => Mage::helper('magebrews_locator')->__('Location Address'),
             'content'   =>  $this->getLayout()
                             ->createBlock('magebrews_locator/adminhtml_location_edit_tab_address')
+                            ->setTabStructure($this->getTabStructure())
+                            ->initForm()
+                            ->toHtml()
+        ));
+
+        $this->addTab('location_seo', array(
+            'label'     => Mage::helper('magebrews_locator')->__('SEO'),
+            'content'   =>  $this->getLayout()
+                            ->createBlock('magebrews_locator/adminhtml_location_edit_tab_seo')
                             ->setTabStructure($this->getTabStructure())
                             ->initForm()
                             ->toHtml()
