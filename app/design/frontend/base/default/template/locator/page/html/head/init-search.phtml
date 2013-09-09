@@ -27,7 +27,8 @@
         ?>
 
         var locations = '<?php echo $this->getLocations()->toJson(); ?>';
-        var search = new Locator.Search().initState(locations);
+        var search = new Locator.Search();
+        search.initState(locations);
 
         <?php if(Mage::getStoreConfig("locator_settings/search/use_places_autocomplete")){
             //initializeAutocomplete();
