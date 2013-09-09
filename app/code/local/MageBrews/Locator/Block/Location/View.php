@@ -38,7 +38,20 @@ class MageBrews_Locator_Block_Location_View extends Mage_Core_Block_Template
         $layout = $this->getLayout();
 
         if ($headBlock = $layout->getBlock('head')) {
-            $headBlock->setTitle($location->getTitle());
+            
+            if ($title = $location->getMetaTitle()) {
+                $headBlock->setTitle($title);
+            } else {
+                $headBlock->setTitle($location->getTitle());
+            }
+
+            if ($description = $location->getMetaDescription()) {
+                $headBlock->setDescription($description);
+            }
+
+            if ($keywords = $location->getMetaKeywords()) {
+                $headBlock->setKeywords($keywords);
+            }
 
             $initLocator = $layout->createBlock('core/template');
             $initLocator->setTemplate('locator/page/html/head/init-locator.phtml');
