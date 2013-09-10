@@ -372,8 +372,6 @@
 
             var self = this;
 
-
-
             this.initScroll();
 
             $$(this.settings.selectors.form).each(function (el) {
@@ -386,8 +384,12 @@
                 var State = History.getState();
 
                 if (State.data.locations && State.data.locations.length) {
-                    self.list.update(State.data.output);
-                    self.map.renderLocations(State.data.locations);
+                    if (self.list) {
+                        self.list.update(State.data.output);
+                    }
+                    if (self.map) {
+                        self.map.renderLocations(State.data.locations);
+                    }
                     self.initEvents();
                 }
             });
