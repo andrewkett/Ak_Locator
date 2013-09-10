@@ -58,24 +58,27 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <use_default_search>
-                            <label>Use default search if no search entered</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </use_default_search>
-
-                        <default_search_params>
-                            <label>Default Search Parameters</label>
+                        <default_search_distance>
+                            <label>Search Radius</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </default_search_params>
+                            <comment>Default radius of point based searches, e.g string search and lat long</comment>
+                        </default_search_distance>
+
+                        <!-- @todo why isn't this showing up? -->
+                        <show_distance_filter>
+                            <label>Show Distance Filter</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allow users to override default search radius in searches</comment>
+                        </show_distance_filter>
 
                         <append_string_to_search>
                             <label>Append extra text to string searches</label>
@@ -94,6 +97,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <comment>E.g. If set to australia and a search is made for melbourne, a string of "melbourne australia" will be geocoded</comment>
                         </append_string>
 
 
@@ -135,6 +139,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <comment>Enabling will give administrators the ability to override a search string with different search parameters. e.g replace s=home with lat=312313&amp;long=23490320</comment>
                         </overrides_enabled>
 
                         <leverage_browser_caching>
@@ -145,7 +150,40 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <comment>If enabled ajax search results will be cached in the browser. This is feature is experimental and not recommended</comment>
                         </leverage_browser_caching>
+
+                        <use_default_search>
+                            <label>Use default search if no search entered</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Should locator use a default search when no parameters are passed?</comment>
+                        </use_default_search>
+
+                        <default_search_params>
+                            <label>Default Search Parameters</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Default value to show on search pages, e.g country=australia or s=melbourne&amp;distance=100</comment>
+                        </default_search_params>
+
+                        <use_customer_address>
+                            <label>Use customer default address for default searches</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>If enabled locator will attempt to geocode a customer billing address when no search params are passed</comment>
+                        </use_customer_address>
 
                     </fields>
                 </search>

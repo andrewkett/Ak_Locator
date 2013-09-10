@@ -204,10 +204,12 @@
                 <append_string>australia</append_string>
                 <use_default_search>1</use_default_search>
                 <default_search_params>country=australia</default_search_params>
+                <default_search_distance>50</default_search_distance>
                 <show_search_filter>1</show_search_filter>
                 <show_distance_filter>1</show_distance_filter>
                 <overrides_enabled>1</overrides_enabled>
                 <leverage_browser_caching>0</leverage_browser_caching>
+                <use_customer_address>0</use_customer_address>
             </search>
             <seo>
                 <search_meta_title>Location Search</search_meta_title>
