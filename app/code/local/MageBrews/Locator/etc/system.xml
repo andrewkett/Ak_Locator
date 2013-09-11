@@ -90,15 +90,16 @@
                             <show_in_store>1</show_in_store>
                         </append_string_to_search>
 
-                        <append_string>
-                            <label>Extra search text</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>E.g. If set to australia and a search is made for melbourne, a string of "melbourne australia" will be geocoded</comment>
-                        </append_string>
+                            <append_string>
+                                <label>Extra search text</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>40</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                                <comment>E.g. If set to australia and a search is made for melbourne, a string of "melbourne australia" will be geocoded</comment>
+                                <depends><append_string_to_search>1</append_string_to_search></depends>
+                            </append_string>
 
 
                         <show_search_filter>
@@ -121,37 +122,8 @@
                             <show_in_store>0</show_in_store>
                         </show_distance_filter>
 
-                        <use_places_autocomplete>
-                            <label>Use Google Places Autocomplete</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </use_places_autocomplete>
 
-                        <overrides_enabled>
-                            <label>Enable search override feature</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Enabling will give administrators the ability to override a search string with different search parameters. e.g replace s=home with lat=312313&amp;long=23490320</comment>
-                        </overrides_enabled>
 
-                        <leverage_browser_caching>
-                            <label>Allow browser to cache ajax search results</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>90</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>If enabled ajax search results will be cached in the browser. This is feature is experimental and not recommended</comment>
-                        </leverage_browser_caching>
 
                         <use_default_search>
                             <label>Use default search if no search entered</label>
@@ -164,27 +136,61 @@
                             <comment>Should locator use a default search when no parameters are passed?</comment>
                         </use_default_search>
 
-                        <default_search_params>
-                            <label>Default Search Parameters</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>120</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Default value to show on search pages, e.g country=australia or s=melbourne&amp;distance=100</comment>
-                        </default_search_params>
+                            <default_search_params>
+                                <label>Default Search Parameters</label>
+                                <frontend_type>text</frontend_type>
+                                <sort_order>120</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                                <comment>Default value to show on search pages, e.g country=australia or s=melbourne&amp;distance=100</comment>
+                                <depends><use_default_search>1</use_default_search></depends>
+                            </default_search_params>
 
-                        <use_customer_address>
-                            <label>Use customer default address for default searches</label>
+                            <use_customer_address>
+                                <label>Use customer default address for default searches</label>
+                                <frontend_type>select</frontend_type>
+                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                <sort_order>130</sort_order>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                                <comment>If enabled locator will attempt to geocode a customer billing address when no search params are passed</comment>
+                                <depends><use_default_search>1</use_default_search></depends>
+                            </use_customer_address>
+
+
+                        <use_places_autocomplete>
+                            <label>Use Google Places Autocomplete</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment>If enabled locator will attempt to geocode a customer billing address when no search params are passed</comment>
-                        </use_customer_address>
+                        </use_places_autocomplete>
 
+                        <overrides_enabled>
+                            <label>Enable search override feature</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enabling will give administrators the ability to override a search string with different search parameters. e.g replace s=home with lat=312313&amp;long=23490320</comment>
+                        </overrides_enabled>
+
+                        <leverage_browser_caching>
+                            <label>Allow browser to cache ajax search results</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>If enabled ajax search results will be cached in the browser. This is feature is experimental and not recommended</comment>
+                        </leverage_browser_caching>
                     </fields>
                 </search>
                 <seo>
