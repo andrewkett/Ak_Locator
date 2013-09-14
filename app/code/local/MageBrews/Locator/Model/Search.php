@@ -25,6 +25,7 @@ class MageBrews_Locator_Model_Search
     const XML_SEARCH_USEDEFAULT_PATH = "locator_settings/search/use_default_search";
     const XML_SEARCH_USE_CUSTOMER_ADDRESS = "locator_settings/search/use_customer_address";
     const XML_SEARCH_DEFAULT_PARAMS = "locator_settings/search/default_search_params";
+    const XML_SEARCH_SHOW_CLOSEST = "locator_settings/search/show_closest_on_noresults";
 
     protected $params = array();
     protected $depth;
@@ -41,7 +42,22 @@ class MageBrews_Locator_Model_Search
         $this->params = $this->parseParams($params);
         $this->depth = 0;
 
-        return $this->getSearchClass()->search($this->params);
+        /** @var MageBrews_Locator_Model_Resource_Location_Collection $collection */
+        $collection = $this->getSearchClass()->search($this->params);
+
+        if (Mage::getStoreConfig(self::XML_SEARCH_SHOW_CLOSEST)
+            && !count($collection->getItems())
+            && $collection->getSearchPoint()
+        ) {
+
+            $params = array(
+                'point'=> $collection->getSearchPoint()
+            );
+
+            $collection = Mage::getModel('magebrews_locator/search_point_closest')->search($params);
+        }
+
+        return $collection;
     }
 
 

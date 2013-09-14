@@ -34,9 +34,9 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
      */
     protected function _initSelect()
     {
-      $this->getSelect()->from(array('e' => $this->getEntity()->getEntityTable()));
+        $this->getSelect()->from(array('e' => $this->getEntity()->getEntityTable()));
 
-      return $this;
+        return $this;
     }
 
     /**
@@ -45,6 +45,7 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
      *
      * @param Point $point
      * @param int $radius
+     *
      * @return $this
      */
     public function nearPoint(Point $point, $radius = 0)
@@ -64,6 +65,7 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
      * @param string $valueField
      * @param string $labelField
      * @param array $additional
+     *
      * @return mixed
      */
     public function toOptionArray($valueField='entity_id', $labelField='title', $additional=array())
@@ -80,14 +82,13 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
     {
         $locations = array();
 
-        foreach($this->getItems() as $location)
-        {
+        foreach ($this->getItems() as $location) {
             $loc = array();
             $loc['id'] = $location->getId();
             $loc['title'] = $location->getTitle();
             $loc['latitude'] = $location->getLatitude();
             $loc['longitude'] = $location->getLongitude();
-            $loc['distance'] = (string)round($location->getDistance(),2);
+            $loc['distance'] = (string)round($location->getDistance(), 2);
             $loc['directions'] = $location->getDirectionsLink();
 
             $locations[(int)$location->getEntityId()] = $loc;
@@ -121,6 +122,11 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
         return $this->_point;
     }
 
+    /**
+     * Get object containing result to be output
+     *
+     * @return Varien_Object
+     */
     public function getResponseObject()
     {
         $obj = new Varien_Object();

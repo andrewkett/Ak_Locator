@@ -136,6 +136,8 @@
                     position: loc,
                     map: self.map
                 });
+
+                latlngbounds.extend( loc );
             }
 
 //            if (this.settings.theme) {
