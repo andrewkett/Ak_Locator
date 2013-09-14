@@ -25,14 +25,15 @@ class MageBrews_Locator_Block_Search_Infowindow extends Mage_Core_Block_Template
 
     public function getLocation(){
 
-        if(!isset($this->_location)){
+        if (!isset($this->_location)) {
             $this->setLocation(Mage::getModel('magebrews_locator/location')->load(Mage::app()->getRequest()->getParam('id')));
         }
 
         return $this->_location;
     }
 
-    public function setLocation($location){
+    public function setLocation($location)
+    {
         $this->_location = $location;
         return $this;
     }

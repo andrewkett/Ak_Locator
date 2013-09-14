@@ -21,19 +21,22 @@
 class MageBrews_Locator_Model_Search_Area
     extends MageBrews_Locator_Model_Search_Abstract
 {
+
     /**
-     * Geocode a search string into a Lat/Long Point
+     * Find locations based on an area attribute
      *
-     * @param Array $params
+     * @param array $params Array of search params
+     *
      * @return MageBrews_Locator_Model_Resource_Location_Collection
+     * @throws Exception
      */
     public function search(Array $params)
     {
-        if(!isset($params['a']) && 
-            !isset($params['country']) && 
-            !isset($params['administrative_area']) && 
-            !isset($params['postcode']))
-        {
+        if (!isset($params['a'])
+            && !isset($params['country'])
+            && !isset($params['administrative_area'])
+            && !isset($params['postcode'])
+        ) {
             throw new Exception('At least one valid search parameter must be passed');
         }
      
@@ -51,20 +54,20 @@ class MageBrews_Locator_Model_Search_Area
         
         $collection = $this->getSearchCollection();
 
-        if(isset($params['a'])){
+        if (isset($params['a'])) {
             $params['administrative_area'] = $params['a']; 
         } 
         
-        if(isset($params['country'])){
-            $collection->addAttributeToFilter('country',$params['country']);
+        if (isset($params['country'])) {
+            $collection->addAttributeToFilter('country', $params['country']);
         }
 
-        if(isset($params['administrative_area'])){
-            $collection->addAttributeToFilter('administrative_area',$params['administrative_area']);
+        if (isset($params['administrative_area'])) {
+            $collection->addAttributeToFilter('administrative_area', $params['administrative_area']);
         }
 
-        if(isset($params['postcode'])){
-            $collection->addAttributeToFilter('postcode',$params['postcode']);
+        if (isset($params['postcode'])) {
+            $collection->addAttributeToFilter('postcode', $params['postcode']);
         }
 
         //area searches cant be sorted by proximity so sort them by title

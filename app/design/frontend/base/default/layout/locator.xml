@@ -2,7 +2,7 @@
     <default>
 
         <reference name="head">
-            <action method="addJs"><script>locator/locator.min.js</script></action>
+            <action method="addJs"><script>locator/locator.js</script></action>
             <action method="addJs"><script>locator/plugins.js</script></action>
             <action method="addCss"><script>locator/css/locator.css</script></action>
         </reference>
@@ -16,6 +16,23 @@
 
     </default>
 
+    <locator_index_index>
+
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="magebrews_locator/search" name="search" as="search" template="locator/search/search.phtml">
+                <block type="magebrews_locator/search_form" name="form" as="form" />
+                <block type="magebrews_locator/search_noresults" name="empty" as="empty" />
+            </block>
+        </reference>
+
+    </locator_index_index>
+
     <locator_search_index>
 
         <reference name="root">
@@ -24,9 +41,9 @@
             </action>
         </reference>
 
-        <reference name="head">core/template
+        <reference name="head">
             <block type="core/template" name="init-locator" as="init-locator" template="locator/page/html/head/init-locator.phtml" />
-            <block type="core/template" name="init-search" as="init-search" template="locator/page/html/head/init-search.phtml" />
+            <block type="magebrews_locator/search_init" name="init-search" as="init-search" template="locator/page/html/head/init-search.phtml" />
         </reference>
 
         <reference name="content">

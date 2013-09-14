@@ -18,7 +18,7 @@
  * @package    MageBrews_Locator
  * @author     Andrew Kett
  */
-abstract class MageBrews_Locator_Model_Search_Point_Abstract 
+abstract class MageBrews_Locator_Model_Search_Point_Abstract
     extends MageBrews_Locator_Model_Search_Abstract
 {
 
@@ -32,13 +32,13 @@ abstract class MageBrews_Locator_Model_Search_Point_Abstract
      */
     protected function pointToLocations(Point $point, $radius = null)
     {
-        if(null==$radius){
+        if (null==$radius) {
             $radius = (int)Mage::getStoreConfig('locator_settings/search/default_search_distance');
         }
 
         return  $this->getSearchCollection()
-                        ->addAttributeToSelect('*')
-                        ->nearPoint($point, $radius)
-                        ->setOrder('distance');
+                ->addAttributeToSelect('*')
+                ->nearPoint($point, $radius)
+                ->setOrder('distance');
     }
 }

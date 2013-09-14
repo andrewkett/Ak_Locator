@@ -118,13 +118,25 @@
          *
          * @param locations
          */
-        renderLocations: function (locations) {
+        renderLocations: function (locations, coords) {
 
             var latlngbounds = new google.maps.LatLngBounds(),
                 show = 0,
                 self = this;
 
             this.clearOverlays();
+
+            // If point coords have been passed render the point marker
+            if (coords) {
+                var lat = coords[1], long = coords[0];
+
+                var loc = new google.maps.LatLng(lat, long);
+
+                self.markers.point = new google.maps.Marker({
+                    position: loc,
+                    map: self.map
+                });
+            }
 
 //            if (this.settings.theme) {
 //                var styledMap = new google.maps.StyledMapType(this.settings.theme, { name: "Locator" });
@@ -159,7 +171,7 @@
                     });
 
                     latlngbounds.extend( loc );
-                    show = 1
+                    show = 1;
                 }
             }
 
@@ -264,7 +276,6 @@
                 },
                 onSuccess: function (t) {
                     var windows = JSON.parse(t.responseText);
-                    var temp = Array();
 
                     for (var key in windows) {
                         if (windows.hasOwnProperty(key) && windows[key] != 'undefined') {
@@ -384,28 +395,45 @@
                 var State = History.getState();
 
                 if (State.data.locations && State.data.locations.length) {
+
                     if (self.list) {
                         self.list.update(State.data.output);
                     }
+
                     if (self.map) {
-                        self.map.renderLocations(State.data.locations);
+                        if (State.data.search_point) {
+                            self.map.renderLocations(State.data.locations, State.data.search_point.coords);
+                        } else {
+                            self.map.renderLocations(State.data.locations);
+                        }
                     }
-                    self.initEvents();
                 }
+                self.initEvents();
             });
         },
 
         /**
          * Set initial history state when locations are not loaded from search, this will trigger map render
          *
-         * @param {Array} locations
+         * @param {Object} data
          */
-        initState: function(locations){
+        initState: function(data){
             //inject a random parameter to query string so state always changes on first load
             var href = window.location.href+'&rand='+Math.random();
-            var locations = this.parseLocationsJson(locations);
+            var state = {};
 
-            if(!locations.length){
+            state.output = this.list.el.innerHTML;
+            state.href = href.toQueryParams();
+
+            if(data.locations != ''){
+                state.locations = this.parseLocationsJson(data.locations);
+            }
+
+            if(data.search_point){
+                state.search_point = data.search_point;
+            }
+
+            if(!state.locations.length){
                 this.toggleNoResults(true);
             }
 
@@ -414,13 +442,8 @@
                 window.location.hash = '';
             }
 
-            History.replaceState(
-                {
-                    locations: locations,
-                    output: this.list.el.innerHTML,
-                    search: href.toQueryParams()
-                },
-                this.getSearchTitle(locations),
+            History.replaceState(state,
+                this.getSearchTitle(state.locations),
                 window.location.search
             );
 
@@ -443,7 +466,7 @@
 
             href = window.location.pathname + '?' + query;
 
-            new Ajax.Request(window.location.pathname + '?' + query +'&ajax=1', {
+            new Ajax.Request(window.location.pathname + '?' + query +'&xhr=1', {
 
                 method : 'get',
                 onFailure: function () {
@@ -496,7 +519,7 @@
         parseLocationsJson: function (string) {
 
             var locations = JSON.parse(string);
-            var temp = Array();
+            var temp = [];
 
             for (var key in locations) {
                 if (locations.hasOwnProperty(key) && locations[key] != 'undefined') {
@@ -527,8 +550,9 @@
         /**
          * Attach events to search UI
          */
-        initEvents: function(){
+        initEvents: function() {
             var self = this;
+
             $$(self.settings.selectors.teaser).invoke('observe', 'click', function(event){
                 var id = this.readAttribute('data-id');
                 self.map.showInfoWindow(id);
@@ -560,6 +584,44 @@
                 });
                 Event.stop(event);
             });
+            setTimeout(function(){
+                google.maps.event.addListener(self.map.map, 'zoom_changed', function() {
+                    self.hideNonVisible();
+                });
+
+                google.maps.event.addListener(self.map.map, 'dragend', function() {
+                    self.hideNonVisible();
+                });
+            }, 1000);
+
+        },
+
+        /**
+         * Hide all markers not currently in view port and the matching item in list
+         */
+        hideNonVisible: function(){
+            var map = this.map;
+
+            for (var key in map.markers) {
+                if (map.markers.hasOwnProperty(key)) {
+                    var marker = map.markers[key];
+                    var teaser = $$(this.settings.selectors.list+' '+this.settings.selectors.teaser+'[data-id='+key+']').first();
+
+
+                    if (!map.map.getBounds().contains(marker.getPosition())) {
+                        if (teaser && !teaser.hasClassName('loc-closest')) {
+                            teaser.addClassName('is-hidden');
+                        }
+                        marker.setVisible(false);
+                    } else {
+                        if (teaser) {
+                            teaser.removeClassName('is-hidden');
+                        }
+
+                        marker.setVisible(true);
+                    }
+                }
+            }
         },
 
         /**
@@ -590,8 +652,6 @@
                     }
                 });
             }
-
         }
     });
-
 })();

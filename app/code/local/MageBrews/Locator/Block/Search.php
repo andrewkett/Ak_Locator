@@ -35,12 +35,7 @@ class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
             $headBlock->setTitle(Mage::getStoreConfig(self::XML_PATH_SEARCH_META_TITLE));
             $headBlock->setDescription(Mage::getStoreConfig(self::XML_PATH_SEARCH_META_DESC));
             $headBlock->setKeywords(Mage::getStoreConfig(self::XML_PATH_SEARCH_META_KEY));
-            $headBlock->getChild('init-search')->setData('locations', $this->getLocations());
         }
-        
-        // @todo init these in layout xml so they can be modified easier
-        $listBlock = $this->getListBlock()->setData('locations', $this->getLocations());
-        $this->setChild('list', $listBlock);
 
         return parent::_prepareLayout();
     }
@@ -56,31 +51,27 @@ class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
         if (!Mage::registry('locator_locations')) {
             $locations = $this->getSearch()->search($this->getRequest()->getParams());
             Mage::register('locator_locations', $locations);
-        }else{
+        } else {
             $locations = Mage::registry('locator_locations');
         }
+
+        $listBlock = $this->getListBlock($locations)->setData('locations', $locations);
+        $this->setChild('list', $listBlock);
 
         return $locations;
     }
 
+
     /**
+     * Represent the current search in a json format
      *
-     * @return MageBrews_Locator_Model_Location
-     */
-//    public function getLocation()
-//    {
-//      $locations = $this->getLocations()->getFirstItem();
-//    }
-
-
-    /**
      * @return string
      */
     public function asJson()
     {
-        $obj = new Varien_Object();
-        $obj->setLocations($this->getLocations()->toJson());
-        $obj->setOutput($this->getListBlock()->setData('locations', $this->getLocations())->toHtml());
+        $obj = $this->getLocations()->getResponseObject();
+        $obj->setOutput($this->getChild('list')->toHtml());
+
         return $obj->toJson();
     }
 
@@ -90,27 +81,45 @@ class MageBrews_Locator_Block_Search extends Mage_Core_Block_Template
         $this->_searchModel = $model;
     }
 
+    /**
+     * @return MageBrews_Locator_Model_Search
+     */
     public function getSearch()
     {
-        if($this->_searchModel === null){
+        if ($this->_searchModel === null) {
             $this->setSearch(Mage::getModel('magebrews_locator/search'));
         }
         return $this->_searchModel;
     }
 
+
     /**
-     * get the child block which will render the list of locations
+     * Get the child block which will render the list of locations
+     *
+     * @param $locations
      *
      * @return Mage_Core_Block_Abstract
      */
-    protected function getListBlock()
+    protected function getListBlock($locations)
     {
-        //if the collection contains distance data render accordingly otherwise just list normally
-        if(!$this->getLocations()->getFirstItem()->getDistance()){
-            return $this->getLayout()->createBlock('magebrews_locator/search_list_area');
-        }else{
-            return $this->getLayout()->createBlock('magebrews_locator/search_list_point');
+        $layout = $this->getLayout();
+
+        //if the collection contains a point of search render accordingly otherwise just list normally
+        if (!$locations->getSearchPoint()) {
+            return $layout->createBlock('magebrews_locator/search_list_area');
+        } else {
+            return $layout->createBlock('magebrews_locator/search_list_point');
         }
+    }
+
+    /**
+     * Check if params are valid
+     *
+     * @return mixed
+     */
+    public function hasValidParams()
+    {
+        return $this->getSearch()->isValidParams($this->getRequest()->getParams());
     }
 
 }

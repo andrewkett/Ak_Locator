@@ -23,7 +23,8 @@ class MageBrews_Locator_IndexController extends Mage_Core_Controller_Front_Actio
      */
     public function indexAction()
     {
-        $this->_forward('index','search');
+        $this->loadLayout();
+        $this->renderLayout();
     }
 
 }

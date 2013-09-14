@@ -15,6 +15,12 @@
 
 class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Model_Entity_Collection_Abstract
 {
+    /**
+     * @var $_point The point that this collections results are based from
+     */
+    protected $_point;
+
+
 
     protected function _construct()
     {
@@ -48,6 +54,8 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
         if ($radius !== 0) {
             $this->getSelect()->having('distance < ?', $radius);
         }
+
+        $this->setSearchPoint($point);
 
         return $this;
     }
@@ -95,5 +103,36 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
         //zend_json doesn't encode single quotes but they break in the browser
         $json = str_replace('\'', '&#39;', $json);
         return $json;
+    }
+
+    /**
+     * @param Point $point
+     */
+    public function setSearchPoint(Point $point)
+    {
+        $this->_point = $point;
+    }
+
+    /**
+     * @return Point
+     */
+    public function getSearchPoint()
+    {
+        return $this->_point;
+    }
+
+    public function getResponseObject()
+    {
+        $obj = new Varien_Object();
+        $point = $this->getSearchPoint();
+
+
+        $obj->setLocations($this->toJson());
+
+        if (!is_null($point)) {
+            $obj->setSearchPoint($point);
+        }
+
+        return $obj;
     }
 }

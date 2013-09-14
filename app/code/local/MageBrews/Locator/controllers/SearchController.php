@@ -23,22 +23,33 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
      */
     public function indexAction()
     {
+
         try{
             $this->loadLayout();
 
-            //if there are no locations returned go to the noresults action now
-            if(!count($this->getLayout()->getBlock('search')->getLocations()->getItems())){
-                $this->_forward('noresults');
+            /** @var MageBrews_Locator_Block_Search $search */
+            $search = $this->getLayout()->getBlock('search');
+
+            //if search block doesn't know how to handle the parameters, forward onto the search form page
+            if (!$search->hasValidParams()) {
+                $this->_redirect('*/index/index');
                 return;
             }
 
-            if($this->getRequest()->isXmlHttpRequest()){
-                if(Mage::helper('magebrews_locator')->browserCacheEnabled()){
+            //if there are no locations returned go to the noresults action now
+            if (!count($search->getLocations()->getItems())) {
+                $this->_forward('noresults');
+                return;
+
+            }
+
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                if (Mage::helper('magebrews_locator')->browserCacheEnabled()) {
                     $this->setCacheHeaders();
                 }
-                echo $this->getLayout()->getBlock('search')->asJson();
+                echo $search->asJson();
                 die();
-            }else{
+            } else {
                 $this->renderLayout();
             }
 
@@ -82,14 +93,14 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
      */
     public function noresultsAction()
     {
-        if($this->getRequest()->isXmlHttpRequest()){
+        if ($this->getRequest()->isXmlHttpRequest()) {
             $obj = new Varien_Object();
             $obj->setError(true);
             $obj->setErrorType('noresults');
             $obj->setMessage('No Results Found');
             echo $obj->toJson();
             die();
-        }else{
+        } else {
             $this->loadLayout();
             $this->renderLayout();
         }

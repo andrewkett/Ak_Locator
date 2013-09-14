@@ -28,17 +28,19 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
     /**
      * Perform search
      *
-     * @param array $params
+     * @param array $params Array of search params
+     *
      * @return MageBrews_Locator_Model_Resource_Location_Collection
      * @throws Exception
      */
     public function search(Array $params)
     {
-        if(!isset($params['s']))
-        {
+        if (!isset($params['s'])) {
             throw new Exception('A search string must be passed to perform a string search');
         }
+
         $point = $this->stringToPoint($params['s']);
+
         return $this->pointToLocations($point, @$params['distance']);
     }
 
@@ -47,6 +49,7 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
      * Geocode a search string into a Lat/Long Point
      *
      * @param $query
+     *
      * @return Point
      * @throws MageBrews_Locator_Model_Exception_Geocode
      * @throws Exception
@@ -59,7 +62,7 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
 
         $query = $query.' '.$appendText;
 
-        if(!$result = unserialize($cache->load('locator_string_to_point_'.$query))){
+        if (!$result = unserialize($cache->load('locator_string_to_point_'.$query))) {
 
             $key = Mage::getStoreConfig(self::XML_SEARCH_APIKEY_PATH);
 

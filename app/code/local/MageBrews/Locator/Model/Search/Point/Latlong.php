@@ -23,20 +23,21 @@ class MageBrews_Locator_Model_Search_Point_Latlong
 {
 
     /**
-     * Geocode a search string into a Lat/Long Point
+     * Find locations near a Lat/Long Point
      *
-     * @param Array $params
+     * @param Array $params Array of search params
+     *
      * @return MageBrews_Locator_Model_Resource_Location_Collection
      * @throws Exception
      */
     public function search(Array $params)
     {
-        if(!isset($params['lat']) || !isset($params['long']))
-        {
+        if (!isset($params['lat']) || !isset($params['long'])) {
             throw new Exception('Both latitude and longitude values are required to do a lat/long search');
         }
 
-        $point = new Point($params['long'],$params['lat']);
+        $point = new Point($params['long'], $params['lat']);
+
         return $this->pointToLocations($point, @$params['distance']);
     }
 }

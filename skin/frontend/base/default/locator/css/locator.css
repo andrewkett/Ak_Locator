@@ -11,6 +11,9 @@
 .loc-teaser{
     -webkit-transition: .5s background ease-in; padding: 10px 0 10px 20px; margin-left:-20px;
 }
+    .loc-teaser.is-hidden{
+        display:none;
+    }
     .loc-teaser:hover{
         background: #efefef;
     }
