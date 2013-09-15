@@ -69,59 +69,7 @@
                 //   return;
                 // }
 
-                latField.setValue(result.geometry.location.lat());
-                longField.setValue(result.geometry.location.lng());
-
-                $('address').setValue(result.formatted_address);
-
-                //@todo need to clear old values first so they aren't carried through to new address
-                components = result.address_components
-                $('geocoded').setValue(1);
-
-                for(typeIndex in components ){
-
-                    if(components.hasOwnProperty(typeIndex)){
-                        switch(components[typeIndex].types[0]){
-
-                            case "subpremise":
-                                $('sub_premise').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case "street_number":
-                                $('premise').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case "route":
-                                $('thoroughfare').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case "locality":
-                                $('locality').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case "sublocality":
-                                $('dependent_locality').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case "administrative_area_level_1":
-                                $('administrative_area').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case "administrative_area_level_2":
-                                $('sub_administrative_area').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case 'country':
-                                $('country').setValue(components[typeIndex].long_name);
-                                break;
-
-                            case "postal_code":
-                                $('postal_code').setValue(components[typeIndex].long_name);
-                                break;
-
-                        }
-                    }
-                }
+                setAddress(result);
 
 
                 map.clearOverlays();
@@ -140,8 +88,14 @@
         map.markers[0] = new google.maps.Marker({
             position: latlng,
             map: map.map,
+            draggable:true,
             //icon: map.getMarkerImage(l),
             animation: google.maps.Animation.DROP
+        });
+
+        google.maps.event.addListener(map.markers[0], 'dragend', function()
+        {
+            geocodePosition(map.markers[0].getPosition());
         });
 
         latlngbounds.extend( latlng );
@@ -150,6 +104,85 @@
         map.map.fitBounds( latlngbounds );
 
     }
+
+    function geocodePosition(pos)
+    {
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode
+        ({
+                latLng: pos
+            },
+            function(results, status)
+            {
+                if (status == google.maps.GeocoderStatus.OK)
+                {
+                    setAddress(results[0]);
+                }
+                else
+                {
+                    alert('could not geocode position. '+status);
+                }
+            }
+        );
+    }
+
+
+    function setAddress(result){
+        latField.setValue(result.geometry.location.lat());
+        longField.setValue(result.geometry.location.lng());
+
+        $('address').setValue(result.formatted_address);
+
+        //@todo need to clear old values first so they aren't carried through to new address
+        components = result.address_components
+        $('geocoded').setValue(1);
+
+        for(typeIndex in components ){
+
+            if(components.hasOwnProperty(typeIndex)){
+                switch(components[typeIndex].types[0]){
+
+                    case "subpremise":
+                        $('sub_premise').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "street_number":
+                        $('premise').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "route":
+                        $('thoroughfare').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "locality":
+                        $('locality').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "sublocality":
+                        $('dependent_locality').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "administrative_area_level_1":
+                        $('administrative_area').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "administrative_area_level_2":
+                        $('sub_administrative_area').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case 'country':
+                        $('country').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "postal_code":
+                        $('postal_code').setValue(components[typeIndex].long_name);
+                        break;
+
+                }
+            }
+        }
+    }
+
 
 </script>
 
