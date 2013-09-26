@@ -148,12 +148,6 @@
                 latlngbounds.extend( loc );
             }
 
-//            if (this.settings.theme) {
-//                var styledMap = new google.maps.StyledMapType(this.settings.theme, { name: "Locator" });
-//                self.map.mapTypes.set('locator', styledMap);
-//                self.map.setMapTypeId('locator');
-//            }
-
             for (var key in locations) {
                 if (locations.hasOwnProperty(key)) {
 
@@ -197,7 +191,7 @@
          */
         checkMaxZoom: function(){
             var self = this;
-            if(self.settings.maxZoom){
+            if (self.settings.maxZoom) {
                 //when the map loads, make sure it hasn't zoomed in to far, if it has zoom out
                 //@todo, configure the zoom level in admin
                 var listener = google.maps.event.addListener(self.map, "idle", function() {
@@ -239,7 +233,8 @@
 
             self.hideInfoWindows();
             self.infowindows[id].open(self.map,self.markers[id]);
-            if(!self.infowindows[id].isSet){
+
+            if (!self.infowindows[id].isSet) {
                 new Ajax.Request('/locator/search/infowindow/id/'+id, {
                     method : 'get',
                     onFailure: function () {
@@ -272,8 +267,7 @@
 
             for (var key in self.infowindows) {
                 if (self.infowindows.hasOwnProperty(key)) {
-
-                    if(!self.infowindows[key].isSet && self.markers[key]){
+                    if (!self.infowindows[key].isSet && self.markers[key]) {
                         ids.push(key);
                     }
                 }
@@ -303,7 +297,7 @@
          */
         highlightMarker: function(id){
             var self = this;
-            if(self.markers[id].getAnimation() === null){
+            if (self.markers[id].getAnimation() === null) {
                 self.markers[id].setAnimation(google.maps.Animation.BOUNCE);
                 self.stoppers[id] = setTimeout(function(){
                     self.markers[id].setAnimation(null);
@@ -373,28 +367,28 @@
          */
         initialize: function(options) {
 
-            if(options){
+            if (options) {
                 //if override settings are
-                if(options.settings){
+                if (options.settings) {
                     this.settings = $H(Locator.defaultSearchSettings).merge(options.settings);
                 }
 
-                if(options.map){
+                if (options.map) {
                     this.map = options.map;
                 }
             }
 
             //if options were not passed to the search class, use locator default
-            if(!this.settings){
+            if (!this.settings) {
                 this.settings = Locator.defaultSearchSettings;
             }
 
             //if map has not already been set from options set it now
-            if(!this.map && $$(this.settings.selectors.map).first()){
+            if (!this.map && $$(this.settings.selectors.map).first()) {
                 this.map = new Locator.Map($$(this.settings.selectors.map).first());
             }
 
-            if($$(this.settings.selectors.list).first()){
+            if ($$(this.settings.selectors.list).first()) {
                 this.list = new Locator.List($$(this.settings.selectors.list).first());
             }
 
@@ -435,6 +429,7 @@
          * Set initial history state when locations are not loaded from search, this will trigger map render
          *
          * @param {Object} data
+         * @returns {Object}
          */
         initState: function(data){
             //inject a random parameter to query string so state always changes on first load
@@ -444,20 +439,20 @@
             state.output = this.list.el.innerHTML;
             state.href = href.toQueryParams();
 
-            if(data.locations != ''){
+            if (data.locations !== '') {
                 state.locations = this.parseLocationsJson(data.locations);
             }
 
-            if(data.search_point){
+            if (data.search_point) {
                 state.search_point = data.search_point;
             }
 
-            if(!state.locations.length){
+            if (!state.locations.length) {
                 this.toggleNoResults(true);
             }
 
             //reset the hash for old browsers to stop history.js errors
-            if(History.getHash()){
+            if (History.getHash()) {
                 window.location.hash = '';
             }
 
@@ -466,6 +461,7 @@
                 window.location.search
             );
 
+            return this;
         },
 
         /**
@@ -473,13 +469,14 @@
          *
          * @param {(string|Object)} query
          * @param callback
+         * @returns {Object}
          */
         findLocations: function (query, callback) {
 
             var self = this;
             var href;
 
-            if(typeof (query) === 'object') {
+            if (typeof (query) === 'object') {
                 query = $H(query).toQueryString();
             }
 
@@ -496,7 +493,7 @@
                     result.search = href.toQueryParams();
 
                     self.toggleNoResults(false);
-                    if(result.error === true) {
+                    if (result.error === true) {
                         if (result.error_type === 'noresults') {
                             self.toggleNoResults(true);
                         } else {
@@ -504,7 +501,7 @@
                         }
                     } else if (result.locations.length) {
                         History.pushState(result, self.getSearchTitle(result.locations), '?' + query);
-                    }else{
+                    } else {
                         alert('an error occured');
                     }
 
@@ -513,6 +510,8 @@
                     }
                 }
             });
+
+            return this;
         },
 
         /**
@@ -552,22 +551,26 @@
          * Show or hide no results page based on boolean parameter
          *
          * @param {boolean} empty
+         * @returns {Object}
          */
         toggleNoResults: function (empty) {
             var els = $$(this.settings.selectors.results);
-            if(empty){
+            if (empty) {
                 els.each(function(el){
                     el.addClassName('is-no-results');
                 });
-            }else{
+            } else {
                 els.each(function(el){
                     el.removeClassName('is-no-results');
                 });
             }
+            return this;
         },
 
         /**
          * Attach events to search UI
+         *
+         * @returns {Object}
          */
         initEvents: function() {
             var self = this;
@@ -586,10 +589,10 @@
             $$(self.settings.selectors.trigger).invoke('observe', 'click', function(event){
                 var el = Event.element(event);
 
-                if(!el.readAttribute('href')){
-                    for(var i=0;i<10;i++){
+                if (!el.readAttribute('href')) {
+                    for (var i=0;i<10;i++) {
                         el = el.up();
-                        if(el.readAttribute('href')){
+                        if (el.readAttribute('href')) {
                             break;
                         }
                     }
@@ -613,10 +616,13 @@
                 });
             }, 1000);
 
+            return this;
         },
 
         /**
          * Hide all markers not currently in view port and the matching item in list
+         *
+         * @returns {Object}
          */
         hideNonVisible: function(){
             var map = this.map;
@@ -625,7 +631,6 @@
                 if (map.markers.hasOwnProperty(key)) {
                     var marker = map.markers[key];
                     var teaser = $$(this.settings.selectors.list+' '+this.settings.selectors.teaser+'[data-id='+key+']').first();
-
 
                     if (!map.map.getBounds().contains(marker.getPosition())) {
                         if (teaser && !teaser.hasClassName('loc-closest')) {
@@ -641,6 +646,8 @@
                     }
                 }
             }
+
+            return this;
         },
 
         /**
@@ -655,22 +662,25 @@
 
         /**
          * Init scroll behaviour
+         *
+         * @returns {Object}
          */
         initScroll: function(){
 
-            if(this.settings.stickyMap){
+            if (this.settings.stickyMap) {
                 var map = $$('.loc-srch-res-map-wrap').first();
                 var results = $$(this.settings.selectors.results).first();
                 var self = this;
 
                 Event.observe(document, "scroll", function() {
-                    if (results.viewportOffset().top < 1){
+                    if (results.viewportOffset().top < 1) {
                         map.addClassName('is-fixed');
-                    }else{
+                    } else {
                         map.removeClassName('is-fixed');
                     }
                 });
             }
+            return this;
         }
     });
 })();
