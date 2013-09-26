@@ -9,8 +9,9 @@
  * It is also available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @copyright   Copyright (c) 2013 Andrew Kett. (http://www.andrewkett.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2013 Andrew Kett. (http://www.andrewkett.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://andrewkett.github.io/MageBrews_Locator/
  */
 
 class MageBrews_Locator_Model_Resource_Form_Attribute_Collection extends Mage_Eav_Model_Resource_Form_Attribute_Collection
