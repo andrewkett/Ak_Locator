@@ -86,6 +86,8 @@
          * @param {HTMLElement} el
          */
         initialize: function (el) {
+            var theme = this.getTheme();
+
             this.el = el;
             this.defaults = {
                 zoom: 15,
@@ -111,6 +113,12 @@
             this.settings = {
                 maxZoom : 15
             };
+
+            if (theme) {
+                var styledMap = new google.maps.StyledMapType(theme, { name: "Locator" });
+                this.map.mapTypes.set('locator', styledMap);
+                this.map.setMapTypeId('locator');
+            }
         },
 
         /**
@@ -316,6 +324,15 @@
                 new google.maps.Point(0, 0),
                 new google.maps.Point(20, 50)
             );
+        },
+
+        /**
+         * Return theme settings, returns false by default but can be overridden to theme map
+         *
+         * @returns {boolean | Object}
+         */
+        getTheme : function() {
+            return false;
         }
     });
 

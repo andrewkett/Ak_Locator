@@ -1,29 +1,32 @@
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=<?php echo Mage::getStoreConfig('locator_settings/google_maps/api_key'); ?>&sensor=false&libraries=places"></script>
 <?php
 //<script>
+//document.observe("dom:loaded", function() {
 
-    //document.observe("dom:loaded", function() {
-
-    //  Locator.settings.maxZoom = 16;
-
-    //  Uncomment this line to start customizing the look of the google map displayed
-    //    Locator.settings.theme = [
-    //        {
-    //            featureType: "road",
-    //            elementType: "geometry",
-    //            stylers: [
-    //                { lightness: 100 },
-    //                { visibility: "simplified" }
-    //            ]
-    //        },{
-    //            featureType: "road",
-    //            elementType: "labels",
-    //            stylers: [
-    //                { visibility: "off" }
-    //            ]
-    //        }
-    //    ];
-    //});
-
+//  Uncomment this line to start customizing the look of the google map displayed
+//      document.observe("dom:loaded", function() {
+//
+//          Locator.Map.addMethods({
+//              getMarkerImage: function(l){
+//                  return new google.maps.MarkerImage(
+//                      '/skin/frontend/default/mytheme/locator/images/pin.png',
+//                      new google.maps.Size(40, 50),
+//                      new google.maps.Point(0, 0),
+//                      new google.maps.Point(20, 50)
+//                  );
+//              },
+//              getTheme: function(){
+//                  return [
+//                      {
+//                          featureType: "all",
+//                          elementType: "all",
+//                          stylers: [
+//                              { saturation: -100 }
+//                          ]
+//                      }
+//                  ];
+//              }
+//        });
+//    });
 //</script>
 ?>
