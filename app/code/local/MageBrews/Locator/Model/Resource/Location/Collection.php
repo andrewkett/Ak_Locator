@@ -16,12 +16,13 @@
 
 class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Model_Entity_Collection_Abstract
 {
+
+    const XML_PATH_SEARCH_SHOW_POINT = "locator_settings/search/show_search_point";
+
     /**
      * @var $_point The point that this collections results are based from
      */
     protected $_point;
-
-
 
     protected function _construct()
     {
@@ -136,7 +137,9 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
 
         $obj->setLocations($this->toJson());
 
-        if (!is_null($point)) {
+        if (!is_null($point)
+            && Mage::getStoreConfig(self::XML_PATH_SEARCH_SHOW_POINT)
+        ) {
             $obj->setSearchPoint($point);
         }
 

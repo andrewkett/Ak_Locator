@@ -211,7 +211,7 @@
                 <overrides_enabled>0</overrides_enabled>
                 <leverage_browser_caching>0</leverage_browser_caching>
                 <use_customer_address>0</use_customer_address>
-                <!--<show_marker_on_point_search>1</show_marker_on_point_search> @todo make showing marker on point searches optional -->
+                <show_search_point>1</show_search_point>
                 <show_closest_on_noresults>0</show_closest_on_noresults>
             </search>
             <seo>

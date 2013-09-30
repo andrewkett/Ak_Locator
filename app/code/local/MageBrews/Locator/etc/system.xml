@@ -168,7 +168,19 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <comment>If no results are returned within a given radius of a point search, show the single closest store to that point</comment>
                         </show_closest_on_noresults>
+
+                        <show_search_point>
+                            <label>Show marker for point of search</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>137</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>If the search was a point search e.g lat/long, postcode/suburb, show the point of the search as a different marker pin</comment>
+                        </show_search_point>
 
                         <use_places_autocomplete>
                             <label>Use Google Places Autocomplete</label>
