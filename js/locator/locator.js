@@ -20,7 +20,8 @@
             results : '.loc-srch-res'
         },
         // if 1 map will be fixed to top of viewport when page is scrolled
-        stickyMap : 0
+        stickyMap : 0,
+        baseUrl : '/'
     };
 
     /**
@@ -111,8 +112,11 @@
             this.stoppers = [];
 
             this.settings = {
-                maxZoom : 15
+                maxZoom : 15,
+                baseUrl : Locator.defaultSearchSettings.baseUrl
             };
+
+
 
             if (theme) {
                 var styledMap = new google.maps.StyledMapType(theme, { name: "Locator" });
@@ -235,7 +239,7 @@
             self.infowindows[id].open(self.map,self.markers[id]);
 
             if (!self.infowindows[id].isSet) {
-                new Ajax.Request('/locator/search/infowindow/id/'+id, {
+                new Ajax.Request(this.settings.baseUrl+'locator/search/infowindow/id/'+id, {
                     method : 'get',
                     onFailure: function () {
                         alert('failed');
@@ -273,7 +277,7 @@
                 }
             }
 
-            new Ajax.Request('/locator/search/infowindows/?ids='+ids.join(), {
+            new Ajax.Request(this.settings.baseUrl+'locator/search/infowindows/?ids='+ids.join(), {
                 method : 'get',
                 onFailure: function () {
                     alert('failed');

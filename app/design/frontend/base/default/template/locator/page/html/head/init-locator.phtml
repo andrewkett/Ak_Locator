@@ -1,8 +1,13 @@
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=<?php echo Mage::getStoreConfig('locator_settings/google_maps/api_key'); ?>&sensor=false&libraries=places"></script>
+
+<script>
+document.observe("dom:loaded", function() {
+    Locator.defaultSearchSettings.baseUrl = '<?php echo Mage::getBaseUrl(); ?>';
+});
+</script>
+
 <?php
 //<script>
-//document.observe("dom:loaded", function() {
-
 //  Uncomment this line to start customizing the look of the google map displayed
 //      document.observe("dom:loaded", function() {
 //
