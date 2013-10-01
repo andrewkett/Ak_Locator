@@ -119,7 +119,13 @@ class MageBrews_Locator_Model_Search
             $params = $this->getDefaultSearchParams();
         }
 
-        return $params;
+        //wrap the parameters in a transport object so they can be manipulated by event listeners
+        $_transportObject = new Varien_Object();
+        $_transportObject->setParams($params);
+
+        Mage::dispatchEvent('magebrews_locator_search_parseparams', array('transport'=>$_transportObject));
+
+        return $_transportObject->getParams();
     }
 
     /**
