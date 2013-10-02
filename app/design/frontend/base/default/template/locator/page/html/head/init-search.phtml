@@ -26,8 +26,7 @@
         */
         ?>
 
-        var data = <?php echo $this->getLocations()->getResponseObject()->toJson(); ?>
-
+        var data = <?php echo $this->getLocations()->getResponseObject()->toJson(); ?>;
         var search = new Locator.Search();
         search.initState(data);
 
