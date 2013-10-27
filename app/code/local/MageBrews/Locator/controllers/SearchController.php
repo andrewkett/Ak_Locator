@@ -44,7 +44,7 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
 
             }
 
-            if ($this->getRequest()->isXmlHttpRequest()) {
+            if ($this->getRequest()->isXmlHttpRequest() || $this->getRequest()->getParam('xhr') == 1) {
                 if (Mage::helper('magebrews_locator')->browserCacheEnabled()) {
                     $this->setCacheHeaders();
                 }
@@ -94,7 +94,7 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
      */
     public function noresultsAction()
     {
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXmlHttpRequest() || $this->getRequest()->getParam('xhr') == 1) {
             $obj = new Varien_Object();
             $obj->setError(true);
             $obj->setErrorType('noresults');
