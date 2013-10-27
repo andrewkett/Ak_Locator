@@ -48,8 +48,8 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
                 if (Mage::helper('magebrews_locator')->browserCacheEnabled()) {
                     $this->setCacheHeaders();
                 }
-                echo $search->asJson();
-                die();
+                $this->getResponse()->setBody($search->asJson());
+                return;
             } else {
                 $this->renderLayout();
             }
@@ -99,8 +99,8 @@ class MageBrews_Locator_SearchController extends Mage_Core_Controller_Front_Acti
             $obj->setError(true);
             $obj->setErrorType('noresults');
             $obj->setMessage('No Results Found');
-            echo $obj->toJson();
-            die();
+            $this->getResponse()->setBody($obj->toJson());
+            return;
         } else {
             $this->loadLayout();
             $this->renderLayout();
