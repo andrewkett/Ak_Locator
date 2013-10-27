@@ -22,6 +22,7 @@
 class MageBrews_Locator_Model_Search_Area
     extends MageBrews_Locator_Model_Search_Abstract
 {
+    const TYPE = 'area';
 
     /**
      * Find locations based on an area attribute
@@ -41,7 +42,10 @@ class MageBrews_Locator_Model_Search_Area
             throw new Exception('At least one valid search parameter must be passed');
         }
      
-        return $this->areaSearch($params);
+        $collection = $this->areaSearch($params);
+        $collection->setSearch($this);
+
+        return $collection;
     }
 
 

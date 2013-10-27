@@ -25,6 +25,7 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
     const XML_SEARCH_SHOULDAPPEND_PATH = "locator_settings/search/append_string_to_search";
     const XML_SEARCH_APPENDTEXT_PATH = "locator_settings/search/append_string";
 
+    const TYPE = 'string';
 
     /**
      * Perform search
@@ -42,7 +43,11 @@ class MageBrews_Locator_Model_Search_Point_String extends MageBrews_Locator_Mode
 
         $point = $this->stringToPoint($params['s']);
 
-        return $this->pointToLocations($point, @$params['distance']);
+        $collection = $this->pointToLocations($point, @$params['distance']);
+        $collection->setSearch($this);
+
+        return $collection;
+
     }
 
 

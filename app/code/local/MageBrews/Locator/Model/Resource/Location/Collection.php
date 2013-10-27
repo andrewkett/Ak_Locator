@@ -24,6 +24,11 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
      */
     protected $_point;
 
+    /**
+     * @var $_search Search object used to find the current locations
+     */
+    protected $_search;
+
     protected function _construct()
     {
         $this->_init('magebrews_locator/location');
@@ -123,6 +128,21 @@ class MageBrews_Locator_Model_Resource_Location_Collection extends Mage_Eav_Mode
     {
         return $this->_point;
     }
+
+    /**
+     * @param  $search
+     */
+    public function setSearch($search)
+    {
+        $this->_search = $search;
+    }
+
+
+    public function getSearch()
+    {
+        return $this->_search;
+    }
+
 
     /**
      * Get object containing result to be output

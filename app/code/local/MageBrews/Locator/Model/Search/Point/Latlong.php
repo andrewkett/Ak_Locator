@@ -22,6 +22,7 @@
 class MageBrews_Locator_Model_Search_Point_Latlong 
     extends MageBrews_Locator_Model_Search_Point_Abstract
 {
+    const TYPE = 'latlong';
 
     /**
      * Find locations near a Lat/Long Point
@@ -39,6 +40,9 @@ class MageBrews_Locator_Model_Search_Point_Latlong
 
         $point = new Point($params['long'], $params['lat']);
 
-        return $this->pointToLocations($point, @$params['distance']);
+        $collection = $this->pointToLocations($point, @$params['distance']);
+        $collection->setSearch($this);
+
+        return $collection;
     }
 }
