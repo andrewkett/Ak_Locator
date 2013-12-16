@@ -28,8 +28,7 @@ class MageBrews_Locator_Block_Adminhtml_Location_Edit_Tabs extends Mage_Adminhtm
             ),
             'location_details' => array(
                 'title',
-                'is_enabled',
-                'url_key'
+                'is_enabled'
             ),
             'location_seo' => array(
                 'url_key',
