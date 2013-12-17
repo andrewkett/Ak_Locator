@@ -24,10 +24,6 @@ add a composer.json file to your root directory
             {
                 "type": "git",
                 "url": "git@github.com:andrewkett/MageBrews_Locator.git"
-            },
-            {
-                "type": "git",
-                "url": "git://github.com/phayes/geoPHP.git"
             }
         ],
         "require": {
