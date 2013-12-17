@@ -1,6 +1,8 @@
 # Magento Store Locator
 A store locator extension for Magento.
 
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/andrewkett/MageBrews_Locator/badges/quality-score.png?s=ca4c9eec21cd5f0d87679426306fbbd8a864b5ff)](https://scrutinizer-ci.com/g/andrewkett/MageBrews_Locator/)
+
 ## Installation. 
 This extension can be installed a few different ways:
 
