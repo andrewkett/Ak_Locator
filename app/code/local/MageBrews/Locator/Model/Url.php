@@ -369,7 +369,7 @@ class MageBrews_Locator_Model_Url
     {
         //skip this for now
         return;
-        echo 'here'; die();
+
         $suffix = $this->getLocationUrlSuffix($storeId);
 
         if (empty($requestPath)) {
@@ -397,7 +397,7 @@ class MageBrews_Locator_Model_Url
         }
 
         echo '<br /><br />rewrite is '.$this->getResource()->getRewriteByRequestPath($requestPath, $storeId).'<br /><br />';
-        die();
+
         $rewrite = $this->getResource()->getRewriteByRequestPath($requestPath, $storeId);
         if ($rewrite && $rewrite->getId()) {
             if ($rewrite->getIdPath() == $idPath) {
