@@ -23,7 +23,7 @@ class MageBrews_Locator_LocationController extends Mage_Core_Controller_Front_Ac
     /**
      * Location view action
      */
-    function indexAction()
+    public function indexAction()
     {
         $this->loadLayout();
 
