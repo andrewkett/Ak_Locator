@@ -32,7 +32,7 @@ class MageBrews_Locator_Model_Location extends Mage_Core_Model_Abstract
 
     protected $_canAffectOptions = false;
 
-    function _construct()
+    public function _construct()
     {
         $this->_init('magebrews_locator/location');
     }
