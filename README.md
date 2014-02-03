@@ -1,14 +1,14 @@
 # Magento Store Locator
 A store locator extension for Magento.
 
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/andrewkett/MageBrews_Locator/badges/quality-score.png?s=ca4c9eec21cd5f0d87679426306fbbd8a864b5ff)](https://scrutinizer-ci.com/g/andrewkett/MageBrews_Locator/) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca/mini.png)](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca) [![Build Status](https://travis-ci.org/andrewkett/MageBrews_Locator.png?branch=master)](https://travis-ci.org/andrewkett/MageBrews_Locator) [![Dependency Status](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037/badge.png)](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/andrewkett/magebrews_locator/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/badges/quality-score.png?s=ca4c9eec21cd5f0d87679426306fbbd8a864b5ff)](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca/mini.png)](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca) [![Build Status](https://travis-ci.org/andrewkett/Ak_Locator.png?branch=master)](https://travis-ci.org/andrewkett/Ak_Locator) [![Dependency Status](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037/badge.png)](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/andrewkett/ak_locator/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Installation. 
 This extension can be installed a few different ways:
 
 ### Using modman
         
-    modman clone git://github.com/andrewkett/MageBrews_Locator.git
+    modman clone git://github.com/andrewkett/Ak_Locator.git
 
 ### Using composer 
     
@@ -23,7 +23,7 @@ add a composer.json file to your root directory
             },
             {
                 "type": "git",
-                "url": "git@github.com:andrewkett/MageBrews_Locator.git"
+                "url": "git@github.com:andrewkett/Ak_Locator.git"
             }
         ],
         "require": {
@@ -43,7 +43,7 @@ If you are using composer and your dependencies are not being installed to the l
 
 ### Download and install manually.
 
-[https://github.com/andrewkett/MageBrews_Locator/archive/master.zip](https://github.com/andrewkett/MageBrews_Locator/archive/master.zip)
+[https://github.com/andrewkett/Ak_Locator/archive/master.zip](https://github.com/andrewkett/Ak_Locator/archive/master.zip)
 
 You will also need to add the [geoPHP](https://github.com/phayes/geoPHP) library to the lib directory
 

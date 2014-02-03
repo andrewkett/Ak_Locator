@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Location extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @copyright 2013 Andrew Kett. (http://www.andrewkett.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://andrewkett.github.io/Ak_Locator/
+ */
+-->
+<config>
+  <modules>
+    <Ak_Locator>
+        <version>0.0.0.6</version>
+    </Ak_Locator>
+  </modules>
+  <global>
+    <models>
+            <ak_locator>
+                <class>Ak_Locator_Model</class>
+                <resourceModel>ak_locator_resource</resourceModel>
+            </ak_locator>
+            <ak_locator_resource>
+                <class>Ak_Locator_Model_Resource</class>
+                <entities>
+                    <location>
+                        <table>ak_locator_location_entity</table>
+                    </location>
+                    <location_entity_varchar>
+                        <table>ak_locator_location_entity_varchar</table>
+                    </location_entity_varchar>
+                    <location_entity_text>
+                        <table>ak_locator_location_entity_text</table>
+                    </location_entity_text>
+                    <location_entity_int>
+                        <table>ak_locator_location_entity_int</table>
+                    </location_entity_int>
+                    <location_entity_datetime>
+                        <table>ak_locator_location_entity_datetime</table>
+                    </location_entity_datetime>
+
+                    <search_override>
+                        <table>ak_locator_search_override</table>
+                    </search_override>
+
+                    <eav_attribute>
+                        <table>ak_locator_eav_attribute</table>
+                    </eav_attribute>
+                    <eav_attribute_website>
+                        <table>ak_locator_eav_attribute_website</table>
+                    </eav_attribute_website>
+                    <form_attribute>
+                        <table>ak_locator_form_attribute</table>
+                    </form_attribute>
+                </entities>
+            </ak_locator_resource>
+        </models>
+        <resources>
+            <ak_locator_setup>
+                <setup>
+                    <module>Ak_Locator</module>
+                    <class>Ak_Locator_Model_Resource_Setup</class>
+                </setup>
+            </ak_locator_setup>
+            <ak_locator_write>
+                <connection>
+                    <use>default_write</use>
+                </connection>
+            </ak_locator_write>
+            <ak_locator_read>
+                <connection>
+                    <use>default_read</use>
+                </connection>
+            </ak_locator_read>
+        </resources>
+
+
+    <blocks>
+        <ak_locator>
+            <class>Ak_Locator_Block</class>
+        </ak_locator>
+    </blocks>
+
+    <helpers>
+      <ak_locator>
+        <class>Ak_Locator_Helper</class>
+      </ak_locator>
+    </helpers>
+
+    <index>
+        <indexer>
+            <locator_url>
+                <model>ak_locator/indexer_url</model>
+            </locator_url>
+        </indexer>
+    </index>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <locator_loadlib>
+                        <type>model</type>
+                        <class>ak_locator/observer</class>
+                        <method>loadLibraries</method>
+                    </locator_loadlib>
+                </observers>
+            </controller_front_init_before>
+        </events>
+  </global>
+  <adminhtml>
+     <menu>
+            <ak_locator>
+                <title>Locator</title>
+                <sort_order>70</sort_order>
+                <children>
+                  <locations>
+                    <title>Manage Locations</title>
+                    <action>adminhtml/locator</action>
+                    <sort_order>30</sort_order>
+                  </locations>
+                </children>
+          </ak_locator>
+        </menu>
+    <layout>
+            <updates>
+                <ak_locator>
+                    <file>locator.xml</file>
+                </ak_locator>
+            </updates>
+        </layout>
+
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <locator_settings>
+                                            <title>Locator Module Section</title>
+                                        </locator_settings>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <controller_action_layout_render_before>
+                <observers>
+                    <locator_admin_load>
+                        <type>model</type>
+                        <class>ak_locator/observer</class>
+                        <method>setAdminMessage</method>
+                    </locator_admin_load>
+                </observers>
+            </controller_action_layout_render_before>
+        </events>
+  </adminhtml>
+
+  <frontend>
+     <routers>
+            <locator>
+                <use>standard</use>
+                <args>
+                    <module>Ak_Locator</module>
+                    <frontName>locator</frontName>
+                </args>
+            </locator>
+        </routers>
+         <layout>
+            <updates>
+                <locator>
+                    <file>locator.xml</file>
+                </locator>
+            </updates>
+        </layout>
+  </frontend>
+  <admin>
+         <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <ak_locator before="Mage_Adminhtml">Ak_Locator_Adminhtml</ak_locator>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+
+    <default>
+        <locator_settings>
+            <search>
+                <append_string_to_search>0</append_string_to_search>
+                <append_string></append_string>
+                <use_default_search>0</use_default_search>
+                <default_search_params></default_search_params>
+                <default_search_distance>50</default_search_distance>
+                <show_search_filter>1</show_search_filter>
+                <show_distance_filter>1</show_distance_filter>
+                <overrides_enabled>0</overrides_enabled>
+                <leverage_browser_caching>0</leverage_browser_caching>
+                <use_customer_address>0</use_customer_address>
+                <show_search_point>1</show_search_point>
+                <show_closest_on_noresults>0</show_closest_on_noresults>
+            </search>
+            <seo>
+                <search_meta_title>Location Search</search_meta_title>
+                <search_meta_key></search_meta_key>
+                <search_meta_desc>Find a Location</search_meta_desc>
+            </seo>
+        </locator_settings>
+    </default>
+
+    <phpunit>
+        <suite>
+            <modules>
+                <Ak_Locator />
+            </modules>
+        </suite>
+    </phpunit>
+
+</config>

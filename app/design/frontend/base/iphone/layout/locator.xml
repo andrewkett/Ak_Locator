@@ -15,7 +15,7 @@
       </reference>
 
    <!--    <reference name="left">
-          <block type="magebrews_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
+          <block type="ak_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
       </reference> -->
 
    </default>
@@ -30,7 +30,7 @@
         </reference> -->
 
         <reference name="content">
-          <block type="magebrews_locator/search_search" name="search" as="search" />
+          <block type="ak_locator/search_search" name="search" as="search" />
         </reference>
 
 
@@ -45,7 +45,7 @@
         </reference>
 
         <reference name="content">
-          <block type="magebrews_locator/search_search_adminarea" name="search" as="search">
+          <block type="ak_locator/search_search_adminarea" name="search" as="search">
           </block>
         </reference> -->
     </locator_search_adminarea>
@@ -62,7 +62,7 @@
 
         <reference name="content">
           <remove name="search" />
-          <block type="magebrews_locator/search_noresults" name="noresults" as="noresults" />
+          <block type="ak_locator/search_noresults" name="noresults" as="noresults" />
         </reference>
 
     </locator_search_noresults>
@@ -78,10 +78,10 @@
 
       </reference>
        <reference name="content">
-     <!--    <block type="magebrews_locator/data" name="data" as="data"></block>
+     <!--    <block type="ak_locator/data" name="data" as="data"></block>
 
  -->
-          <block type="magebrews_locator/location_view" name="view" as="view">
+          <block type="ak_locator/location_view" name="view" as="view">
 
           </block>
         </reference>

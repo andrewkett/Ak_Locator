@@ -10,7 +10,7 @@
         <!--
         example of how to add a store locator to your layout, do this in local.xml, not here.
         <reference name="left">
-            <block type="magebrews_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
+            <block type="ak_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
         </reference>
         -->
 
@@ -25,9 +25,9 @@
         </reference>
 
         <reference name="content">
-            <block type="magebrews_locator/search" name="search" as="search" template="locator/search/search.phtml">
-                <block type="magebrews_locator/search_form" name="form" as="form" />
-                <block type="magebrews_locator/search_noresults" name="empty" as="empty" />
+            <block type="ak_locator/search" name="search" as="search" template="locator/search/search.phtml">
+                <block type="ak_locator/search_form" name="form" as="form" />
+                <block type="ak_locator/search_noresults" name="empty" as="empty" />
             </block>
         </reference>
 
@@ -43,25 +43,25 @@
 
         <reference name="head">
             <block type="core/template" name="init-locator" as="init-locator" template="locator/page/html/head/init-locator.phtml" />
-            <block type="magebrews_locator/search_init" name="init-search" as="init-search" template="locator/page/html/head/init-search.phtml" />
+            <block type="ak_locator/search_init" name="init-search" as="init-search" template="locator/page/html/head/init-search.phtml" />
         </reference>
 
         <reference name="content">
-            <block type="magebrews_locator/search" name="search" as="search" template="locator/search/search.phtml">
-                <block type="magebrews_locator/search_form" name="form" as="form" />
-                <block type="magebrews_locator/search_noresults" name="empty" as="empty" />
+            <block type="ak_locator/search" name="search" as="search" template="locator/search/search.phtml">
+                <block type="ak_locator/search_form" name="form" as="form" />
+                <block type="ak_locator/search_noresults" name="empty" as="empty" />
             </block>
         </reference>
 
     </locator_search_index>
 
     <locator_search_infowindow>
-        <block type="magebrews_locator/search_infowindow" name="root" template="locator/search/infowindow.phtml"/>
+        <block type="ak_locator/search_infowindow" name="root" template="locator/search/infowindow.phtml"/>
     </locator_search_infowindow>
 
     <locator_search_infowindows>
-        <block type="magebrews_locator/search_infowindows" name="root">
-            <block type="magebrews_locator/search_infowindow" name="infowindow" template="locator/search/infowindow.phtml"/>
+        <block type="ak_locator/search_infowindows" name="root">
+            <block type="ak_locator/search_infowindow" name="infowindow" template="locator/search/infowindow.phtml"/>
         </block>
     </locator_search_infowindows>
 
@@ -74,7 +74,7 @@
         </reference>
 
         <reference name="content">
-            <block type="magebrews_locator/location_view" name="view" as="view"></block>
+            <block type="ak_locator/location_view" name="view" as="view"></block>
         </reference>
 
     </locator_location_index>
