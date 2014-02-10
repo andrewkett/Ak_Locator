@@ -1,6 +1,6 @@
 tools:
     php_cpd: true
     php_pdepend: true
-    js_hint: true
+    js_hint: false
     php_mess_detector: true
     php_code_sniffer: true
