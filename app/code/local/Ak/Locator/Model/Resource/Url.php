@@ -248,7 +248,47 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
     {
         $adapter = $this->_getWriteAdapter();
         try {
+
             $adapter->insertOnDuplicate($this->getMainTable(), $rewriteData);
+
+            if($this->getTable('enterprise_urlrewrite/url_rewrite')) {
+
+                //@todo - this isn't a good way of achieving this, need to investigate 1.13 enterprise rewrites more
+
+                $entityType = Mage::getModel('eav/config')->getEntityType('ak_locator_location');
+                $entityTypeId = $entityType->getEntityTypeId();
+
+
+                $suffix = '.html';
+
+                echo $rewriteData['request_path'];
+
+
+                $rewriteData['request_path'] = str_replace($suffix, '', $rewriteData['request_path']);
+
+                $enterpriseData = array(
+                    'request_path' => $rewriteData['request_path'],
+                    'target_path' => $rewriteData['target_path'],
+                    'is_system' => $rewriteData['is_system'],
+                    'identifier' => $rewriteData['request_path'],
+                    'guid' => Mage::helper('core')->uniqHash(),
+                    'entity_type' => $entityTypeId
+                );
+
+                foreach($enterpriseData as $data){
+                    if($data == '' || $data == null){
+                        //can't save this one as the data isn't correct
+                        Mage::log('Cannot create rewrite as data is bad, data: '.print_r($enterpriseData,1));
+                        return;
+                    }
+                }
+
+                $adapter->insertOnDuplicate($this->getTable('enterprise_urlrewrite/url_rewrite'),$enterpriseData);
+            }else{
+                //@todo, shouldn't need to index both url tables, put community code here
+            }
+
+
         } catch (Exception $e) {
             Mage::logException($e);
             Mage::throwException(Mage::helper('catalog')->__('An error occurred while saving the URL rewrite'));
@@ -305,7 +345,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         $adapter = $this->_getWriteAdapter();
         if (!isset($this->_locationAttributes[$attributeCode])) {
 
-            echo $attributeCode;
             $attribute = $this->getLocationModel()->getResource()->getAttribute($attributeCode);
 
             $this->_locationAttributes[$attributeCode] = array(
@@ -378,7 +417,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      */
     public function _getLocationAttribute($attributeCode, $locationIds, $storeId)
     {
-        echo $attributeCode;
         $adapter = $this->_getReadAdapter();
         if (!isset($this->_locationAttributes[$attributeCode])) {
             $attribute = $this->getLocationModel()->getResource()->getAttribute($attributeCode);

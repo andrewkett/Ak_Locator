@@ -221,6 +221,14 @@
                 <location_url_suffix>.html</location_url_suffix>
             </seo>
         </locator_settings>
+
+        <rewrite_matchers>
+            <location translate="title" module="ak_locator">
+                <title>Location</title>
+                <model>ak_locator/urlrewrite_matcher_location</model>
+                <priority>40</priority>
+            </location>
+        </rewrite_matchers>
     </default>
 
     <phpunit>
