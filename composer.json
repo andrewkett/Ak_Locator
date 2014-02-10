@@ -8,6 +8,12 @@
         "magento-hackathon/magento-composer-installer": "*",
         "phayes/geophp": "dev-master"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ],
     "authors":[
         {
             "name":"Andrew Kett"
