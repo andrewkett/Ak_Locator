@@ -251,7 +251,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
             $adapter->insertOnDuplicate($this->getMainTable(), $rewriteData);
 
-            if($this->getTable('enterprise_urlrewrite/url_rewrite')) {
+            if(Mage::getConfig ()->getModuleConfig ( 'Enterprise_Enterprise' ) && Mage::getConfig ()->getModuleConfig ( 'Enterprise_UrlRewrite' )) {
 
                 //@todo - this isn't a good way of achieving this, need to investigate 1.13 enterprise rewrites more
 
