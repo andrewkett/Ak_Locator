@@ -16,6 +16,9 @@
 
 class Ak_Locator_Helper_Location extends Mage_Core_Helper_Abstract
 {
+
+    const XML_PATH_LOCATION_URL_SUFFIX  = 'locator_settings/seo/location_url_suffix';
+
     /**
      * Default attribute entity type code
      *
@@ -43,5 +46,24 @@ class Ak_Locator_Helper_Location extends Mage_Core_Helper_Abstract
                 'value' => 'location_edit'
             ),
         );
+    }
+
+
+    /**
+     * Retrieve location rewrite suffix for store
+     *
+     * @param int $storeId
+     * @return string
+     */
+    public function getLocationUrlSuffix($storeId = null)
+    {
+        if (is_null($storeId)) {
+            $storeId = Mage::app()->getStore()->getId();
+        }
+
+        if (!isset($this->_locationUrlSuffix[$storeId])) {
+            $this->_locationUrlSuffix[$storeId] = Mage::getStoreConfig(self::XML_PATH_LOCATION_URL_SUFFIX, $storeId);
+        }
+        return $this->_locationUrlSuffix[$storeId];
     }
 }

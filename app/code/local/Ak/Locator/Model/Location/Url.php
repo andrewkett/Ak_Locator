@@ -15,23 +15,50 @@
  */
 
 
+
+/**
+ * Location Url model
+ */
 class Ak_Locator_Model_Location_Url extends Varien_Object
 {
     const CACHE_TAG = 'url_rewrite';
 
     /**
-     * Static URL instance
+     * URL instance
      *
      * @var Mage_Core_Model_Url
      */
-    protected static $_url;
+    protected  $_url;
 
     /**
-     * Static URL Rewrite Instance
+     * URL Rewrite Instance
      *
      * @var Mage_Core_Model_Url_Rewrite
      */
-    protected static $_urlRewrite;
+    protected $_urlRewrite;
+
+    /**
+     * Factory instance
+     *
+     * @var Mage_Catalog_Model_Factory
+     */
+    protected $_factory;
+
+    /**
+     * @var Mage_Core_Model_Store
+     */
+    protected $_store;
+
+    /**
+     * Initialize Url model
+     *
+     * @param array $args
+     */
+    public function __construct(array $args = array())
+    {
+        //$this->_factory = !empty($args['factory']) ? $args['factory'] : Mage::getSingleton('catalog/factory');
+        $this->_store = !empty($args['store']) ? $args['store'] : Mage::app()->getStore();
+    }
 
     /**
      * Retrieve URL Instance
@@ -40,10 +67,10 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
      */
     public function getUrlInstance()
     {
-        if (!self::$_url) {
-            self::$_url = Mage::getModel('core/url');
+        if (null === $this->_url) {
+            $this->_url = Mage::getModel('core/url');
         }
-        return self::$_url;
+        return $this->_url;
     }
 
     /**
@@ -53,10 +80,10 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
      */
     public function getUrlRewrite()
     {
-        if (!self::$_urlRewrite) {
-            self::$_urlRewrite = Mage::getModel('core/url_rewrite');
+        if (null === $this->_urlRewrite) {
+            $this->_urlRewrite = Mage::getModel('core/url_rewrite');
         }
-        return self::$_urlRewrite;
+        return $this->_urlRewrite;
     }
 
     /**
@@ -87,13 +114,13 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
     }
 
     /**
-     * Retrieve Product URL
+     * Retrieve Location URL
      *
      * @param  Ak_Locator_Model_Location $location
      * @param  bool $useSid forced SID mode
      * @return string
      */
-    public function getLocationUrl($location, $useSid = null)
+    public function getLocationUrl(Ak_Locator_Model_Location $location, $useSid = null)
     {
         if ($useSid === null) {
             $useSid = Mage::app()->getUseSessionInUrl();
@@ -115,93 +142,144 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
      */
     public function formatUrlKey($str)
     {
-        $urlKey = preg_replace('#[^0-9a-z]+#i', '-', Mage::helper('catalog/product_url')->format($str));
+        $urlKey = preg_replace('#[^0-9a-z]+#i', '-', Mage::helper('ak_locator/location_url')->format($str));
         $urlKey = strtolower($urlKey);
         $urlKey = trim($urlKey, '-');
 
         return $urlKey;
     }
 
-    // *
-    //  * Retrieve Product Url path (with category if exists)
-    //  *
-    //  * @param Mage_Catalog_Model_Product $product
-    //  * @param Mage_Catalog_Model_Category $category
-    //  *
-    //  * @return string
-     
-    // public function getUrlPath($location, $category=null)
-    // {
-    //     $path = $location->getData('url_path');
-    //     return $path;
-
-    // }
+    /**
+     * Retrieve Location Url path
+     *
+     * @param Ak_Locator_Model_Location $location
+     *
+     * @return string
+     */
+    public function getUrlPath($location)
+    {
+        $path = $location->getData('url_path');
+        return $path;
+    }
 
     /**
      * Retrieve Product URL using UrlDataObject
      *
-     * @param Mage_Catalog_Model_Product $product
+     * @param Ak_Locator_Model_Location $location
      * @param array $params
      * @return string
      */
     public function getUrl(Ak_Locator_Model_Location $location, $params = array())
     {
-        $routePath      = '';
-        $routeParams    = $params;
+        $url = $location->getData('url');
 
-        $storeId    = $location->getStoreId();
-        // if (isset($params['_ignore_category'])) {
-        //     unset($params['_ignore_category']);
-        //     $categoryId = null;
-        // } else {
-        //     $categoryId = $product->getCategoryId() && !$product->getDoNotUseCategoryId()
-        //         ? $product->getCategoryId() : null;
-        // }
+        if (!empty($url)) {
+            return $url;
+        }
 
-        if ($location->hasUrlDataObject()) {
-            $requestPath = $location->getUrlDataObject()->getUrlRewrite();
-            $routeParams['_store'] = $location->getUrlDataObject()->getStoreId();
+        $requestPath = $location->getData('request_path');
+
+        if (empty($requestPath)) {
+            $requestPath = $this->_getRequestPath($location);
+            $location->setRequestPath($requestPath);
+        }
+
+
+
+        if (isset($params['_store'])) {
+            $storeId = $this->_getStoreId($params['_store']);
         } else {
-            $requestPath = $location->getRequestPath();
-            if (empty($requestPath) && $requestPath !== false) {
-                $idPath = sprintf('location/%d', $location->getEntityId());
-                // if ($categoryId) {
-                //     $idPath = sprintf('%s/%d', $idPath, $categoryId);
-                // }
-                $rewrite = $this->getUrlRewrite();
-                $rewrite->setStoreId($storeId)
-                    ->loadByIdPath($idPath);
-                if ($rewrite->getId()) {
-                    $requestPath = $rewrite->getRequestPath();
-                    $location->setRequestPath($requestPath);
-                } else {
-                    $location->setRequestPath(false);
-                }
-            }
+            $storeId = $location->getStoreId();
         }
 
-        if (isset($routeParams['_store'])) {
-            $storeId = Mage::app()->getStore($routeParams['_store'])->getId();
-        }
-
-        if ($storeId != Mage::app()->getStore()->getId()) {
-            $routeParams['_store_to_url'] = true;
-        }
-
-        if (!empty($requestPath)) {
-            $routeParams['_direct'] = $requestPath;
-        } else {
-            $routePath = 'locator/location/index';
-            $routeParams['id']  = $location->getId();
-            $routeParams['s']   = $location->getUrlKey();
+        if ($storeId != $this->_getStoreId()) {
+            $params['_store_to_url'] = true;
         }
 
         // reset cached URL instance GET query params
-        if (!isset($routeParams['_query'])) {
-            $routeParams['_query'] = array();
+        if (!isset($params['_query'])) {
+            $params['_query'] = array();
         }
 
-        return $this->getUrlInstance()->setStore($storeId)
-            ->getUrl($routePath, $routeParams);
+        $this->getUrlInstance()->setStore($storeId);
+        $locationUrl = $this->_getLocationUrl($location, $requestPath, $params);
+        $location->setData('url', $locationUrl);
+
+
+        return $location->getData('url');
+    }
+
+    /**
+     * Returns checked store_id value
+     *
+     * @param int|null $id
+     * @return int
+     */
+    protected function _getStoreId($id = null)
+    {
+        return Mage::app()->getStore($id)->getId();
+    }
+
+//    /**
+//     * Check product category
+//     *
+//     * @param Mage_Catalog_Model_Product $product
+//     * @param array $params
+//     *
+//     * @return int|null
+//     */
+//    protected function _getCategoryIdForUrl($product, $params)
+//    {
+//        if (isset($params['_ignore_category'])) {
+//            return null;
+//        } else {
+//            return $product->getCategoryId() && !$product->getDoNotUseCategoryId()
+//                ? $product->getCategoryId() : null;
+//        }
+//    }
+
+    /**
+     * Retrieve product URL based on requestPath param
+     *
+     * @param Ak_Locator_Model_Location $location
+     * @param string $requestPath
+     * @param array $routeParams
+     *
+     * @return string
+     */
+    protected function _getLocationUrl($location, $requestPath, $routeParams)
+    {
+        if (!empty($requestPath)) {
+            return $this->getUrlInstance()->getDirectUrl($requestPath, $routeParams);
+        }
+        $routeParams['id'] = $location->getId();
+        $routeParams['s'] = $location->getUrlKey();
+//        $categoryId = $this->_getCategoryIdForUrl($location, $routeParams);
+//        if ($categoryId) {
+//            $routeParams['category'] = $categoryId;
+//        }
+
+        return $this->getUrlInstance()->getUrl('locator/location/index', $routeParams);
+    }
+
+    /**
+     * Retrieve request path
+     *
+     * @param Ak_Locator_Model_Location $location
+     *
+     * @return bool|string
+     */
+    protected function _getRequestPath(Ak_Locator_Model_Location $location)
+    {
+        $idPath = sprintf('location/%d', $location->getEntityId());
+
+        $rewrite = $this->getUrlRewrite();
+        $rewrite->setStoreId($location->getStoreId())
+            ->loadByIdPath($idPath);
+        if ($rewrite->getId()) {
+            return $rewrite->getRequestPath();
+        }
+
+        return false;
     }
 }

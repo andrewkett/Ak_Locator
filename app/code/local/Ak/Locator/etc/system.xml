@@ -249,6 +249,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </search_meta_key>
+
+                        <location_url_suffix>
+                            <label>Location url suffix</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>will be appended to the end of location urls</comment>
+                        </location_url_suffix>
+
                     </fields>
                 </seo>
 

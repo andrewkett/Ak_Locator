@@ -218,6 +218,7 @@
                 <search_meta_title>Location Search</search_meta_title>
                 <search_meta_key></search_meta_key>
                 <search_meta_desc>Find a Location</search_meta_desc>
+                <location_url_suffix>.html</location_url_suffix>
             </seo>
         </locator_settings>
     </default>

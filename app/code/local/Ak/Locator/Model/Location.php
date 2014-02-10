@@ -14,6 +14,12 @@
  * @link      http://andrewkett.github.io/Ak_Locator/
  */
 
+/**
+ * Class Ak_Locator_Model_Location
+ *
+ * @method Ak_Locator_Model_Resource_Location getResource()
+ *
+ */
 class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
 {
     /**
