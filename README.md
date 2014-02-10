@@ -1,7 +1,7 @@
 # Magento Store Locator
 A store locator extension for Magento.
 
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/badges/quality-score.png?s=ca4c9eec21cd5f0d87679426306fbbd8a864b5ff)](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca/mini.png)](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca) [![Build Status](https://travis-ci.org/andrewkett/Ak_Locator.png?branch=master)](https://travis-ci.org/andrewkett/Ak_Locator) [![Dependency Status](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037/badge.png)](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/andrewkett/ak_locator/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/badges/quality-score.png?s=ed69380af3f8cae9103d253d27e7c193fbe02914)](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca/mini.png)](https://insight.sensiolabs.com/projects/68c3fc50-74f1-4d50-a4b2-81db51fd13ca)  [![Dependency Status](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037/badge.png)](https://www.versioneye.com/user/projects/52b0f598ec1375b8dc000037) 
 
 ## Installation. 
 This extension can be installed a few different ways:
