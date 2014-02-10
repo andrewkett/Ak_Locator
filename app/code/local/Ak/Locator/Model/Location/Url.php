@@ -229,7 +229,18 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
      *
      * @return string
      */
-    protected function _getLocationUrl($location, $requestPath, $routeParams)
+    protected function _getLocationUrl()
+    {
+        if(isenterprise) {
+
+        } else {
+            return $this->_getLocationUrlCommunity();
+        }
+
+    }
+
+
+    protected function _getLocationUrlCommunity($location, $requestPath, $routeParams)
     {
         if (!empty($requestPath)) {
             return $this->getUrlInstance()->getDirectUrl($requestPath, $routeParams);
@@ -239,6 +250,27 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
 
         return $this->getUrlInstance()->getUrl('locator/location/index', $routeParams);
     }
+
+    protected function _getLocationUrlEnterprise($location, $requestPath, $routeParams)
+    {
+
+        if (!empty($requestPath)) {
+
+            $location->setRequestPath($requestPath);
+
+            $storeId = $this->getUrlInstance()->getStore()->getId();
+            $requestPath = $this->_factory->getHelper('enterprise_catalog')
+                ->getProductRequestPath($requestPath, $storeId);
+
+            return $this->getUrlInstance()->getDirectUrl($requestPath, $routeParams);
+        }
+
+        $routeParams['id'] = $product->getId();
+        $routeParams['s'] = $product->getUrlKey();
+
+        return $this->getUrlInstance()->getUrl('locator/location/index', $routeParams);
+    }
+
 
     /**
      * Retrieve request path
