@@ -18,5 +18,11 @@
         {
             "name":"Andrew Kett"
         }
-    ]
+    ],
+    "extra":{
+        "skip-package-deployment" : true,
+        "magento-root-dir" : "./"
+    }
+
+
 }
