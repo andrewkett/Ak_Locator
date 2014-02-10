@@ -137,7 +137,6 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
      */
     protected function _registerLocationEvent(Mage_Index_Model_Event $event)
     {
-        //echo 'herwrew';
         $location = $event->getDataObject();
         $dataChange = $location->dataHasChangedFor('url_key')
             || $location->getIsChangedWebsites();
