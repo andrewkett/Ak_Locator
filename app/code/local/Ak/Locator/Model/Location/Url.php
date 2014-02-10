@@ -237,10 +237,6 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
         }
         $routeParams['id'] = $location->getId();
         $routeParams['s'] = $location->getUrlKey();
-//        $categoryId = $this->_getCategoryIdForUrl($location, $routeParams);
-//        if ($categoryId) {
-//            $routeParams['category'] = $categoryId;
-//        }
 
         return $this->getUrlInstance()->getUrl('locator/location/index', $routeParams);
     }

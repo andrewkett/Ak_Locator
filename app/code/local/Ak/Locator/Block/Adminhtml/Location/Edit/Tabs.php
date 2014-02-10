@@ -71,32 +71,4 @@ class Ak_Locator_Block_Adminhtml_Location_Edit_Tabs extends Mage_Adminhtml_Block
 
         return parent::_prepareLayout();
     }
-
-    // /**
-    //  * Getting attribute block name for tabs
-    //  *
-    //  * @return string
-    //  */
-    // public function getAttributeTabBlock()
-    // {     
-    //     return $this->_attributeTabBlock;        
-    // }
-
-    // public function setAttributeTabBlock($attributeTabBlock)
-    // {
-    //     $this->_attributeTabBlock = $attributeTabBlock;
-    //     return $this;
-    // }
-
-    // /**
-    //  * Translate html content
-    //  *
-    //  * @param string $html
-    //  * @return string
-    //  */
-    // protected function _translateHtml($html)
-    // {
-    //     Mage::getSingleton('core/translate_inline')->processResponseBody($html);
-    //     return $html;
-    // }
 }

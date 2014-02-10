@@ -120,14 +120,6 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
                $this->_registerProductEvent($event);
                 break;
 
-            // case Mage_Catalog_Model_Category::ENTITY:
-            //     $this->_registerCategoryEvent($event);
-            //     break;
-
-            // case Mage_Catalog_Model_Convert_Adapter_Product::ENTITY:
-            //     $event->addNewData('catalog_url_reindex_all', true);
-            //     break;
-
             case Mage_Core_Model_Store::ENTITY:
             case Mage_Core_Model_Store_Group::ENTITY:
             case Mage_Core_Model_Config_Data::ENTITY:
@@ -155,26 +147,6 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
         }
     }
 
-    // /**
-    //  * Register event data during category save process
-    //  *
-    //  * @param Mage_Index_Model_Event $event
-    //  */
-    // protected function _registerCategoryEvent(Mage_Index_Model_Event $event)
-    // {
-    //     $category = $event->getDataObject();
-    //     if (!$category->getInitialSetupFlag() && $category->getLevel() > 1) {
-    //         if ($category->dataHasChangedFor('url_key') || $category->getIsChangedProductList()) {
-    //             $event->addNewData('rewrite_category_ids', array($category->getId()));
-    //         }
-    //         /**
-    //          * Check if category has another affected category ids (category move result)
-    //          */
-    //         if ($category->getAffectedCategoryIds()) {
-    //             $event->addNewData('rewrite_category_ids', $category->getAffectedCategoryIds());
-    //         }
-    //     }
-    // }
 
     /**
      * Process event
@@ -203,12 +175,6 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
                  $urlModel->refreshProductRewrite($productId);
             }
         }
-        // if (isset($data['rewrite_category_ids'])) {
-        //     $urlModel->clearStoreInvalidRewrites(); // Maybe some categories were moved
-        //     foreach ($data['rewrite_category_ids'] as $categoryId) {
-        //         $urlModel->refreshCategoryRewrite($categoryId);
-        //     }
-        // }
     }
 
     /**
