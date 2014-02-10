@@ -476,8 +476,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
             $select->where('e.entity_id IN(?)', $locationIds);
         }
 
-//        echo $select;
-//        die();
 
         $rowSet = $adapter->fetchAll($select, $bind);
         foreach ($rowSet as $row) {
@@ -492,19 +490,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         unset($rowSet);
 
         if ($locations) {
-//            $select = $adapter->select()
-//                ->from(
-//                    $this->getTable('catalog/category_product'),
-//                    array('product_id', 'category_id')
-//                )
-//                ->where('product_id IN(?)', array_keys($locations));
-//            $categories = $adapter->fetchAll($select);
-//            foreach ($categories as $category) {
-//                $productId = $category['product_id'];
-//                $categoryIds = $products[$productId]->getCategoryIds();
-//                $categoryIds[] = $category['category_id'];
-//                $products[$productId]->setCategoryIds($categoryIds);
-//            }
 
             //foreach (array('title', 'url_key', 'url_path') as $attributeCode) {
             foreach (array('title', 'url_key') as $attributeCode) {
@@ -662,10 +647,8 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
         $bind = array();
         foreach ($locations as $locationId => $storeId) {
-            //$catId = Mage::app()->getStore($storeId)->getRootCategoryId();
             $locationBind = 'location_id' . $locationId;
             $storeBind   = 'store_id' . $storeId;
-            //$catBind     = 'category_id' . $catId;
             $cond  = '(' . implode(' AND ', array(
                     'i.location_id = :' . $locationBind,
                     'i.store_id = :' . $storeBind,
@@ -673,7 +656,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
                 )) . ')';
             $bind[$locationBind] = $locationId;
             $bind[$storeBind]   = $storeId;
-            //$bind[$catBind]     = $catId;
             $select->orWhere($cond);
         }
 

@@ -238,31 +238,10 @@ class Ak_Locator_Model_Url
 
         $location = $this->getResource()->getLocation($locationId, $storeId);
         if ($location) {
-            $store = $this->getStores($storeId);
-//            $storeRootCategoryId = $store->getRootCategoryId();
-//
-//            // List of categories the product is assigned to, filtered by being within the store's categories root
-//            $categories = $this->getResource()->getCategories($product->getCategoryIds(), $storeId);
-
             $this->_rewrites = $this->getResource()->prepareRewrites($storeId, '', $locationId);
 
-//            // Add rewrites for all needed categories
-//            // If product is assigned to any of store's categories -
-//            // we also should use store root category to create root product url rewrite
-//            if (!isset($categories[$storeRootCategoryId])) {
-//                $categories[$storeRootCategoryId] = $this->getResource()->getCategory($storeRootCategoryId, $storeId);
-//            }
-
-//            // Create product url rewrites
-//            foreach ($categories as $category) {
-//                $this->_refreshProductRewrite($product, $category);
-//            }
-
             // Remove all other product rewrites created earlier for this store - they're invalid now
-            //$excludeCategoryIds = array_keys($categories);
             $this->getResource()->clearLocationRewrites($locationId, $storeId);
-
-            //unset($categories);
             unset($location);
         } else {
             // Product doesn't belong to this store - clear all its url rewrites including root one
@@ -280,11 +259,6 @@ class Ak_Locator_Model_Url
      */
     public function refreshLocationRewrites($storeId)
     {
-        //$this->_categories      = array();
-        //$storeRootCategoryId    = $this->getStores($storeId)->getRootCategoryId();
-        //$storeRootCategoryPath  = $this->getStores($storeId)->getRootCategoryPath();
-        //$this->_categories[$storeRootCategoryId] = $this->getResource()->getCategory($storeRootCategoryId, $storeId);
-
         $lastEntityId = 0;
         $process = true;
 
@@ -297,21 +271,6 @@ class Ak_Locator_Model_Url
 
             $this->_rewrites = $this->getResource()->prepareRewrites($storeId, false, array_keys($locations));
 
-//            $loadCategories = array();
-//            foreach ($products as $product) {
-//                foreach ($product->getCategoryIds() as $categoryId) {
-//                    if (!isset($this->_categories[$categoryId])) {
-//                        $loadCategories[$categoryId] = $categoryId;
-//                    }
-//                }
-//            }
-
-//            if ($loadCategories) {
-//                foreach ($this->getResource()->getCategories($loadCategories, $storeId) as $category) {
-//                    $this->_categories[$category->getId()] = $category;
-//                }
-//            }
-
             foreach ($locations as $location) {
                 $this->_refreshLocationRewrite($location);
             }
@@ -320,7 +279,6 @@ class Ak_Locator_Model_Url
             $this->_rewrites = array();
         }
 
-        //$this->_categories = array();
         return $this;
     }
 
@@ -457,18 +415,8 @@ class Ak_Locator_Model_Url
         $storeId = $location->getStoreId();
         $suffix  = $this->getLocationUrlSuffix($storeId);
         $idPath  = $this->generatePath('id', $location);
-//        /**
-//         * Prepare product base request path
-//         */
-//        if ($category->getLevel() > 1) {
-//            // To ensure, that category has path either from attribute or generated now
-//            $this->_addCategoryUrlPath($category);
-//            $categoryUrl = Mage::helper('catalog/category')->getCategoryUrlPath($category->getUrlPath(),
-//                false, $storeId);
-//            $requestPath = $categoryUrl . '/' . $urlKey;
-//        } else {
-            $requestPath = $urlKey;
-        //}
+
+        $requestPath = $urlKey;
 
         if (strlen($requestPath) > self::MAX_REQUEST_PATH_LENGTH + self::ALLOWED_REQUEST_PATH_OVERFLOW) {
             $requestPath = substr($requestPath, 0, self::MAX_REQUEST_PATH_LENGTH);
@@ -549,34 +497,6 @@ class Ak_Locator_Model_Url
 
         // generate request_path
         if ('request' === $type) {
-            // for category
-//            if (!$location) {
-//                if ($category->getUrlKey() == '') {
-//                    $urlKey = $this->getCategoryModel()->formatUrlKey($category->getName());
-//                }
-//                else {
-//                    $urlKey = $this->getCategoryModel()->formatUrlKey($category->getUrlKey());
-//                }
-//
-//                $categoryUrlSuffix = $this->getCategoryUrlSuffix($category->getStoreId());
-//                if (null === $parentPath) {
-//                    $parentPath = $this->getResource()->getCategoryParentPath($category);
-//                }
-//                elseif ($parentPath == '/') {
-//                    $parentPath = '';
-//                }
-//                $parentPath = Mage::helper('catalog/category')->getCategoryUrlPath($parentPath,
-//                    true, $category->getStoreId());
-//
-//                return $this->getUnusedPath($category->getStoreId(), $parentPath . $urlKey . $categoryUrlSuffix,
-//                    $this->generatePath('id', null, $category)
-//                );
-//            }
-
-            // for product & category
-//            if (!$category) {
-//                Mage::throwException(Mage::helper('core')->__('A category object is required for determining the product request path.')); // why?
-//            }
 
             if ($location->getUrlKey() == '') {
                 $urlKey = $this->getLocationModel()->formatUrlKey($location->getName());
@@ -585,15 +505,6 @@ class Ak_Locator_Model_Url
                 $urlKey = $this->getLocationModel()->formatUrlKey($location->getUrlKey());
             }
             $locationUrlSuffix  = $this->getLocationUrlSuffix($location->getStoreId());
-//            if ($category->getLevel() > 1) {
-//                // To ensure, that category has url path either from attribute or generated now
-//                $this->_addCategoryUrlPath($category);
-//                $categoryUrl = Mage::helper('catalog/category')->getCategoryUrlPath($category->getUrlPath(),
-//                    false, $category->getStoreId());
-//                return $this->getUnusedPath($category->getStoreId(), $categoryUrl . '/' . $urlKey . $productUrlSuffix,
-//                    $this->generatePath('id', $product, $category)
-//                );
-//            }
 
             // for product only
             return $this->getUnusedPath($location->getStoreId(), $urlKey . $locationUrlSuffix,
@@ -602,12 +513,6 @@ class Ak_Locator_Model_Url
         }
 
         // generate target_path
-//        if (!$product) {
-//            return 'catalog/category/view/id/' . $category->getId();
-//        }
-//        if ($category && $category->getLevel() > 1) {
-//            return 'catalog/product/view/id/' . $product->getId() . '/category/' . $category->getId();
-//        }
         return 'locator/location/index/id/' . $location->getId();
     }
 
