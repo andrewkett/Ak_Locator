@@ -28,12 +28,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      */
     protected $_stores;
 
-//    /**
-//     * Category attribute properties cache
-//     *
-//     * @var array
-//     */
-//    protected $_categoryAttributes          = array();
 
     /**
      * location attribute properties cache
@@ -82,15 +76,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         return $this->_stores;
     }
 
-//    /**
-//     * Retrieve Category model singleton
-//     *
-//     * @return Mage_Catalog_Model_Category
-//     */
-//    public function getCategoryModel()
-//    {
-//        return Mage::getSingleton('catalog/category');
-//    }
 
     /**
      * Retrieve location model singleton
@@ -307,164 +292,11 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         return $this;
     }
 
-//    /**
-//     * Save category attribute
-//     *
-//     * @param Varien_Object $category
-//     * @param string $attributeCode
-//     * @return Mage_Catalog_Model_Resource_Url
-//     */
-//    public function saveCategoryAttribute(Varien_Object $category, $attributeCode)
-//    {
-//        $adapter = $this->_getWriteAdapter();
-//        if (!isset($this->_categoryAttributes[$attributeCode])) {
-//            $attribute = $this->getCategoryModel()->getResource()->getAttribute($attributeCode);
-//
-//            $this->_categoryAttributes[$attributeCode] = array(
-//                'entity_type_id' => $attribute->getEntityTypeId(),
-//                'attribute_id'   => $attribute->getId(),
-//                'table'          => $attribute->getBackend()->getTable(),
-//                'is_global'      => $attribute->getIsGlobal()
-//            );
-//            unset($attribute);
-//        }
-//
-//        $attributeTable = $this->_categoryAttributes[$attributeCode]['table'];
-//
-//        $attributeData = array(
-//            'entity_type_id'    => $this->_categoryAttributes[$attributeCode]['entity_type_id'],
-//            'attribute_id'      => $this->_categoryAttributes[$attributeCode]['attribute_id'],
-//            'store_id'          => $category->getStoreId(),
-//            'entity_id'         => $category->getId(),
-//            'value'             => $category->getData($attributeCode)
-//        );
-//
-//        if ($this->_categoryAttributes[$attributeCode]['is_global'] || $category->getStoreId() == 0) {
-//            $attributeData['store_id'] = 0;
-//        }
-//
-//        $select = $adapter->select()
-//            ->from($attributeTable)
-//            ->where('entity_type_id = ?', (int)$attributeData['entity_type_id'])
-//            ->where('attribute_id = ?', (int)$attributeData['attribute_id'])
-//            ->where('store_id = ?', (int)$attributeData['store_id'])
-//            ->where('entity_id = ?', (int)$attributeData['entity_id']);
-//
-//        $row = $adapter->fetchRow($select);
-//        $whereCond = array('value_id = ?' => $row['value_id']);
-//        if ($row) {
-//            $adapter->update($attributeTable, $attributeData, $whereCond);
-//        } else {
-//            $adapter->insert($attributeTable, $attributeData);
-//        }
-//
-//        if ($attributeData['store_id'] != 0) {
-//            $attributeData['store_id'] = 0;
-//            $select = $adapter->select()
-//                ->from($attributeTable)
-//                ->where('entity_type_id = ?', (int)$attributeData['entity_type_id'])
-//                ->where('attribute_id = ?', (int)$attributeData['attribute_id'])
-//                ->where('store_id = ?', (int)$attributeData['store_id'])
-//                ->where('entity_id = ?', (int)$attributeData['entity_id']);
-//
-//            $row = $adapter->fetchRow($select);
-//            if ($row) {
-//                $whereCond = array('value_id = ?' => $row['value_id']);
-//                $adapter->update($attributeTable, $attributeData, $whereCond);
-//            } else {
-//                $adapter->insert($attributeTable, $attributeData);
-//            }
-//        }
-//        unset($attributeData);
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * Retrieve category attributes
-//     *
-//     * @param string $attributeCode
-//     * @param int|array $categoryIds
-//     * @param int $storeId
-//     * @return array
-//     */
-//    protected function _getCategoryAttribute($attributeCode, $categoryIds, $storeId)
-//    {
-//        $adapter = $this->_getWriteAdapter();
-//        if (!isset($this->_categoryAttributes[$attributeCode])) {
-//            $attribute = $this->getCategoryModel()->getResource()->getAttribute($attributeCode);
-//
-//            $this->_categoryAttributes[$attributeCode] = array(
-//                'entity_type_id' => $attribute->getEntityTypeId(),
-//                'attribute_id'   => $attribute->getId(),
-//                'table'          => $attribute->getBackend()->getTable(),
-//                'is_global'      => $attribute->getIsGlobal(),
-//                'is_static'      => $attribute->isStatic()
-//            );
-//            unset($attribute);
-//        }
-//
-//        if (!is_array($categoryIds)) {
-//            $categoryIds = array($categoryIds);
-//        }
-//
-//        $attributeTable = $this->_categoryAttributes[$attributeCode]['table'];
-//        $select         = $adapter->select();
-//        $bind           = array();
-//        if ($this->_categoryAttributes[$attributeCode]['is_static']) {
-//            $select
-//                ->from(
-//                    $this->getTable('catalog/category'),
-//                    array('value' => $attributeCode, 'entity_id' => 'entity_id')
-//                )
-//                ->where('entity_id IN(?)', $categoryIds);
-//        } elseif ($this->_categoryAttributes[$attributeCode]['is_global'] || $storeId == 0) {
-//            $select
-//                ->from($attributeTable, array('entity_id', 'value'))
-//                ->where('attribute_id = :attribute_id')
-//                ->where('store_id = ?', 0)
-//                ->where('entity_id IN(?)', $categoryIds);
-//            $bind['attribute_id'] = $this->_categoryAttributes[$attributeCode]['attribute_id'];
-//        } else {
-//            $valueExpr = $adapter->getCheckSql('t2.value_id > 0', 't2.value', 't1.value');
-//            $select
-//                ->from(
-//                    array('t1' => $attributeTable),
-//                    array('entity_id', 'value' => $valueExpr)
-//                )
-//                ->joinLeft(
-//                    array('t2' => $attributeTable),
-//                    't1.entity_id = t2.entity_id AND t1.attribute_id = t2.attribute_id AND t2.store_id = :store_id',
-//                    array()
-//                )
-//                ->where('t1.store_id = ?', 0)
-//                ->where('t1.attribute_id = :attribute_id')
-//                ->where('t1.entity_id IN(?)', $categoryIds);
-//
-//            $bind['attribute_id'] = $this->_categoryAttributes[$attributeCode]['attribute_id'];
-//            $bind['store_id']     = $storeId;
-//        }
-//
-//        $rowSet = $adapter->fetchAll($select, $bind);
-//
-//        $attributes = array();
-//        foreach ($rowSet as $row) {
-//            $attributes[$row['entity_id']] = $row['value'];
-//        }
-//        unset($rowSet);
-//        foreach ($categoryIds as $categoryId) {
-//            if (!isset($attributes[$categoryId])) {
-//                $attributes[$categoryId] = null;
-//            }
-//        }
-//
-//        return $attributes;
-//    }
 
     /**
      * Save location attribute
      *
-     * @param Varien_Object $product
+     * @param Varien_Object $location
      * @param string $attributeCode
      * @return Mage_Catalog_Model_Resource_Url
      */
@@ -540,7 +372,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      * Retrieve product attribute
      *
      * @param string $attributeCode
-     * @param int|array $productIds
+     * @param int|array $locationIds
      * @param string $storeId
      * @return array
      */
@@ -605,296 +437,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
         return $attributes;
     }
-
-//    /**
-//     * Prepare category parentId
-//     *
-//     * @param Varien_Object $category
-//     * @return Mage_Catalog_Model_Resource_Url
-//     */
-//    protected function _prepareCategoryParentId(Varien_Object $category)
-//    {
-//        if ($category->getPath() != $category->getId()) {
-//            $split = explode('/', $category->getPath());
-//            $category->setParentId($split[(count($split) - 2)]);
-//        } else {
-//            $category->setParentId(0);
-//        }
-//        return $this;
-//    }
-
-//    /**
-//     * Prepare stores root categories
-//     *
-//     * @param array $stores
-//     * @return array
-//     */
-//    protected function _prepareStoreRootCategories($stores)
-//    {
-//        $rootCategoryIds = array();
-//        foreach ($stores as $store) {
-//            /* @var $store Mage_Core_Model_Store */
-//            $rootCategoryIds[$store->getRootCategoryId()] = $store->getRootCategoryId();
-//        }
-//        if ($rootCategoryIds) {
-//            $categories = $this->_getCategories($rootCategoryIds);
-//        }
-//        foreach ($stores as $store) {
-//            /* @var $store Mage_Core_Model_Store */
-//            $rootCategoryId = $store->getRootCategoryId();
-//            if (isset($categories[$rootCategoryId])) {
-//                $store->setRootCategoryPath($categories[$rootCategoryId]->getPath());
-//                $store->setRootCategory($categories[$rootCategoryId]);
-//            } else {
-//                unset($stores[$store->getId()]);
-//            }
-//        }
-//        return $stores;
-//    }
-
-//    /**
-//     * Retrieve categories objects
-//     * Either $categoryIds or $path (with ending slash) must be specified
-//     *
-//     * @param int|array $categoryIds
-//     * @param int $storeId
-//     * @param string $path
-//     * @return array
-//     */
-//    protected function _getCategories($categoryIds, $storeId = null, $path = null)
-//    {
-//        $isActiveAttribute = Mage::getSingleton('eav/config')
-//            ->getAttribute(Mage_Catalog_Model_Category::ENTITY, 'is_active');
-//        $categories        = array();
-//        $adapter           = $this->_getReadAdapter();
-//
-//        if (!is_array($categoryIds)) {
-//            $categoryIds = array($categoryIds);
-//        }
-//        $isActiveExpr = $adapter->getCheckSql('c.value_id > 0', 'c.value', 'c.value');
-//        $select = $adapter->select()
-//            ->from(array('main_table' => $this->getTable('catalog/category')), array(
-//                'main_table.entity_id',
-//                'main_table.parent_id',
-//                'main_table.level',
-//                'is_active' => $isActiveExpr,
-//                'main_table.path'));
-//
-//        // Prepare variables for checking whether categories belong to store
-//        if ($path === null) {
-//            $select->where('main_table.entity_id IN(?)', $categoryIds);
-//        } else {
-//            // Ensure that path ends with '/', otherwise we can get wrong results - e.g. $path = '1/2' will get '1/20'
-//            if (substr($path, -1) != '/') {
-//                $path .= '/';
-//            }
-//
-//            $select
-//                ->where('main_table.path LIKE ?', $path . '%')
-//                ->order('main_table.path');
-//        }
-//        $table = $this->getTable(array('catalog/category', 'int'));
-//        $select->joinLeft(array('d' => $table),
-//            'd.attribute_id = :attribute_id AND d.store_id = 0 AND d.entity_id = main_table.entity_id',
-//            array()
-//        )
-//            ->joinLeft(array('c' => $table),
-//                'c.attribute_id = :attribute_id AND c.store_id = :store_id AND c.entity_id = main_table.entity_id',
-//                array()
-//            );
-//
-//        if ($storeId !== null) {
-//            $rootCategoryPath = $this->getStores($storeId)->getRootCategoryPath();
-//            $rootCategoryPathLength = strlen($rootCategoryPath);
-//        }
-//        $bind = array(
-//            'attribute_id' => (int)$isActiveAttribute->getId(),
-//            'store_id'     => (int)$storeId
-//        );
-//
-//        $rowSet = $adapter->fetchAll($select, $bind);
-//        foreach ($rowSet as $row) {
-//            if ($storeId !== null) {
-//                // Check the category to be either store's root or its descendant
-//                // First - check that category's start is the same as root category
-//                if (substr($row['path'], 0, $rootCategoryPathLength) != $rootCategoryPath) {
-//                    continue;
-//                }
-//                // Second - check non-root category - that it's really a descendant, not a simple string match
-//                if ((strlen($row['path']) > $rootCategoryPathLength)
-//                    && ($row['path'][$rootCategoryPathLength] != '/')) {
-//                    continue;
-//                }
-//            }
-//
-//            $category = new Varien_Object($row);
-//            $category->setIdFieldName('entity_id');
-//            $category->setStoreId($storeId);
-//            $this->_prepareCategoryParentId($category);
-//
-//            $categories[$category->getId()] = $category;
-//        }
-//        unset($rowSet);
-//
-//        if ($storeId !== null && $categories) {
-//            foreach (array('name', 'url_key', 'url_path') as $attributeCode) {
-//                $attributes = $this->_getCategoryAttribute($attributeCode, array_keys($categories),
-//                    $category->getStoreId());
-//                foreach ($attributes as $categoryId => $attributeValue) {
-//                    $categories[$categoryId]->setData($attributeCode, $attributeValue);
-//                }
-//            }
-//        }
-//
-//        return $categories;
-//    }
-
-//    /**
-//     * Retrieve category data object
-//     *
-//     * @param int $categoryId
-//     * @param int $storeId
-//     * @return Varien_Object
-//     */
-//    public function getCategory($categoryId, $storeId)
-//    {
-//        if (!$categoryId || !$storeId) {
-//            return false;
-//        }
-//
-//        $categories = $this->_getCategories($categoryId, $storeId);
-//        if (isset($categories[$categoryId])) {
-//            return $categories[$categoryId];
-//        }
-//        return false;
-//    }
-
-//    /**
-//     * Retrieve categories data objects by their ids. Return only categories that belong to specified store.
-//     *
-//     * @param int|array $categoryIds
-//     * @param int $storeId
-//     * @return array
-//     */
-//    public function getCategories($categoryIds, $storeId)
-//    {
-//        if (!$categoryIds || !$storeId) {
-//            return false;
-//        }
-//
-//        return $this->_getCategories($categoryIds, $storeId);
-//    }
-
-//    /**
-//     * Retrieve category childs data objects
-//     *
-//     * @param Varien_Object $category
-//     * @return Varien_Object
-//     */
-//    public function loadCategoryChilds(Varien_Object $category)
-//    {
-//        if ($category->getId() === null || $category->getStoreId() === null) {
-//            return $category;
-//        }
-//
-//        $categories = $this->_getCategories(null, $category->getStoreId(), $category->getPath() . '/');
-//        $category->setChilds(array());
-//        foreach ($categories as $child) {
-//            if (!is_array($child->getChilds())) {
-//                $child->setChilds(array());
-//            }
-//            if ($child->getParentId() == $category->getId()) {
-//                $category->setChilds($category->getChilds() + array($child->getId() => $child));
-//            } else {
-//                if (isset($categories[$child->getParentId()])) {
-//                    if (!is_array($categories[$child->getParentId()]->getChilds())) {
-//                        $categories[$child->getParentId()]->setChilds(array());
-//                    }
-//                    $categories[$child->getParentId()]->setChilds(
-//                        $categories[$child->getParentId()]->getChilds() + array($child->getId() => $child)
-//                    );
-//                }
-//            }
-//        }
-//        $category->setAllChilds($categories);
-//
-//        return $category;
-//    }
-
-//    /**
-//     * Retrieves all children ids of root category tree
-//     * Actually this routine can be used to get children ids of any category, not only root.
-//     * But as far as result is cached in memory, it's not recommended to do so.
-//     *
-//     * @param Varien_Object $category
-//     * @return Varien_Object
-//     */
-//    public function getRootChildrenIds($categoryId, $categoryPath, $includeStart = true)
-//    {
-//        if (!isset($this->_rootChildrenIds[$categoryId])) {
-//            // Select all descedant category ids
-//            $adapter = $this->_getReadAdapter();
-//            $select = $adapter->select()
-//                ->from(array($this->getTable('catalog/category')), array('entity_id'))
-//                ->where('path LIKE ?', $categoryPath . '/%');
-//
-//            $categoryIds = array();
-//            $rowSet = $adapter->fetchAll($select);
-//            foreach ($rowSet as $row) {
-//                $categoryIds[$row['entity_id']] = $row['entity_id'];
-//            }
-//            $this->_rootChildrenIds[$categoryId] = $categoryIds;
-//        }
-//
-//        $categoryIds = $this->_rootChildrenIds[$categoryId];
-//        if ($includeStart) {
-//            $categoryIds[$categoryId] = $categoryId;
-//        }
-//        return $categoryIds;
-//    }
-
-//    /**
-//     * Retrieve category parent path
-//     *
-//     * @param Varien_Object $category
-//     * @return string
-//     */
-//    public function getCategoryParentPath(Varien_Object $category)
-//    {
-//        $store = Mage::app()->getStore($category->getStoreId());
-//
-//        if ($category->getId() == $store->getRootCategoryId()) {
-//            return '';
-//        } elseif ($category->getParentId() == 1 || $category->getParentId() == $store->getRootCategoryId()) {
-//            return '';
-//        }
-//
-//        $parentCategory = $this->getCategory($category->getParentId(), $store->getId());
-//        return $parentCategory->getUrlPath() . '/';
-//    }
-//
-//    /**
-//     * Retrieve product ids by category
-//     *
-//     * @param Varien_Object|int $category
-//     * @return array
-//     */
-//    public function getProductIdsByCategory($category)
-//    {
-//        if ($category instanceof Varien_Object) {
-//            $categoryId = $category->getId();
-//        } else {
-//            $categoryId = $category;
-//        }
-//        $adapter = $this->_getReadAdapter();
-//        $select = $adapter->select()
-//            ->from($this->getTable('catalog/category_product'), array('product_id'))
-//            ->where('category_id = :category_id')
-//            ->order('product_id');
-//        $bind = array('category_id' => $categoryId);
-//
-//        return $adapter->fetchCol($select, $bind);
-//    }
 
     /**
      * Retrieve Product data objects
@@ -1005,52 +547,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         return $this->_getLocations(null, $storeId, $lastEntityId, $lastEntityId);
     }
 
-//    /**
-//     * Retrieve Product data objects in category
-//     *
-//     * @param Varien_Object $category
-//     * @param int $lastEntityId
-//     * @return array
-//     */
-//    public function getProductsByCategory(Varien_Object $category, &$lastEntityId)
-//    {
-//        $productIds = $this->getProductIdsByCategory($category);
-//        if (!$productIds) {
-//            return array();
-//        }
-//        return $this->_getProducts($productIds, $category->getStoreId(), $lastEntityId, $lastEntityId);
-//    }
-
-//    /**
-//     * Find and remove unused products rewrites - a case when products were moved away from the category
-//     * (either to other category or deleted), so rewrite "category_id-product_id" is invalid
-//     *
-//     * @param int $storeId
-//     * @return Mage_Catalog_Model_Resource_Url
-//     */
-//    public function clearCategoryProduct($storeId)
-//    {
-//        $adapter = $this->_getWriteAdapter();
-//        $select = $adapter->select()
-//            ->from(array('tur' => $this->getMainTable()), $this->getIdFieldName())
-//            ->joinLeft(
-//                array('tcp' => $this->getTable('catalog/category_product')),
-//                'tur.category_id = tcp.category_id AND tur.product_id = tcp.product_id',
-//                array()
-//            )
-//            ->where('tur.store_id = :store_id')
-//            ->where('tur.category_id IS NOT NULL')
-//            ->where('tur.product_id IS NOT NULL')
-//            ->where('tcp.category_id IS NULL');
-//        $rewriteIds = $adapter->fetchCol($select, array('store_id' => $storeId));
-//        if ($rewriteIds) {
-//            $where = array($this->getIdFieldName() . ' IN(?)' => $rewriteIds);
-//            $adapter->delete($this->getMainTable(), $where);
-//        }
-//
-//        return $this;
-//    }
-
     /**
      * Remove unused rewrites for locations - called after we created all needed rewrites for product and know the categories
      * where the product is contained ($excludeCategoryIds), so we can remove all invalid product rewrites that have other category ids
@@ -1058,15 +554,14 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      * Notice: this routine is not identical to clearCategoryProduct(), because after checking all categories this one removes rewrites
      * for product still contained within categories.
      *
-     * @param int $productId Product entity Id
+     * @param int $locationId Product entity Id
      * @param int $storeId Store Id for rewrites
-     * @param array $excludeCategoryIds Array of category Ids that should be skipped
      * @return Mage_Catalog_Model_Resource_Url
      */
-    public function clearLocationRewrites($productId, $storeId)
+    public function clearLocationRewrites($locationId, $storeId)
     {
         $where = array(
-            'product_id = ?' => $productId,
+            'product_id = ?' => $locationId,
             'store_id = ?' => $storeId
         );
 
@@ -1074,35 +569,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
         return $this;
     }
-
-//    /**
-//     * Finds and deletes all old category and category/product rewrites for store
-//     * left from the times when categories/products belonged to store
-//     *
-//     * @param int $storeId
-//     * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Url
-//     */
-//    public function clearStoreCategoriesInvalidRewrites($storeId)
-//    {
-//        // Form a list of all current store categories ids
-//        $store          = $this->getStores($storeId);
-//        $rootCategoryId = $store->getRootCategoryId();
-//        if (!$rootCategoryId) {
-//            return $this;
-//        }
-//        $categoryIds = $this->getRootChildrenIds($rootCategoryId, $store->getRootCategoryPath());
-//
-//        // Remove all store catalog rewrites that are for some category or cartegory/product not within store categories
-//        $where   = array(
-//            'store_id = ?' => $storeId,
-//            'category_id IS NOT NULL', // For sure check that it's a catalog rewrite
-//            'category_id NOT IN (?)' => $categoryIds
-//        );
-//
-//        $this->_getWriteAdapter()->delete($this->getMainTable(), $where);
-//
-//        return $this;
-//    }
 
     /**
      * Finds and deletes product rewrites (that are not assigned to any category) for store
@@ -1161,47 +627,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         $this->clearStoreLocationsInvalidRewrites($storeId);
         return $this;
     }
-
-//    /**
-//     * Delete rewrites for associated to category products
-//     *
-//     * @param int $categoryId
-//     * @param array $productIds
-//     * @return Mage_Catalog_Model_Resource_Url
-//     */
-//    public function deleteCategoryProductRewrites($categoryId, $productIds)
-//    {
-//        $this->deleteCategoryProductStoreRewrites($categoryId, $productIds);
-//        return $this;
-//    }
-
-//    /**
-//     * Delete URL rewrites for category products of specific store
-//     *
-//     * @param int $categoryId
-//     * @param array|int|null $productIds
-//     * @param null|int $storeId
-//     * @return Mage_Catalog_Model_Resource_Url
-//     */
-//    public function deleteCategoryProductStoreRewrites($categoryId, $productIds = null, $storeId = null)
-//    {
-//        // Notice that we don't include category_id = NULL in case of root category,
-//        // because product removed from all categories but assigned to store's website is still
-//        // assumed to be in root cat. Unassigned products must be removed by other routine.
-//        $condition = array('category_id = ?' => $categoryId);
-//        if (empty($productIds)) {
-//            $condition[] = 'product_id IS NOT NULL';
-//        } else {
-//            $condition['product_id IN (?)'] = $productIds;
-//        }
-//
-//        if ($storeId !== null) {
-//            $condition['store_id IN(?)'] = $storeId;
-//        }
-//
-//        $this->_getWriteAdapter()->delete($this->getMainTable(), $condition);
-//        return $this;
-//    }
 
     /**
      * Retrieve rewrites and visibility by store

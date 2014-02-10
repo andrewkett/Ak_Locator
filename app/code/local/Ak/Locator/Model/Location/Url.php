@@ -220,23 +220,6 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
         return Mage::app()->getStore($id)->getId();
     }
 
-//    /**
-//     * Check product category
-//     *
-//     * @param Mage_Catalog_Model_Product $product
-//     * @param array $params
-//     *
-//     * @return int|null
-//     */
-//    protected function _getCategoryIdForUrl($product, $params)
-//    {
-//        if (isset($params['_ignore_category'])) {
-//            return null;
-//        } else {
-//            return $product->getCategoryId() && !$product->getDoNotUseCategoryId()
-//                ? $product->getCategoryId() : null;
-//        }
-//    }
 
     /**
      * Retrieve product URL based on requestPath param

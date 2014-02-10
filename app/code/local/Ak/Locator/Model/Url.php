@@ -42,20 +42,6 @@ class Ak_Locator_Model_Url
      */
     protected $_resourceModel;
 
-//    /**
-//     * Categories cache for products
-//     *
-//     * @var array
-//     */
-//    protected $_categories = array();
-
-//    /**
-//     * Store root categories cache
-//     *
-//     * @var array
-//     */
-//    protected $_rootCategories = array();
-
     /**
      * Rewrite cache
      *
@@ -77,12 +63,6 @@ class Ak_Locator_Model_Url
      */
     protected $_locationUrlSuffix = array();
 
-//    /**
-//     * Cache for category rewrite suffix
-//     *
-//     * @var array
-//     */
-//    protected $_categoryUrlSuffix = array();
 
     /**
      * Flag to overwrite config settings for Catalog URL rewrites history maintainance
@@ -91,45 +71,6 @@ class Ak_Locator_Model_Url
      */
     protected $_saveRewritesHistory = null;
 
-//    /**
-//     * Singleton of category model for building URL path
-//     *
-//     * @var Mage_Catalog_Model_Category
-//     */
-//    static protected $_categoryForUrlPath;
-
-//    /**
-//     * Adds url_path property for non-root category - to ensure that url path is not empty.
-//     *
-//     * Sometimes attribute 'url_path' can be empty, because url_path hasn't been generated yet,
-//     * in this case category is loaded with empty url_path and we should generate it manually.
-//     *
-//     * @param Varien_Object $category
-//     * @return void
-//     */
-//    protected function _addCategoryUrlPath($category)
-//    {
-//        if (!($category instanceof Varien_Object) || $category->getUrlPath()) {
-//            return;
-//        }
-//
-//        // This routine is not intended to be used with root categories,
-//        // but handle 'em gracefully - ensure them to have empty path.
-//        if ($category->getLevel() <= 1) {
-//            $category->setUrlPath('');
-//            return;
-//        }
-//
-//        if (self::$_categoryForUrlPath === null) {
-//            self::$_categoryForUrlPath = Mage::getModel('catalog/category');
-//        }
-//
-//        // Generate url_path
-//        $urlPath = self::$_categoryForUrlPath
-//            ->setData($category->getData())
-//            ->getUrlPath();
-//        $category->setUrlPath($urlPath);
-//    }
 
     /**
      * Retrieve stores array or store model
@@ -155,15 +96,6 @@ class Ak_Locator_Model_Url
         return $this->_resourceModel;
     }
 
-//    /**
-//     * Retrieve Category model singleton
-//     *
-//     * @return Mage_Catalog_Model_Category
-//     */
-//    public function getCategoryModel()
-//    {
-//        return $this->getResource()->getCategoryModel();
-//    }
 
     /**
      * Retrieve location model singleton
@@ -175,24 +107,6 @@ class Ak_Locator_Model_Url
         return $this->getResource()->getLocationModel();
     }
 
-//    /**
-//     * Returns store root category, uses caching for it
-//     *
-//     * @param int $storeId
-//     * @return Varien_Object
-//     */
-//    public function getStoreRootCategory($storeId) {
-//        if (!array_key_exists($storeId, $this->_rootCategories)) {
-//            $category = null;
-//            $store = $this->getStores($storeId);
-//            if ($store) {
-//                $rootCategoryId = $store->getRootCategoryId();
-//                $category = $this->getResource()->getCategory($rootCategoryId, $storeId);
-//            }
-//            $this->_rootCategories[$storeId] = $category;
-//        }
-//        return $this->_rootCategories[$storeId];
-//    }
 
     /**
      * Setter for $_saveRewritesHistory
@@ -246,70 +160,6 @@ class Ak_Locator_Model_Url
         return $this;
     }
 
-//    /**
-//     * Refresh category rewrite
-//     *
-//     * @param Varien_Object $category
-//     * @param string $parentPath
-//     * @param bool $refreshProducts
-//     * @return Mage_Catalog_Model_Url
-//     */
-//    protected function _refreshCategoryRewrites(Varien_Object $category, $parentPath = null, $refreshProducts = true)
-//    {
-//        if ($category->getId() != $this->getStores($category->getStoreId())->getRootCategoryId()) {
-//            if ($category->getUrlKey() == '') {
-//                $urlKey = $this->getCategoryModel()->formatUrlKey($category->getName());
-//            }
-//            else {
-//                $urlKey = $this->getCategoryModel()->formatUrlKey($category->getUrlKey());
-//            }
-//
-//            $idPath      = $this->generatePath('id', null, $category);
-//            $targetPath  = $this->generatePath('target', null, $category);
-//            $requestPath = $this->getCategoryRequestPath($category, $parentPath);
-//
-//            $rewriteData = array(
-//                'store_id'      => $category->getStoreId(),
-//                'category_id'   => $category->getId(),
-//                'product_id'    => null,
-//                'id_path'       => $idPath,
-//                'request_path'  => $requestPath,
-//                'target_path'   => $targetPath,
-//                'is_system'     => 1
-//            );
-//
-//            $this->getResource()->saveRewrite($rewriteData, $this->_rewrite);
-//
-//            if ($this->getShouldSaveRewritesHistory($category->getStoreId())) {
-//                $this->_saveRewriteHistory($rewriteData, $this->_rewrite);
-//            }
-//
-//            if ($category->getUrlKey() != $urlKey) {
-//                $category->setUrlKey($urlKey);
-//                $this->getResource()->saveCategoryAttribute($category, 'url_key');
-//            }
-//            if ($category->getUrlPath() != $requestPath) {
-//                $category->setUrlPath($requestPath);
-//                $this->getResource()->saveCategoryAttribute($category, 'url_path');
-//            }
-//        }
-//        else {
-//            if ($category->getUrlPath() != '') {
-//                $category->setUrlPath('');
-//                $this->getResource()->saveCategoryAttribute($category, 'url_path');
-//            }
-//        }
-//
-//        if ($refreshProducts) {
-//            $this->_refreshCategoryProductRewrites($category);
-//        }
-//
-//        foreach ($category->getChilds() as $child) {
-//            $this->_refreshCategoryRewrites($child, $category->getUrlPath() . '/', $refreshProducts);
-//        }
-//
-//        return $this;
-//    }
 
     /**
      * Refresh location rewrite
@@ -368,90 +218,6 @@ class Ak_Locator_Model_Url
         return $this;
     }
 
-//    /**
-//     * Refresh products for catwgory
-//     *
-//     * @param Varien_Object $category
-//     * @return Mage_Catalog_Model_Url
-//     */
-//    protected function _refreshCategoryProductRewrites(Varien_Object $category)
-//    {
-//        $originalRewrites = $this->_rewrites;
-//        $process = true;
-//        $lastEntityId = 0;
-//        $firstIteration = true;
-//        while ($process == true) {
-//            $products = $this->getResource()->getProductsByCategory($category, $lastEntityId);
-//            if (!$products) {
-//                if ($firstIteration) {
-//                    $this->getResource()->deleteCategoryProductStoreRewrites(
-//                        $category->getId(),
-//                        array(),
-//                        $category->getStoreId()
-//                    );
-//                }
-//                $process = false;
-//                break;
-//            }
-//
-//            // Prepare rewrites for generation
-//            $rootCategory = $this->getStoreRootCategory($category->getStoreId());
-//            $categoryIds = array($category->getId(), $rootCategory->getId());
-//            $this->_rewrites = $this->getResource()->prepareRewrites(
-//                $category->getStoreId(),
-//                $categoryIds,
-//                array_keys($products)
-//            );
-//
-//            foreach ($products as $product) {
-//                // Product always must have rewrite in root category
-//                $this->_refreshProductRewrite($product, $rootCategory);
-//                $this->_refreshProductRewrite($product, $category);
-//            }
-//            $firstIteration = false;
-//            unset($products);
-//        }
-//        $this->_rewrites = $originalRewrites;
-//        return $this;
-//    }
-//
-//    /**
-//     * Refresh category and childs rewrites
-//     * Called when reindexing all rewrites and as a reaction on category change that affects rewrites
-//     *
-//     * @param int $categoryId
-//     * @param int|null $storeId
-//     * @param bool $refreshProducts
-//     * @return Mage_Catalog_Model_Url
-//     */
-//    public function refreshCategoryRewrite($categoryId, $storeId = null, $refreshProducts = true)
-//    {
-//        if (is_null($storeId)) {
-//            foreach ($this->getStores() as $store) {
-//                $this->refreshCategoryRewrite($categoryId, $store->getId(), $refreshProducts);
-//            }
-//            return $this;
-//        }
-//
-//        $category = $this->getResource()->getCategory($categoryId, $storeId);
-//        if (!$category) {
-//            return $this;
-//        }
-//
-//        // Load all childs and refresh all categories
-//        $category = $this->getResource()->loadCategoryChilds($category);
-//        $categoryIds = array($category->getId());
-//        if ($category->getAllChilds()) {
-//            $categoryIds = array_merge($categoryIds, array_keys($category->getAllChilds()));
-//        }
-//        $this->_rewrites = $this->getResource()->prepareRewrites($storeId, $categoryIds);
-//        $this->_refreshCategoryRewrites($category, null, $refreshProducts);
-//
-//        unset($category);
-//        $this->_rewrites = array();
-//
-//        return $this;
-//    }
 
     /**
      * Refresh product rewrite urls for one store or all stores
@@ -653,66 +419,6 @@ class Ak_Locator_Model_Url
     {
         return Mage::helper('ak_locator/location')->getLocationUrlSuffix($storeId);
     }
-
-//    /**
-//     * Retrieve category rewrite sufix for store
-//     *
-//     * @param int $storeId
-//     * @return string
-//     */
-//    public function getCategoryUrlSuffix($storeId)
-//    {
-//        return Mage::helper('catalog/category')->getCategoryUrlSuffix($storeId);
-//    }
-
-//    /**
-//     * Get unique category request path
-//     *
-//     * @param Varien_Object $category
-//     * @param string $parentPath
-//     * @return string
-//     */
-//    public function getCategoryRequestPath($category, $parentPath)
-//    {
-//        $storeId = $category->getStoreId();
-//        $idPath  = $this->generatePath('id', null, $category);
-//        $suffix  = $this->getCategoryUrlSuffix($storeId);
-//
-//        if (isset($this->_rewrites[$idPath])) {
-//            $this->_rewrite = $this->_rewrites[$idPath];
-//            $existingRequestPath = $this->_rewrites[$idPath]->getRequestPath();
-//        }
-//
-//        if ($category->getUrlKey() == '') {
-//            $urlKey = $this->getCategoryModel()->formatUrlKey($category->getName());
-//        }
-//        else {
-//            $urlKey = $this->getCategoryModel()->formatUrlKey($category->getUrlKey());
-//        }
-//
-//        $categoryUrlSuffix = $this->getCategoryUrlSuffix($category->getStoreId());
-//        if (null === $parentPath) {
-//            $parentPath = $this->getResource()->getCategoryParentPath($category);
-//        }
-//        elseif ($parentPath == '/') {
-//            $parentPath = '';
-//        }
-//        $parentPath = Mage::helper('catalog/category')->getCategoryUrlPath($parentPath,
-//            true, $category->getStoreId());
-//
-//        $requestPath = $parentPath . $urlKey . $categoryUrlSuffix;
-//        if (isset($existingRequestPath) && $existingRequestPath == $requestPath . $suffix) {
-//            return $existingRequestPath;
-//        }
-//
-//        if ($this->_deleteOldTargetPath($requestPath, $idPath, $storeId)) {
-//            return $requestPath;
-//        }
-//
-//        return $this->getUnusedPath($category->getStoreId(), $requestPath,
-//            $this->generatePath('id', null, $category)
-//        );
-//    }
 
     /**
      * Check if current generated request path is one of the old paths
