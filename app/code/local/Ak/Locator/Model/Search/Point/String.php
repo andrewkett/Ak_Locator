@@ -27,6 +27,14 @@ class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point
 
     const TYPE = 'string';
 
+    const CACHE_ID = 'locator_geo';
+    const CACHE_TAG = 'LOCATOR_SEARCH_GEO';
+
+    protected $_cache;
+    protected $_isCacheEnabled;
+
+
+
     /**
      * Perform search
      *
@@ -65,28 +73,54 @@ class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point
         $cache = $this->getCache();
 
         $appendText = (Mage::getStoreConfig(self::XML_SEARCH_SHOULDAPPEND_PATH))?Mage::getStoreConfig(self::XML_SEARCH_APPENDTEXT_PATH):'';
-
         $query = $query.' '.$appendText;
 
-        if (!$result = unserialize($cache->load('locator_string_to_point_'.$query))) {
-
+        if (!$this->_isCacheEnabled() || !$result = unserialize($cache->load(self::CACHE_TAG.'_'.$query))) {
             $key = Mage::getStoreConfig(self::XML_SEARCH_APIKEY_PATH);
 
-            try{
+            try {
                 $geocoder = new GoogleGeocode($key);
                 $result = $geocoder->read($query);
-                $cache->save(serialize($result), 'locator_string_to_point_'.$query);
+                $cache->save(serialize($result), self::CACHE_TAG.'_'.$query, array(self::CACHE_TAG) );
 
-            }catch(Exception $e){
+            } catch(Exception $e) {
 
-                if(strpos($e->getMessage(), 'ZERO_RESULTS')){
+                if(strpos($e->getMessage(), 'ZERO_RESULTS')) {
                     throw new Ak_Locator_Model_Exception_Geocode($e->getMessage());
                 }
 
                 throw $e;
             }
         }
-        
+
         return $result;
-    }       
+    }
+
+
+    /**
+     *
+     * @return mixed
+     */
+    protected function getCache()
+    {
+        if(!$this->_cache) {
+            $this->_cache = Mage::app()->getCache();
+        }
+
+        return $this->_cache;
+    }
+
+
+    /**
+     * Check cache availability
+     *
+     * @return bool
+     */
+    protected function _isCacheEnabled()
+    {
+        if ($this->_isCacheEnabled === null) {
+            $this->_isCacheEnabled = Mage::app()->useCache(self::CACHE_ID);
+        }
+        return $this->_isCacheEnabled;
+    }
 }

@@ -112,6 +112,17 @@
                 </observers>
             </controller_front_init_before>
         </events>
+
+      <cache>
+          <types>
+              <locator_geo translate="label,description" module="ak_locator">
+                  <label>Locator Geocoding</label>
+                  <description>Cache Google geocoding results.</description>
+                  <tags>LOCATOR_SEARCH_GEO</tags>
+              </locator_geo>
+          </types>
+      </cache>
+
   </global>
   <adminhtml>
      <menu>

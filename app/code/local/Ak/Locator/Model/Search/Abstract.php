@@ -26,21 +26,7 @@ abstract class Ak_Locator_Model_Search_Abstract
 
     protected $_collection;
     protected $_model;
-    protected $_cache;
 
-    /**
-     *
-     * @return mixed
-     */
-    protected function getCache()
-    {
-        if(!$this->_cache){
-            $this->_cache = Mage::getSingleton('core/cache');
-        }
-
-        return $this->_cache;
-
-    }
 
     /**
      * Get the location collection used to search
