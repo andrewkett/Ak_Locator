@@ -6,7 +6,7 @@
     "homepage": "http://andrewkett.github.io/Ak_Locator/",
     "require": {
         "magento-hackathon/magento-composer-installer": "*",
-        "phayes/geophp": "dev-master"
+        "phayes/geophp": "*"
     },
     "repositories": [
         {
