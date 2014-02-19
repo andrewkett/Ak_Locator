@@ -15,7 +15,6 @@ This extension can be installed a few different ways:
 add a composer.json file to your root directory
 
     {
-        "minimum-stability":"dev",
         "repositories": [
             {
               "type":"composer",
@@ -23,7 +22,7 @@ add a composer.json file to your root directory
             }
         ],
         "require": {
-            "andrewkett/locator" : "dev-master"
+            "andrewkett/locator" : "0.0.8"
         },
         "extra":{
             "magento-root-dir":"./",
@@ -35,7 +34,6 @@ then
 
     composer.phar install
 
-If you are using composer and your dependencies are not being installed to the lib directory, copy the [geoPHP](https://github.com/phayes/geoPHP) directory into your lib directory
 
 ### Download and install manually.
 
