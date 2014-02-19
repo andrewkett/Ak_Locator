@@ -20,10 +20,6 @@ add a composer.json file to your root directory
             {
               "type":"composer",
               "url":"http://packages.firegento.com"
-            },
-            {
-                "type": "git",
-                "url": "git@github.com:andrewkett/Ak_Locator.git"
             }
         ],
         "require": {
