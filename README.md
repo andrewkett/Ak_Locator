@@ -23,7 +23,7 @@ add a composer.json file to your root directory
             }
         ],
         "require": {
-            "magebrews/locator" : "dev-master"
+            "andrewkett/locator" : "dev-master"
         },
         "extra":{
             "magento-root-dir":"./",
