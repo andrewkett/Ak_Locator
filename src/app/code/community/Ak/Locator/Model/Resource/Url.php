@@ -257,13 +257,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
                 $entityType = Mage::getModel('eav/config')->getEntityType('ak_locator_location');
                 $entityTypeId = $entityType->getEntityTypeId();
-
-
                 $suffix = '.html';
-
-                echo $rewriteData['request_path'];
-
-
                 $rewriteData['request_path'] = str_replace($suffix, '', $rewriteData['request_path']);
 
                 $enterpriseData = array(
