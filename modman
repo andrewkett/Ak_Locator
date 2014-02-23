@@ -1,18 +1,18 @@
 #extension files
-app/etc/modules/*                                           app/etc/modules/
-app/code/local/Ak/Locator                            	    app/code/community/Ak/Locator
+src/app/etc/modules/*                                           app/etc/modules/
+src/app/code/community/Ak/Locator                            	app/code/community/Ak/Locator
 
 #template files
-app/design/adminhtml/default/default/layout/locator.xml     app/design/adminhtml/default/default/layout/locator.xml
-app/design/adminhtml/default/default/template/locator       app/design/adminhtml/default/default/template/locator
-app/design/frontend/base/default/layout/locator.xml         app/design/frontend/base/default/layout/locator.xml
-app/design/frontend/base/default/template/locator           app/design/frontend/base/default/template/locator
-app/design/frontend/base/iphone/layout/locator.xml          app/design/frontend/base/iphone/layout/locator.xml
-app/design/frontend/base/iphone/template/locator            app/design/frontend/base/iphone/template/locator
+src/app/design/adminhtml/default/default/layout/locator.xml     app/design/adminhtml/default/default/layout/locator.xml
+src/app/design/adminhtml/default/default/template/locator       app/design/adminhtml/default/default/template/locator
+src/app/design/frontend/base/default/layout/locator.xml         app/design/frontend/base/default/layout/locator.xml
+src/app/design/frontend/base/default/template/locator           app/design/frontend/base/default/template/locator
+src/app/design/frontend/base/iphone/layout/locator.xml          app/design/frontend/base/iphone/layout/locator.xml
+src/app/design/frontend/base/iphone/template/locator            app/design/frontend/base/iphone/template/locator
 
 #js
-js/locator                                                  js/locator
+src/js/locator                                                  js/locator
 
 #skin files
-skin/adminhtml/default/default/locator                      skin/adminhtml/default/default/locator
-skin/frontend/base/default/locator                          skin/frontend/base/default/locator
+src/skin/adminhtml/default/default/locator                      skin/adminhtml/default/default/locator
+src/skin/frontend/base/default/locator                          skin/frontend/base/default/locator
