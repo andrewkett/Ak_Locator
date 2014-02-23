@@ -7,7 +7,7 @@ php:
   - 5.3
 
 before_script:
-  - cp ./src/* ./
+  - cp -r ./src/* ./
   - wget -O modgit https://raw.github.com/jreinke/modgit/master/modgit
   - chmod +x modgit
   - sudo mv modgit /usr/local/bin
