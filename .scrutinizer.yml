@@ -1,6 +1,7 @@
 tools:
     php_cpd: false
-    php_pdepend: true
+    php_pdepend:
+        enabled: true
         filter:
             paths: ["src/app/*"]
     js_hint: false
