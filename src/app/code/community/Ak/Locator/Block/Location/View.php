@@ -58,7 +58,8 @@ class Ak_Locator_Block_Location_View extends Mage_Core_Block_Template
             $initLocator->setTemplate('locator/page/html/head/init-locator.phtml');
 
             $initSearch = $layout->createBlock('core/template');
-            $initSearch->setTemplate('locator/page/html/head/init-store.phtml')->setData('locations', $this->getLocations());
+            $initSearch->setTemplate('locator/page/html/head/init-store.phtml')
+                       ->setData('locations', $this->getLocations());
 
             $headBlock->append($initLocator);
             $headBlock->append($initSearch);
@@ -66,11 +67,15 @@ class Ak_Locator_Block_Location_View extends Mage_Core_Block_Template
 
         
 
-        $listBlock = $this->getLayout()->createBlock('ak_locator/location_info')->setData('locations', $this->getLocations());
-        $mapBlock = $this->getLayout()->createBlock('ak_locator/location_map')->setData('locations', $this->getLocations());
+        $listBlock = $this->getLayout()->createBlock('ak_locator/location_info')
+                                       ->setData('locations', $this->getLocations());
+        $mapBlock = $this->getLayout()->createBlock('ak_locator/location_map')
+                                      ->setData('locations', $this->getLocations());
 
 
-        $nearbyBlock = $this->getLayout()->createBlock('ak_locator/search_list_point')->setData('locations', $this->getNearbyLocations())->setTemplate('locator/location/others.phtml');
+        $nearbyBlock = $this->getLayout()->createBlock('ak_locator/search_list_point')
+                                         ->setData('locations', $this->getNearbyLocations())
+                                         ->setTemplate('locator/location/others.phtml');
 
 
         $this->setChild('others', $nearbyBlock);

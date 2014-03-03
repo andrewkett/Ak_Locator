@@ -566,11 +566,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
     }
 
     /**
-     * Remove unused rewrites for locations - called after we created all needed rewrites for product and know the categories
-     * where the product is contained ($excludeCategoryIds), so we can remove all invalid product rewrites that have other category ids
-     *
-     * Notice: this routine is not identical to clearCategoryProduct(), because after checking all categories this one removes rewrites
-     * for product still contained within categories.
+     * Remove unused rewrites for locations
      *
      * @param int $locationId Product entity Id
      * @param int $storeId Store Id for rewrites
@@ -634,7 +630,8 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
     /**
      * Finds and deletes old rewrites for store
-     * a) product rewrites left from products that once belonged to this site, but then deleted or just removed from website
+     * a) product rewrites left from products that once belonged to this site,
+     *    but then deleted or just removed from website
      *
      * @param int $storeId
      * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Url

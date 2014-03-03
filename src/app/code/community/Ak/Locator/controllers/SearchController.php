@@ -56,7 +56,9 @@ class Ak_Locator_SearchController extends Mage_Core_Controller_Front_Action
 
         } catch (Exception $e) {
 
-            if ($e instanceof Ak_Locator_Model_Exception_Geocode || $e instanceof Ak_Locator_Model_Exception_NoResults) {
+            if ($e instanceof Ak_Locator_Model_Exception_Geocode
+                || $e instanceof Ak_Locator_Model_Exception_NoResults
+            ) {
                 $this->_forward('noresults');
                 return;
             }

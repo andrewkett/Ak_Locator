@@ -43,7 +43,9 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
                     $model->setData($data)->setId($id);
                 }
             } else {
-                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('ak_locator')->__('Example does not exist'));
+                Mage::getSingleton('adminhtml/session')->addError(
+                    Mage::helper('ak_locator')->__('Example does not exist')
+                );
                 $this->_redirect('*/*/');
             }
         }
@@ -68,7 +70,9 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
                 $model = Mage::getModel('ak_locator/location');
                 $model->setId($id);
                 $model->delete();
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('ak_locator')->__('The example has been deleted.'));
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('ak_locator')->__('The example has been deleted.')
+                );
                 $this->_redirect('*/*/');
                 return;
             } catch (Exception $e) {
@@ -77,7 +81,9 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
                 return;
             }
         }
-        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Unable to find the example to delete.'));
+        Mage::getSingleton('adminhtml/session')->addError(
+            Mage::helper('adminhtml')->__('Unable to find the example to delete.')
+        );
         $this->_redirect('*/*/');
     }
 
@@ -102,7 +108,9 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
                     Mage::throwException(Mage::helper('ak_locator')->__('Error saving location'));
                 }
 
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('ak_locator')->__('Location was successfully saved.'));
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('ak_locator')->__('Location was successfully saved.')
+                );
                 Mage::getSingleton('adminhtml/session')->setFormData(false);
 
                 // The following line decides if it is a "save" or "save and continue"

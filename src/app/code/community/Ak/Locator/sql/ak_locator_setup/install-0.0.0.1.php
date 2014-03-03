@@ -144,28 +144,8 @@ $table = $installer->getConnection()
         'primary'   => true,
         ), 'Website Id')
     ->addIndex($installer->getIdxName('ak_locator/form_attribute', array('attribute_id')), array('attribute_id'))
-    // ->addForeignKey(
-    //     $installer->getFkName('ak_locator/eav_attribute_website', 'attribute_id', 'eav/attribute', 'attribute_id'),
-    //     'attribute_id', $installer->getTable('eav/attribute'), 'attribute_id',
-    //     Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
-    // ->addForeignKey($installer->getFkName('ak_locator/eav_attribute_website', 'website_id', 'core/website', 'website_id'),
-    //     'website_id', $installer->getTable('core/website'), 'website_id',
-    //     Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
     ->setComment('Location Form Attribute');
 $installer->getConnection()->createTable($table);
-
-// @todo convert to new code as above
-// $installer->run("
-// CREATE TABLE `{$installer->getTable('ak_locator/form_attribute')}` (
-//   `form_code` char(32) NOT NULL,
-//   `attribute_id` smallint UNSIGNED NOT NULL,
-//   PRIMARY KEY(`form_code`, `attribute_id`),
-//   KEY `IDX_LOCATION_FORM_ATTRIBUTE_ATTRIBUTE` (`attribute_id`),
-//   CONSTRAINT `FK_LOCATION_FORM_ATTRIBUTE_ATTRIBUTE` FOREIGN KEY (`attribute_id`) REFERENCES `{$installer->getTable('eav_attribute')}` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE
-// ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Location attributes/forms relations';
-// ");
-
-
 
 
 /* Create table 'ak_locator/location_entity_varchar' */

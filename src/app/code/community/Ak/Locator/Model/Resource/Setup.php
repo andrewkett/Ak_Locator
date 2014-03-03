@@ -95,7 +95,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup
         return array(
             Ak_Locator_Model_Location::ENTITY => array(
                 'entity_model' => 'ak_locator/location',
-                'table' => 'ak_locator/location', /* Maps to the config.xml > global > models > ak_locator_resource > entities > location */
+                'table' => 'ak_locator/location',
                 'attribute_model'                => 'ak_locator/attribute',
                 'increment_model'                => 'eav/entity_increment_numeric',
                 'additional_attribute_table'     => 'ak_locator/eav_attribute',

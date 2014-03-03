@@ -78,7 +78,10 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
             }
         }
 
-        $this->setData('directions_link', Mage::helper('core/url')->addRequestParam('http://maps.google.com/maps', $params));
+        $this->setData(
+            'directions_link',
+            Mage::helper('core/url')->addRequestParam('http://maps.google.com/maps', $params)
+        );
     }
 
 
