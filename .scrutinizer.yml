@@ -1,6 +1,25 @@
 tools:
-#    php_cpd: true
-    php_pdepend: true
+    php_cpd: false
+    php_pdepend: false
     js_hint: false
-    php_mess_detector: true
-    php_code_sniffer: true
+    php_code_sniffer:
+        extensions:
+            - php
+        command: phpcs
+        enabled: true
+        filter:
+            paths: ["src/app/*"]
+        config:
+          ruleset: rulesets/phpcs.xml
+    php_mess_detector:
+        enabled: true
+        config:
+           # ruleset: rulesets/phpmd-ruleset.xml
+            design_rules: { eval_expression: false }
+        filter:
+            paths: ["src/app/*"]
+
+    php_loc:
+        enabled: true
+        excluded_dirs: ["src/app/*"]
+
