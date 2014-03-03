@@ -25,5 +25,5 @@ tools:
     php_loc:
         enabled: true
         excluded_dirs: ["src/app/*"]
-    php_analyzer: true
+#    php_analyzer: true # cannot use as composer dependencies can't be found
 
