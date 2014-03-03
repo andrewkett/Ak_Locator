@@ -15,8 +15,8 @@
  */
 
 /**
-*
-*/
+ *
+ */
 class Ak_Locator_SearchController extends Mage_Core_Controller_Front_Action
 {
     /**
@@ -25,7 +25,7 @@ class Ak_Locator_SearchController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
 
-        try{
+        try {
             $this->loadLayout();
 
             /** @var Ak_Locator_Block_Search $search */
@@ -54,7 +54,7 @@ class Ak_Locator_SearchController extends Mage_Core_Controller_Front_Action
                 $this->renderLayout();
             }
 
-        }catch( Exception $e ) {
+        } catch (Exception $e) {
 
             if ($e instanceof Ak_Locator_Model_Exception_Geocode || $e instanceof Ak_Locator_Model_Exception_NoResults) {
                 $this->_forward('noresults');
@@ -71,7 +71,7 @@ class Ak_Locator_SearchController extends Mage_Core_Controller_Front_Action
     public function infowindowAction()
     {
         $this->loadLayout();
-        if(Mage::helper('ak_locator')->browserCacheEnabled()){
+        if (Mage::helper('ak_locator')->browserCacheEnabled()) {
             $this->setCacheHeaders();
         }
         $this->renderLayout();
@@ -83,7 +83,7 @@ class Ak_Locator_SearchController extends Mage_Core_Controller_Front_Action
     public function infowindowsAction()
     {
         $this->loadLayout();
-        if(Mage::helper('ak_locator')->browserCacheEnabled()){
+        if (Mage::helper('ak_locator')->browserCacheEnabled()) {
             $this->setCacheHeaders();
         }
         $this->renderLayout();
@@ -117,6 +117,4 @@ class Ak_Locator_SearchController extends Mage_Core_Controller_Front_Action
         header_remove('Pragma');
         header_remove('Cache-Control');
     }
-
-
 }

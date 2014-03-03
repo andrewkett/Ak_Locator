@@ -34,7 +34,6 @@ class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point
     protected $_isCacheEnabled;
 
 
-
     /**
      * Perform search
      *
@@ -81,11 +80,11 @@ class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point
             try {
                 $geocoder = new GoogleGeocode($key);
                 $result = $geocoder->read($query);
-                $cache->save(serialize($result), self::CACHE_TAG.'_'.$query, array(self::CACHE_TAG) );
+                $cache->save(serialize($result), self::CACHE_TAG.'_'.$query, array(self::CACHE_TAG));
 
-            } catch(Exception $e) {
+            } catch (Exception $e) {
 
-                if(strpos($e->getMessage(), 'ZERO_RESULTS')) {
+                if (strpos($e->getMessage(), 'ZERO_RESULTS')) {
                     throw new Ak_Locator_Model_Exception_Geocode($e->getMessage());
                 }
 
@@ -103,7 +102,7 @@ class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point
      */
     protected function getCache()
     {
-        if(!$this->_cache) {
+        if (!$this->_cache) {
             $this->_cache = Mage::app()->getCache();
         }
 

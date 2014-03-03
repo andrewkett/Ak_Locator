@@ -19,8 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-class Ak_Locator_Model_Search_Area
-    extends Ak_Locator_Model_Search_Abstract
+class Ak_Locator_Model_Search_Area extends Ak_Locator_Model_Search_Abstract
 {
     const TYPE = 'area';
 
@@ -55,13 +54,13 @@ class Ak_Locator_Model_Search_Area
      * @param string name of the administrative area
      * @return Ak_Locator_Model_Resource_Location_Collection
      */
-    public function areaSearch($params){
-        
+    public function areaSearch($params)
+    {
         $collection = $this->getSearchCollection();
 
         if (isset($params['a'])) {
-            $params['administrative_area'] = $params['a']; 
-        } 
+            $params['administrative_area'] = $params['a'];
+        }
         
         if (isset($params['country'])) {
             $collection->addAttributeToFilter('country', $params['country']);
@@ -80,5 +79,5 @@ class Ak_Locator_Model_Search_Area
         
         $collection->addAttributeToSelect('*');
         return $collection;
-    }  
+    }
 }

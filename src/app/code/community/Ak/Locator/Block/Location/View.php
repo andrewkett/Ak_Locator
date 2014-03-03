@@ -32,7 +32,7 @@ class Ak_Locator_Block_Location_View extends Mage_Core_Block_Template
     {
         $location = $this->getLocation();
 
-        if(!$location){
+        if (!$location) {
             return;
         }
 
@@ -90,11 +90,11 @@ class Ak_Locator_Block_Location_View extends Mage_Core_Block_Template
     {
         if (!Mage::registry('locator_locations')) {
 
-          $id = $this->getRequest()->getParam('id');
+            $id = $this->getRequest()->getParam('id');
 
-          $locations = Mage::getModel('ak_locator/location')->getCollection()
-            ->addAttributeToSelect('*')
-            ->addAttributeToFilter('entity_id',$id);
+            $locations = Mage::getModel('ak_locator/location')->getCollection()
+                ->addAttributeToSelect('*')
+                ->addAttributeToFilter('entity_id', $id);
 
             Mage::register('locator_locations', $locations);
         }
@@ -109,7 +109,7 @@ class Ak_Locator_Block_Location_View extends Mage_Core_Block_Template
      */
     public function getLocation()
     {
-      return $this->getLocations()->getFirstItem();
+        return $this->getLocations()->getFirstItem();
     }
 
 

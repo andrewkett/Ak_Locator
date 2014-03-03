@@ -54,5 +54,4 @@ class Ak_Locator_Model_Location_Attribute_Backend_Image extends Mage_Eav_Model_E
             return;
         }
     }
-
 }

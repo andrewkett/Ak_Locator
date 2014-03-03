@@ -15,7 +15,6 @@
  */
 
 
-
 /**
  * Location url rewrite resource model
  */
@@ -34,21 +33,21 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      *
      * @var array
      */
-    protected $_locationAttributes           = array();
+    protected $_locationAttributes = array();
 
     /**
      * Limit locations for select
      *
      * @var int
      */
-    protected $_locationLimit                = 250;
+    protected $_locationLimit = 250;
 
     /**
      * Cache of root category children ids
      *
      * @var array
      */
-    protected $_rootChildrenIds             = array();
+    protected $_rootChildrenIds = array();
 
     /**
      * Load core Url rewrite model
@@ -103,7 +102,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
             ->where('id_path = :id_path');
         $bind = array(
             'store_id' => (int)$storeId,
-            'id_path'  => $idPath
+            'id_path' => $idPath
         );
         $row = $adapter->fetchRow($select, $bind);
 
@@ -131,8 +130,8 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
             ->where('store_id = :store_id')
             ->where('request_path = :request_path');
         $bind = array(
-            'request_path'  => $requestPath,
-            'store_id'      => (int)$storeId
+            'request_path' => $requestPath,
+            'store_id' => (int)$storeId
         );
         $row = $adapter->fetchRow($select, $bind);
 
@@ -172,8 +171,8 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
                 'regexp' => '^' . preg_quote($prefix) . '[0-9]*' . preg_quote($suffix) . '$'
             )));
         $bind = array(
-            'store_id'            => (int)$storeId,
-            'request_path'        => $prefix . '%' . $suffix,
+            'store_id' => (int)$storeId,
+            'request_path' => $prefix . '%' . $suffix,
         );
 
         return (int)$adapter->fetchOne($select, $bind);
@@ -212,9 +211,9 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      */
     public function prepareRewrites($storeId, $locationIds = null)
     {
-        $rewrites   = array();
-        $adapter    = $this->_getWriteAdapter();
-        $select     = $adapter->select()
+        $rewrites = array();
+        $adapter = $this->_getWriteAdapter();
+        $select = $adapter->select()
             ->from($this->getMainTable())
             ->where('store_id = :store_id')
             ->where('is_system = ?', 1);
@@ -251,7 +250,9 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
             $adapter->insertOnDuplicate($this->getMainTable(), $rewriteData);
 
-            if(Mage::getConfig ()->getModuleConfig ( 'Enterprise_Enterprise' ) && Mage::getConfig ()->getModuleConfig ( 'Enterprise_UrlRewrite' )) {
+            if (Mage::getConfig()->getModuleConfig('Enterprise_Enterprise')
+                && Mage::getConfig()->getModuleConfig('Enterprise_UrlRewrite')
+            ) {
 
                 //@todo - this isn't a good way of achieving this, need to investigate 1.13 enterprise rewrites more
 
@@ -269,16 +270,16 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
                     'entity_type' => $entityTypeId
                 );
 
-                foreach($enterpriseData as $data){
-                    if($data == '' || $data == null){
+                foreach ($enterpriseData as $data) {
+                    if ($data == '' || $data == null) {
                         //can't save this one as the data isn't correct
-                        Mage::log('Cannot create rewrite as data is bad, data: '.print_r($enterpriseData,1));
+                        Mage::log('Cannot create rewrite as data is bad, data: ' . print_r($enterpriseData, 1));
                         return;
                     }
                 }
 
-                $adapter->insertOnDuplicate($this->getTable('enterprise_urlrewrite/url_rewrite'),$enterpriseData);
-            }else{
+                $adapter->insertOnDuplicate($this->getTable('enterprise_urlrewrite/url_rewrite'), $enterpriseData);
+            } else {
                 //@todo, shouldn't need to index both url tables, put community code here
             }
 
@@ -343,9 +344,9 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
             $this->_locationAttributes[$attributeCode] = array(
                 'entity_type_id' => $attribute->getEntityTypeId(),
-                'attribute_id'   => $attribute->getId(),
-                'table'          => $attribute->getBackend()->getTable(),
-                'is_global'      => $attribute->getIsGlobal()
+                'attribute_id' => $attribute->getId(),
+                'table' => $attribute->getBackend()->getTable(),
+                'is_global' => $attribute->getIsGlobal()
             );
             unset($attribute);
         }
@@ -353,11 +354,11 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         $attributeTable = $this->_locationAttributes[$attributeCode]['table'];
 
         $attributeData = array(
-            'entity_type_id'    => $this->_locationAttributes[$attributeCode]['entity_type_id'],
-            'attribute_id'      => $this->_locationAttributes[$attributeCode]['attribute_id'],
-            'store_id'          => $location->getStoreId(),
-            'entity_id'         => $location->getId(),
-            'value'             => $location->getData($attributeCode)
+            'entity_type_id' => $this->_locationAttributes[$attributeCode]['entity_type_id'],
+            'attribute_id' => $this->_locationAttributes[$attributeCode]['attribute_id'],
+            'store_id' => $location->getStoreId(),
+            'entity_id' => $location->getId(),
+            'value' => $location->getData($attributeCode)
         );
 
         if ($this->_locationAttributes[$attributeCode]['is_global'] || $location->getStoreId() == 0) {
@@ -417,9 +418,9 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 
             $this->_locationAttributes[$attributeCode] = array(
                 'entity_type_id' => $attribute->getEntityTypeId(),
-                'attribute_id'   => $attribute->getId(),
-                'table'          => $attribute->getBackend()->getTable(),
-                'is_global'      => $attribute->getIsGlobal()
+                'attribute_id' => $attribute->getId(),
+                'table' => $attribute->getBackend()->getTable(),
+                'is_global' => $attribute->getIsGlobal()
             );
             unset($attribute);
         }
@@ -481,17 +482,17 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      */
     protected function _getLocations($locationIds, $storeId, $entityId, &$lastEntityId)
     {
-        $locations   = array();
-        $websiteId  = Mage::app()->getStore($storeId)->getWebsiteId();
-        $adapter    = $this->_getReadAdapter();
+        $locations = array();
+        $websiteId = Mage::app()->getStore($storeId)->getWebsiteId();
+        $adapter = $this->_getReadAdapter();
         if ($locationIds !== null) {
             if (!is_array($locationIds)) {
                 $locationIds = array($locationIds);
             }
         }
         $bind = array(
-           // 'website_id' => (int)$websiteId,
-            'entity_id'  => (int)$entityId,
+            // 'website_id' => (int)$websiteId,
+            'entity_id' => (int)$entityId,
         );
         $select = $adapter->select()
             ->useStraightJoin(true)
@@ -601,11 +602,11 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      */
     public function clearStoreLocationsInvalidRewrites($storeId, $locationId = null)
     {
-        $store   = $this->getStores($storeId);
+        $store = $this->getStores($storeId);
         $adapter = $this->_getReadAdapter();
-        $bind    = array(
+        $bind = array(
             'website_id' => (int)$store->getWebsiteId(),
-            'store_id'   => (int)$storeId
+            'store_id' => (int)$storeId
         );
         $select = $adapter->select()
             ->from(array('rewrite' => $this->getMainTable()), $this->getIdFieldName());
@@ -614,7 +615,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
 //                'rewrite.location_id = website.location_id AND website.website_id = :website_id',
 //                array()
 //            )->where('rewrite.store_id = :store_id');
-            //->where('rewrite.category_id IS NULL');
+        //->where('rewrite.category_id IS NULL');
         if ($locationId) {
             $select->where('rewrite.location_id IN (?)', $locationId);
         } else {
@@ -680,23 +681,23 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
         $bind = array();
         foreach ($locations as $locationId => $storeId) {
             $locationBind = 'location_id' . $locationId;
-            $storeBind   = 'store_id' . $storeId;
-            $cond  = '(' . implode(' AND ', array(
+            $storeBind = 'store_id' . $storeId;
+            $cond = '(' . implode(' AND ', array(
                     'i.location_id = :' . $locationBind,
                     'i.store_id = :' . $storeBind,
                     //'i.category_id = :' . $catBind,
                 )) . ')';
             $bind[$locationBind] = $locationId;
-            $bind[$storeBind]   = $storeId;
+            $bind[$storeBind] = $storeId;
             $select->orWhere($cond);
         }
 
         $rowSet = $adapter->fetchAll($select, $bind);
         foreach ($rowSet as $row) {
             $result[$row['location_id']] = array(
-                'store_id'      => $row['store_id'],
-                'visibility'    => $row['visibility'],
-                'url_rewrite'   => $row['request_path'],
+                'store_id' => $row['store_id'],
+                'visibility' => $row['visibility'],
+                'url_rewrite' => $row['request_path'],
             );
         }
 
@@ -759,7 +760,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
      */
     public function deleteRewriteRecord($requestPath, $storeId, $rp = false)
     {
-        $conditions =  array(
+        $conditions = array(
             'store_id = ?' => $storeId,
             'request_path = ?' => $requestPath,
         );

@@ -75,7 +75,7 @@ class Ak_Locator_Model_Resource_Location_Collection extends Mage_Eav_Model_Entit
      *
      * @return mixed
      */
-    public function toOptionArray($valueField='entity_id', $labelField='title', $additional=array())
+    public function toOptionArray($valueField = 'entity_id', $labelField = 'title', $additional = array())
     {
         return $this->_toOptionArray($valueField, $labelField, $additional);
     }

@@ -74,10 +74,10 @@ class Ak_Locator_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $path = array();
 
-        if ($id=Mage::app()->getRequest()->getParam('id')) {
+        if ($id = Mage::app()->getRequest()->getParam('id')) {
             $locations = Mage::getModel('ak_locator/location')->getCollection()
                 ->addAttributeToSelect('title')
-                ->addAttributeToFilter('entity_id',$id)
+                ->addAttributeToFilter('entity_id', $id)
                 ->load();
             $items = $locations->getItems();
             $location = reset($items);

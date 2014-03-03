@@ -62,7 +62,7 @@ $formAttributes = array(
 
 $eavConfig = Mage::getSingleton('eav/config');
 
-foreach($formAttributes as $code){
+foreach ($formAttributes as $code) {
     $attribute = $eavConfig->getAttribute(Ak_Locator_Model_Location::ENTITY, $code);
     $attribute->setData('used_in_forms', array('location_edit','location_create'));
     $attribute->save();

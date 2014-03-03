@@ -19,8 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-class Ak_Locator_Model_Search
-    extends Ak_Locator_Model_Search_Abstract
+class Ak_Locator_Model_Search extends Ak_Locator_Model_Search_Abstract
 {
     const XML_SEARCH_OVERRIDES_PATH = "locator_settings/search/overrides_enabled";
     const XML_SEARCH_USEDEFAULT_PATH = "locator_settings/search/use_default_search";
@@ -65,6 +64,7 @@ class Ak_Locator_Model_Search
     /**
      * Find appropriate search class based on params passed
      *
+     * @param array $params
      * @return Ak_Locator_Model_Search_Abstract
      */
     protected function getSearchClass(Array $params = null)
@@ -95,11 +95,11 @@ class Ak_Locator_Model_Search
 
             return Mage::getModel('ak_locator/search_point_string');
 
-        } else if ($this->isLatLongSearch($params)) {
+        } elseif ($this->isLatLongSearch($params)) {
 
             return Mage::getModel('ak_locator/search_point_latlong');
 
-        } else if ($this->isAreaSearch($params)) {
+        } elseif ($this->isAreaSearch($params)) {
 
             return Mage::getModel('ak_locator/search_area');
 
@@ -148,7 +148,11 @@ class Ak_Locator_Model_Search
                 $address = Mage::getModel('customer/address')->load($addressId);
                 $street = $address->getStreet();
 
-                $search = @$street[0].' '.@$street[1].', '.$address->getCity().', '.$address->getRegion().', '.$address->getPostcode().', '.$address->getCountry();
+                $search = @$street[0].' '.@$street[1].', '
+                                         .$address->getCity().', '
+                                         .$address->getRegion().', '
+                                         .$address->getPostcode().', '
+                                         .$address->getCountry();
 
                 $newParams = array('s'=>$search, 'distance'=>300);
                 $searchModel = $this->getSearchClass($newParams);

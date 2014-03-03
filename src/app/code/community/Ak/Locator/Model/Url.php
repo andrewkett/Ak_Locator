@@ -176,8 +176,7 @@ class Ak_Locator_Model_Url
 
         if ($location->getUrlKey() == '') {
             $urlKey = $this->getLocationModel()->formatUrlKey($location->getTitle());
-        }
-        else {
+        } else {
             $urlKey = $this->getLocationModel()->formatUrlKey($location->getUrlKey());
         }
 
@@ -333,8 +332,7 @@ class Ak_Locator_Model_Url
             if ($this->_rewrites[$idPath]->getRequestPath() == $requestPath) {
                 return $requestPath;
             }
-        }
-        else {
+        } else {
             $this->_rewrite = null;
         }
 
@@ -361,8 +359,7 @@ class Ak_Locator_Model_Url
             return $match[1]
             . (isset($match[3]) ? ($match[3]+1) : '1')
             . $match[4];
-        }
-        else {
+        } else {
             return $requestPath;
         }
     }
@@ -442,7 +439,9 @@ class Ak_Locator_Model_Url
                 && strpos($existingRequestPath, $requestPath) === 0
             ) {
                 $existingRequestPath = preg_replace(
-                    '/^' . preg_quote($requestPath, '/') . '/', '', $existingRequestPath
+                    '/^' . preg_quote($requestPath, '/') . '/',
+                    '',
+                    $existingRequestPath
                 );
                 if (preg_match('#^-([0-9]+)$#i', $existingRequestPath)) {
                     return $this->_rewrites[$idPath]->getRequestPath();
@@ -500,14 +499,15 @@ class Ak_Locator_Model_Url
 
             if ($location->getUrlKey() == '') {
                 $urlKey = $this->getLocationModel()->formatUrlKey($location->getName());
-            }
-            else {
+            } else {
                 $urlKey = $this->getLocationModel()->formatUrlKey($location->getUrlKey());
             }
             $locationUrlSuffix  = $this->getLocationUrlSuffix($location->getStoreId());
 
             // for product only
-            return $this->getUnusedPath($location->getStoreId(), $urlKey . $locationUrlSuffix,
+            return $this->getUnusedPath(
+                $location->getStoreId(),
+                $urlKey . $locationUrlSuffix,
                 $this->generatePath('id', $location)
             );
         }

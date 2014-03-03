@@ -20,5 +20,4 @@ class Ak_Locator_Model_Resource_Search_Override_Collection extends Mage_Eav_Mode
     {
         $this->_init('ak_locator/search_override');
     }
-
 }

@@ -24,8 +24,8 @@ class Ak_Locator_Block_Search_Infowindow extends Mage_Core_Block_Template
         $this->setTemplate('locator/search/no-results.phtml');
     }
 
-    public function getLocation(){
-
+    public function getLocation()
+    {
         if (!isset($this->_location)) {
             $this->setLocation(Mage::getModel('ak_locator/location')->load(Mage::app()->getRequest()->getParam('id')));
         }
@@ -38,5 +38,4 @@ class Ak_Locator_Block_Search_Infowindow extends Mage_Core_Block_Template
         $this->_location = $location;
         return $this;
     }
-
 }

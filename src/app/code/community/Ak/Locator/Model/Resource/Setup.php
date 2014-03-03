@@ -14,7 +14,8 @@
  * @link      http://andrewkett.github.io/Ak_Locator/
  */
 
-class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
+class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup
+{
 
     /**
      * Prepare location attribute values to save in additional table
@@ -52,7 +53,8 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
         $select = $this->getConnection()->select()
             ->from(
                 array('ea' => $this->getTable('eav/attribute')),
-                array('entity_type_id', 'attribute_code', 'attribute_id'))
+                array('entity_type_id', 'attribute_code', 'attribute_id')
+            )
             ->where('ea.entity_type_id IN(?)', array($location));
 
         foreach ($this->getConnection()->fetchAll($select) as $row) {
@@ -88,8 +90,8 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
     }
 
 
-
-    public function getDefaultEntities() {
+    public function getDefaultEntities()
+    {
         return array(
             Ak_Locator_Model_Location::ENTITY => array(
                 'entity_model' => 'ak_locator/location',
@@ -156,7 +158,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'label' => 'Administrative Area',
                       'type' => 'varchar',
                       'input' => 'text',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'sub_administrative_area' => array(
@@ -165,7 +167,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'type' => 'varchar',
                       'input' => 'text',
                       'default' => '',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'locality' => array(
@@ -174,7 +176,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'input' => 'text',
                       'label' => 'Locality',
                       'default' => '',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'dependent_locality' => array(
@@ -183,7 +185,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'type' => 'varchar',
                       'input' => 'text',
                       'default' => '',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'postal_code' => array(
@@ -192,7 +194,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'type' => 'varchar',
                       'input' => 'text',
                       'default' => '',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'thoroughfare' => array(
@@ -201,7 +203,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'type' => 'varchar',
                       'input' => 'text',
                       'default' => '',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'premise' => array(
@@ -210,7 +212,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'type' => 'varchar',
                       'input' => 'text',
                       'default' => '',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'sub_premise' => array(
@@ -219,7 +221,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'type' => 'varchar',
                       'input' => 'text',
                       'default' => '',
-                      'required' => FALSE,
+                      'required' => false,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
                     'data' => array(
@@ -227,8 +229,8 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                       'label' => 'Additional Data',
                       'type' => 'varchar',
                       'input' => 'text',
-                      'required' => FALSE,
-                      'serialize' => TRUE,
+                      'required' => false,
+                      'serialize' => true,
                       'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
                     ),
 
@@ -263,8 +265,5 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup {
                 )
             )
         );
-
-
-
     }
 }

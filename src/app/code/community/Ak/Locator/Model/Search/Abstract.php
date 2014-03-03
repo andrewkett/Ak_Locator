@@ -19,9 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-abstract class Ak_Locator_Model_Search_Abstract
-         extends Mage_Core_Model_Abstract
-         implements Ak_Locator_Model_Search_Interface
+abstract class Ak_Locator_Model_Search_Abstract extends Mage_Core_Model_Abstract implements Ak_Locator_Model_Search_Interface
 {
 
     protected $_collection;
@@ -47,8 +45,12 @@ abstract class Ak_Locator_Model_Search_Abstract
      */
     public function getCollection()
     {
-        if(!$this->_collection){
-             $this->setCollection($this->getModel()->getCollection()->addAttributeToFilter('is_enabled','1'));
+        if (!$this->_collection) {
+             $this->setCollection(
+                 $this->getModel()
+                      ->getCollection()
+                      ->addAttributeToFilter('is_enabled', '1')
+             );
         }
 
         return $this->_collection;
@@ -61,7 +63,7 @@ abstract class Ak_Locator_Model_Search_Abstract
      */
     public function getModel()
     {
-        if(!$this->_model){
+        if (!$this->_model) {
             $this->setModel(Mage::getModel('ak_locator/location'));
         }
 
@@ -92,5 +94,4 @@ abstract class Ak_Locator_Model_Search_Abstract
 
         return $this;
     }
-
 }

@@ -19,8 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-class Ak_Locator_Model_Search_Point_Latlong
-    extends Ak_Locator_Model_Search_Point_Abstract
+class Ak_Locator_Model_Search_Point_Latlong extends Ak_Locator_Model_Search_Point_Abstract
 {
     const TYPE = 'latlong';
 

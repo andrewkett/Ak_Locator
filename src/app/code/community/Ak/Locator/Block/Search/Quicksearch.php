@@ -22,5 +22,4 @@ class Ak_Locator_Block_Search_Quicksearch extends Mage_Core_Block_Template
         parent::__construct();
         $this->setTemplate('locator/search/quick.phtml');
     }
-
 }

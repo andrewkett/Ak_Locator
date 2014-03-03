@@ -29,5 +29,4 @@ class Ak_Locator_Model_Search_Override extends Mage_Core_Model_Abstract
     {
         $this->_init('ak_locator/search_override');
     }
-
 }

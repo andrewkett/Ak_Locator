@@ -6,7 +6,7 @@ class Ak_Locator_Block_Breadcrumbs extends Mage_Core_Block_Template
     /**
      * Preparing layout
      *
-     * @return DigiBrews_Locator_Block_Breadcrumbs
+     * @return Ak_Locator_Block_Breadcrumbs
      */
     protected function _prepareLayout()
     {
@@ -24,7 +24,7 @@ class Ak_Locator_Block_Breadcrumbs extends Mage_Core_Block_Template
                 'link'=>Mage::getBaseUrl().'locator/search'
             ));
             $path  = Mage::helper('ak_locator')->getBreadcrumbPath();
-            if(count($path)>0){
+            if (count($path)>0) {
                 foreach ($path as $name => $breadcrumb) {
                     $breadcrumbsBlock->addCrumb($name, $breadcrumb);
                 }

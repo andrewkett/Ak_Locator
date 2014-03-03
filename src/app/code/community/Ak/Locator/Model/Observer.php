@@ -22,12 +22,12 @@ class Ak_Locator_Model_Observer
      */
     public function setAdminMessage()
     {
-        if('' == Mage::getStoreConfig('locator_settings/google_maps/api_key')){
+        if ('' == Mage::getStoreConfig('locator_settings/google_maps/api_key')) {
             Mage::getSingleton('core/session')->addError('Warning: You haven\'t yet set a Google API key in locator configuration, the locator module requires the Google Maps API to function. You can sign up for a key <a href="https://code.google.com/apis/console/" target="_blank">here</a>.');
     
         }
 
-        if(!@class_exists('geoPHP')){
+        if (!@class_exists('geoPHP')) {
             Mage::getSingleton('core/session')->addError('Warning: The geoPHP library could not be detected, this is a requirement of the Locator extension. Please <a href=" https://github.com/downloads/phayes/geoPHP/geoPHP.tar.gz">download</a> the library and add it to the lib directory');
         }
     }
@@ -49,5 +49,4 @@ class Ak_Locator_Model_Observer
             }
         }
     }
-
 }

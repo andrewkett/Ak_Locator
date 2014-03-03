@@ -51,12 +51,13 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
 
         $this->loadLayout();
        
-        if(Mage::registry('location_isnew')){
+        if (Mage::registry('location_isnew')) {
             $this->getLayout()->getBlock('root')->addBodyClass('location-new');
-        }else{
-            $this->getLayout()->getBlock('root')->addBodyClass('location-edit');    
+        } else {
+            $this->getLayout()->getBlock('root')->addBodyClass('location-edit');
         }
-        $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);    
+
+        $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
         $this->renderLayout();
     }
 
@@ -70,8 +71,7 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('ak_locator')->__('The example has been deleted.'));
                 $this->_redirect('*/*/');
                 return;
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
                 $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
                 return;
@@ -83,8 +83,7 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
 
     public function saveAction()
     {
-        if ($data = $this->getRequest()->getPost())
-        {
+        if ($data = $this->getRequest()->getPost()) {
             $model = Mage::getModel('ak_locator/location');
             $id = $this->getRequest()->getParam('id');
             if ($id) {

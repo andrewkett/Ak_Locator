@@ -36,7 +36,7 @@ class Ak_Locator_Model_Urlrewrite_Matcher_Location
 
         if (strcmp($rewriteTail, $requestTail) === 0) {
 
-            $locationId = substr( $rewriteRow['target_path'], strrpos( $rewriteRow['target_path'], '/' )+1 );
+            $locationId = substr($rewriteRow['target_path'], strrpos($rewriteRow['target_path'], '/')+1);
 
             $isMatched = !empty($locationId);
                // && $this->_isRewriteRedefinedInStore($locationId, $rewriteRow['request_path']);

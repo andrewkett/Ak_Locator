@@ -73,9 +73,14 @@ $table = $installer->getConnection()
         ), 'Sort Order')
     ->addColumn('data_model', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
         ), 'Data Model')
-    ->addForeignKey($installer->getFkName('ak_locator/eav_attribute', 'attribute_id', 'eav/attribute', 'attribute_id'),
-        'attribute_id', $installer->getTable('eav/attribute'), 'attribute_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+    ->addForeignKey(
+        $installer->getFkName('ak_locator/eav_attribute', 'attribute_id', 'eav/attribute', 'attribute_id'),
+        'attribute_id',
+        $installer->getTable('eav/attribute'),
+        'attribute_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->setComment('Location Eav Attribute');
 $installer->getConnection()->createTable($table);
 
@@ -106,15 +111,23 @@ $table = $installer->getConnection()
     ->addColumn('multiline_count', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
         'unsigned'  => true,
         ), 'Multiline Count')
-    ->addIndex($installer->getIdxName('ak_locator/eav_attribute_website', array('website_id')),
-        array('website_id'))
+    ->addIndex($installer->getIdxName('ak_locator/eav_attribute_website', array('website_id')), array('website_id'))
     ->addForeignKey(
         $installer->getFkName('ak_locator/eav_attribute_website', 'attribute_id', 'eav/attribute', 'attribute_id'),
-        'attribute_id', $installer->getTable('eav/attribute'), 'attribute_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
-    ->addForeignKey($installer->getFkName('ak_locator/eav_attribute_website', 'website_id', 'core/website', 'website_id'),
-        'website_id', $installer->getTable('core/website'), 'website_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'attribute_id',
+        $installer->getTable('eav/attribute'),
+        'attribute_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
+    ->addForeignKey(
+        $installer->getFkName('ak_locator/eav_attribute_website', 'website_id', 'core/website', 'website_id'),
+        'website_id',
+        $installer->getTable('core/website'),
+        'website_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->setComment('Location Eav Attribute Website');
 $installer->getConnection()->createTable($table);
 
@@ -192,25 +205,44 @@ $table = $installer->getConnection()
             Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
         ),
         array('entity_id', 'attribute_id', 'store_id'),
-        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_varchar', array('attribute_id')),
-        array('attribute_id'))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_varchar', array('store_id')),
-        array('store_id'))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_varchar', array('entity_id')),
-        array('entity_id'))
+        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE)
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_varchar', array('attribute_id')),
+        array('attribute_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_varchar', array('store_id')),
+        array('store_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_varchar', array('entity_id')),
+        array('entity_id')
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_varchar', 'attribute_id', 'eav/attribute', 'attribute_id'),
-        'attribute_id', $installer->getTable('eav/attribute'), 'attribute_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'attribute_id',
+        $installer->getTable('eav/attribute'),
+        'attribute_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_varchar', 'entity_id', 'ak_locator/location', 'entity_id'),
-        'entity_id', $installer->getTable('ak_locator/location'), 'entity_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'entity_id',
+        $installer->getTable('ak_locator/location'),
+        'entity_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_varchar', 'store_id', 'core/store', 'store_id'),
-        'store_id', $installer->getTable('core/store'), 'store_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'store_id',
+        $installer->getTable('core/store'),
+        'store_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->setComment('Location Entity Varchar');
 $installer->getConnection()->createTable($table);
 
@@ -252,25 +284,44 @@ $table = $installer->getConnection()
             Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
         ),
         array('entity_id', 'attribute_id', 'store_id'),
-        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_int', array('attribute_id')),
-        array('attribute_id'))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_int', array('store_id')),
-        array('store_id'))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_int', array('entity_id')),
-        array('entity_id'))
+        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE)
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_int', array('attribute_id')),
+        array('attribute_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_int', array('store_id')),
+        array('store_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_int', array('entity_id')),
+        array('entity_id')
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_int', 'attribute_id', 'eav/attribute', 'attribute_id'),
-        'attribute_id', $installer->getTable('eav/attribute'), 'attribute_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'attribute_id',
+        $installer->getTable('eav/attribute'),
+        'attribute_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_int', 'entity_id', 'ak_locator/location', 'entity_id'),
-        'entity_id', $installer->getTable('ak_locator/location'), 'entity_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'entity_id',
+        $installer->getTable('ak_locator/location'),
+        'entity_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_int', 'store_id', 'core/store', 'store_id'),
-        'store_id', $installer->getTable('core/store'), 'store_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'store_id',
+        $installer->getTable('core/store'),
+        'store_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->setComment('Location Entity Int');
 $installer->getConnection()->createTable($table);
 
@@ -303,7 +354,7 @@ $table = $installer->getConnection()
         'nullable'  => false,
         'default'   => '0',
         ), 'Entity Id')
-    ->addColumn('value', Varien_Db_Ddl_Table::TYPE_TEXT,'64k', array(
+    ->addColumn('value', Varien_Db_Ddl_Table::TYPE_TEXT, '64k', array(
         ), 'Value')
     ->addIndex(
         $installer->getIdxName(
@@ -312,25 +363,44 @@ $table = $installer->getConnection()
             Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
         ),
         array('entity_id', 'attribute_id', 'store_id'),
-        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_text', array('attribute_id')),
-        array('attribute_id'))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_text', array('store_id')),
-        array('store_id'))
-    ->addIndex($installer->getIdxName('ak_locator_location_entity_text', array('entity_id')),
-        array('entity_id'))
+        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE)
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_text', array('attribute_id')),
+        array('attribute_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_text', array('store_id')),
+        array('store_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator_location_entity_text', array('entity_id')),
+        array('entity_id')
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_text', 'attribute_id', 'eav/attribute', 'attribute_id'),
-        'attribute_id', $installer->getTable('eav/attribute'), 'attribute_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'attribute_id',
+        $installer->getTable('eav/attribute'),
+        'attribute_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_text', 'entity_id', 'ak_locator/location', 'entity_id'),
-        'entity_id', $installer->getTable('ak_locator/location'), 'entity_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'entity_id',
+        $installer->getTable('ak_locator/location'),
+        'entity_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator_location_entity_text', 'store_id', 'core/store', 'store_id'),
-        'store_id', $installer->getTable('core/store'), 'store_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'store_id',
+        $installer->getTable('core/store'),
+        'store_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->setComment('Location Entity Text');
 $installer->getConnection()->createTable($table);
 
@@ -375,25 +445,49 @@ $table = $installer->getConnection()
             array('entity_id', 'attribute_id'),
             Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
         ),
-        array('entity_id', 'attribute_id'), array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE))
-    ->addIndex($installer->getIdxName('ak_locator/location_entity_datetime', array('entity_type_id')),
-        array('entity_type_id'))
-    ->addIndex($installer->getIdxName('ak_locator/location_entity_datetime', array('attribute_id')),
-        array('attribute_id'))
-    ->addIndex($installer->getIdxName('ak_locator/location_entity_datetime', array('entity_id')),
-        array('entity_id'))
-    ->addIndex($installer->getIdxName('ak_locator/location_entity_datetime', array('entity_id', 'attribute_id', 'value')),
-        array('entity_id', 'attribute_id', 'value'))
-    ->addForeignKey($installer->getFkName('ak_locator/location_entity_datetime', 'attribute_id', 'eav/attribute', 'attribute_id'),
-        'attribute_id', $installer->getTable('eav/attribute'), 'attribute_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
-    ->addForeignKey($installer->getFkName('ak_locator/location_entity_datetime', 'entity_id', 'ak_locator/location', 'entity_id'),
-        'entity_id', $installer->getTable('ak_locator/location'), 'entity_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        array('entity_id', 'attribute_id'),
+        array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE)
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator/location_entity_datetime', array('entity_type_id')),
+        array('entity_type_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator/location_entity_datetime', array('attribute_id')),
+        array('attribute_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator/location_entity_datetime', array('entity_id')),
+        array('entity_id')
+    )
+    ->addIndex(
+        $installer->getIdxName('ak_locator/location_entity_datetime', array('entity_id', 'attribute_id', 'value')),
+        array('entity_id', 'attribute_id', 'value')
+    )
+    ->addForeignKey(
+        $installer->getFkName('ak_locator/location_entity_datetime', 'attribute_id', 'eav/attribute', 'attribute_id'),
+        'attribute_id',
+        $installer->getTable('eav/attribute'),
+        'attribute_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
+    ->addForeignKey(
+        $installer->getFkName('ak_locator/location_entity_datetime', 'entity_id', 'ak_locator/location', 'entity_id'),
+        'entity_id',
+        $installer->getTable('ak_locator/location'),
+        'entity_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->addForeignKey(
         $installer->getFkName('ak_locator/location_entity_datetime', 'entity_type_id', 'eav/entity_type', 'entity_type_id'),
-        'entity_type_id', $installer->getTable('eav/entity_type'), 'entity_type_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        'entity_type_id',
+        $installer->getTable('eav/entity_type'),
+        'entity_type_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE,
+        Varien_Db_Ddl_Table::ACTION_CASCADE
+    )
     ->setComment('Location Entity Datetime');
 $installer->getConnection()->createTable($table);
 

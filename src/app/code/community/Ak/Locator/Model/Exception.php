@@ -14,6 +14,7 @@
  * @link      http://andrewkett.github.io/Ak_Locator/
  */
 
-class Ak_Locator_Model_Exception extends Mage_Core_Exception{
+class Ak_Locator_Model_Exception extends Mage_Core_Exception
+{
 
 }

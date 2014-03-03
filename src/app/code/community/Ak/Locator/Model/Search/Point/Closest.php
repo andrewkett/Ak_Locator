@@ -1,7 +1,6 @@
 <?php
 
-class Ak_Locator_Model_Search_Point_Closest
-    extends Ak_Locator_Model_Search_Point_Abstract
+class Ak_Locator_Model_Search_Point_Closest extends Ak_Locator_Model_Search_Point_Abstract
 {
     const TYPE = 'closest';
 
@@ -19,5 +18,4 @@ class Ak_Locator_Model_Search_Point_Closest
 
         return $collection;
     }
-
 }

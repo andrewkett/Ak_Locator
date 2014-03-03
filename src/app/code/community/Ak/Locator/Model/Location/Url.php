@@ -28,7 +28,7 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
      *
      * @var Mage_Core_Model_Url
      */
-    protected  $_url;
+    protected $_url;
 
     /**
      * URL Rewrite Instance
@@ -93,7 +93,7 @@ class Ak_Locator_Model_Location_Url extends Varien_Object
      */
     protected function _validImage($image)
     {
-        if($image == 'no_selection') {
+        if ($image == 'no_selection') {
             $image = null;
         }
         return $image;

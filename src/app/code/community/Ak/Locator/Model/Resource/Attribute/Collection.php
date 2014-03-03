@@ -47,5 +47,4 @@ class Ak_Locator_Model_Resource_Attribute_Collection extends Mage_Eav_Model_Reso
     {
           return $this->getTable('ak_locator/eav_attribute_website');
     }
-
 }

@@ -122,5 +122,4 @@ class Ak_Locator_Block_Search extends Mage_Core_Block_Template
     {
         return $this->getSearch()->isValidParams($this->getRequest()->getParams());
     }
-
 }

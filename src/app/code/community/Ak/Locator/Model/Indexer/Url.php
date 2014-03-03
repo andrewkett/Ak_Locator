@@ -81,7 +81,7 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
             } else {
                 $result = false;
             }
-        } else if ($entity == Mage_Core_Model_Store_Group::ENTITY) {
+        } elseif ($entity == Mage_Core_Model_Store_Group::ENTITY) {
             $storeGroup = $event->getDataObject();
             $hasDataChanges = $storeGroup && ($storeGroup->dataHasChangedFor('root_category_id')
                 || $storeGroup->dataHasChangedFor('website_id'));
@@ -90,7 +90,7 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
             } else {
                 $result = false;
             }
-        } else if ($entity == Mage_Core_Model_Config_Data::ENTITY) {
+        } elseif ($entity == Mage_Core_Model_Config_Data::ENTITY) {
             $configData = $event->getDataObject();
             if ($configData && in_array($configData->getPath(), $this->_relatedConfigSettings)) {
                 $result = $configData->isValueChanged();
@@ -117,7 +117,7 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
         $entity = $event->getEntity();
         switch ($entity) {
             case Mage_Catalog_Model_Product::ENTITY:
-               $this->_registerProductEvent($event);
+                $this->_registerProductEvent($event);
                 break;
 
             case Mage_Core_Model_Store::ENTITY:
@@ -168,7 +168,7 @@ class Ak_Locator_Model_Indexer_Url extends Mage_Index_Model_Indexer_Abstract
             $urlModel->setShouldSaveRewritesHistory($dataObject->getData('save_rewrites_history'));
         }
 
-        if(isset($data['rewrite_location_ids'])) {
+        if (isset($data['rewrite_location_ids'])) {
             $urlModel->clearStoreInvalidRewrites(); // Maybe some products were moved or removed from website
             foreach ($data['rewrite_location_ids'] as $productId) {
                  $urlModel->refreshProductRewrite($productId);

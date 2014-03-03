@@ -19,8 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-abstract class Ak_Locator_Model_Search_Point_Abstract
-    extends Ak_Locator_Model_Search_Abstract
+abstract class Ak_Locator_Model_Search_Point_Abstract extends Ak_Locator_Model_Search_Abstract
 {
 
     /**

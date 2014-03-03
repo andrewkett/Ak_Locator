@@ -52,12 +52,10 @@ class Ak_Locator_Block_Adminhtml_Location_Edit extends Mage_Adminhtml_Block_Widg
 
     public function getHeaderText()
     {
-        if (Mage::registry('location_data') && Mage::registry('location_data')->getId())
-        {
+        if (Mage::registry('location_data') && Mage::registry('location_data')->getId()) {
             return Mage::helper('ak_locator')->__('%s', $this->htmlEscape(Mage::registry('location_data')->getTitle()));
         } else {
             return Mage::helper('ak_locator')->__('New Location');
         }
     }
-
 }

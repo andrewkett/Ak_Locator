@@ -51,8 +51,7 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
      */
     public function getDirectionsLink()
     {
-
-        if(null == $this->getData('directions_link')){
+        if (null == $this->getData('directions_link')) {
             $this->setDirectionsLink();
         }
 
@@ -71,10 +70,10 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
             'daddr' => $this->getLatitude().','.$this->getLongitude()
         );
 
-        if(isset($options['start'])){
-            if($options['start'] instanceof Point){
+        if (isset($options['start'])) {
+            if ($options['start'] instanceof Point) {
                 $params['saddr']=$options['start']->coords[1].','.$options['start']->coords[0];
-            }else{
+            } else {
                 $params['saddr']=$options['start'];
             }
         }
@@ -118,7 +117,4 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
     {
         return $this->getUrlModel()->formatUrlKey($str);
     }
-
-
-
 }
