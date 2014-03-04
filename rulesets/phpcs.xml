@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="MyAPI">
-    <description>Magento extensino ruleset based on PSR-1 and PSR-2 but modified for magento 1</description>
+<ruleset name="Magento1">
+    <description>Magento extension ruleset based on PSR-1 and PSR-2 but modified for magento 1</description>
 
     <rule ref="PSR2">
         <!-- Magento 1 class names don't comply so ignore these rules  -->
@@ -8,7 +8,7 @@
         <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
 
 
-        <!-- magento standards use underscore for private methods so lets ignore this -->
+        <!-- Magento standards use underscore for private methods so lets ignore this -->
         <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
         <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
     </rule>
