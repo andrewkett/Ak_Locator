@@ -37,6 +37,9 @@ class Ak_Locator_Block_Location_View extends Mage_Core_Block_Template
         }
 
         $layout = $this->getLayout();
+        
+        //Add Breadcrumbs
+        $layout ->createBlock('ak_locator/breadcrumbs');
 
         if ($headBlock = $layout->getBlock('head')) {
             
