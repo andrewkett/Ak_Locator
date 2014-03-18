@@ -66,8 +66,24 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
      */
     public function setDirectionsLink($options = array())
     {
+
+        $address = "";
+        $attrs = array('address', 'postal_code', 'country');
+        $count = 0;
+
+        foreach ($attrs as $attr) {
+            if ($this->getData($attr) && $this->getData($attr) != '') {
+                if ($count > 0) {
+                    $address .= ', ';
+                }
+
+                $address .=$this->getData($attr);
+                $count ++;
+            }
+        }
+
         $params = array(
-            'daddr' => $this->getLatitude().','.$this->getLongitude()
+            'daddr' => $address . '@' . $this->getLatitude().','.$this->getLongitude()
         );
 
         if (isset($options['start'])) {
