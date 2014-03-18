@@ -315,7 +315,7 @@
          * @param {Object} l object containing location data
          * @returns {google.maps.MarkerImage}
          */
-        getMarkerImage: function(l){
+        getMarkerImage: function(){
             return new google.maps.MarkerImage(
                 '/skin/frontend/base/default/locator/images/pin.png',
                 new google.maps.Size(40, 50),
@@ -484,9 +484,9 @@
                 query = $H(query).toQueryString();
             }
 
-            href = window.location.pathname + '?' + query;
+            href = this.settings.baseUrl+"locator/search/?" + query;
 
-            new Ajax.Request(window.location.pathname + '?' + query +'&xhr=1', {
+            new Ajax.Request(href +'&xhr=1', {
 
                 method : 'get',
                 onFailure: function () {
@@ -579,12 +579,12 @@
         initEvents: function() {
             var self = this;
 
-            $$(self.settings.selectors.teaser).invoke('observe', 'click', function(event){
+            $$(self.settings.selectors.teaser).invoke('observe', 'click', function(){
                 var id = this.readAttribute('data-id');
                 self.map.showInfoWindow(id);
             });
 
-            $$(self.settings.selectors.teaser).invoke('observe', 'mouseover', function(event) {
+            $$(self.settings.selectors.teaser).invoke('observe', 'mouseover', function() {
                 var id = this.readAttribute('data-id');
                 self.map.highlightMarker(id);
             });
@@ -674,7 +674,6 @@
             if (this.settings.stickyMap) {
                 var map = $$('.loc-srch-res-map-wrap').first();
                 var results = $$(this.settings.selectors.results).first();
-                var self = this;
 
                 Event.observe(document, "scroll", function() {
                     if (results.viewportOffset().top < 1) {
