@@ -19,7 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-abstract class Ak_Locator_Model_Search_Point_Abstract extends Ak_Locator_Model_Search_Abstract
+abstract class Ak_Locator_Model_Search_Handler_Point_Abstract extends Ak_Locator_Model_Search_Handler_Abstract
 {
 
     /**
@@ -36,7 +36,7 @@ abstract class Ak_Locator_Model_Search_Point_Abstract extends Ak_Locator_Model_S
             $radius = (int)Mage::getStoreConfig('locator_settings/search/default_search_distance');
         }
 
-        return  $this->getSearchCollection()
+        return  $this->getCollection()
                 ->addAttributeToSelect('*')
                 ->nearPoint($point, $radius)
                 ->setOrder('distance');

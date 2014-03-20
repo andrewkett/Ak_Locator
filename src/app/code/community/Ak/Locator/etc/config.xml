@@ -123,6 +123,32 @@
           </types>
       </cache>
 
+
+      <ak_locator>
+          <search_handlers>
+              <string>
+                   <namespace>ak_locator/search_handler_point_string</namespace>
+                   <enabled>1</enabled>
+                   <weight>10</weight>
+              </string>
+              <latlong>
+                  <namespace>ak_locator/search_handler_point_latlong</namespace>
+                  <enabled>1</enabled>
+                  <weight>20</weight>
+              </latlong>
+              <area>
+                  <namespace>ak_locator/search_handler_area</namespace>
+                  <enabled>1</enabled>
+                  <weight>30</weight>
+              </area>
+              <closest>
+                  <namespace>ak_locator/search_handler_point_closest</namespace>
+                  <enabled>1</enabled>
+                  <weight>1000</weight>
+              </closest>
+          </search_handlers>
+      </ak_locator>
+
   </global>
   <adminhtml>
      <menu>

@@ -19,7 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-abstract class Ak_Locator_Model_Search_Abstract extends Mage_Core_Model_Abstract implements Ak_Locator_Model_Search_Interface
+abstract class Ak_Locator_Model_Search_Handler_Abstract extends Mage_Core_Model_Abstract implements Ak_Locator_Model_Search_Handler_Interface
 {
 
     protected $_collection;
@@ -93,5 +93,17 @@ abstract class Ak_Locator_Model_Search_Abstract extends Mage_Core_Model_Abstract
         $this->_model = $model;
 
         return $this;
+    }
+
+
+    /**
+     * Make any manipulations to parameters required by this handler
+     *
+     * @param array $params
+     * @return array
+     */
+    public function parseParams(array $params)
+    {
+        return $params;
     }
 }

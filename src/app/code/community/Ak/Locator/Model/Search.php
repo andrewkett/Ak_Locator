@@ -19,7 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-class Ak_Locator_Model_Search extends Ak_Locator_Model_Search_Abstract
+class Ak_Locator_Model_Search
 {
     const XML_SEARCH_OVERRIDES_PATH = "locator_settings/search/overrides_enabled";
     const XML_SEARCH_USEDEFAULT_PATH = "locator_settings/search/use_default_search";
@@ -27,8 +27,36 @@ class Ak_Locator_Model_Search extends Ak_Locator_Model_Search_Abstract
     const XML_SEARCH_DEFAULT_PARAMS = "locator_settings/search/default_search_params";
     const XML_SEARCH_SHOW_CLOSEST = "locator_settings/search/show_closest_on_noresults";
 
+
+    protected $handlers = array();
     protected $params = array();
     protected $depth;
+    protected $_collection;
+    protected $_model;
+
+
+    public function __construct()
+    {
+        $this->initHandlers();
+    }
+
+    protected function initHandlers()
+    {
+        //@todo handle weighting handlers
+        // Loop through configured handlers and push them into handler stack
+        foreach (Mage::app()->getConfig()->getNode('global')->xpath('ak_locator/search_handlers/*') as $handlerConfig) {
+            if ($handlerConfig->enabled == '1') {
+                $handler = Mage::getModel($handlerConfig->namespace);
+
+                if ($handler) {
+                    $this->pushHandler($handler, $handlerConfig->getName());
+                }
+            }
+        }
+
+        return;
+    }
+
 
     /**
      * Perform search based on params passed
@@ -37,95 +65,85 @@ class Ak_Locator_Model_Search extends Ak_Locator_Model_Search_Abstract
      *
      * @return Ak_Locator_Model_Resource_Location_Collection
      */
-    public function search(Array $params = array())
+    public function search(array $params = array())
     {
-        $this->params = $this->parseParams($params);
-        $this->depth = 0;
+        $params = $this->parseParams($params);
 
-        /** @var Ak_Locator_Model_Resource_Location_Collection $collection */
-        $collection = $this->getSearchClass()->search($this->params);
-
-        if (Mage::getStoreConfig(self::XML_SEARCH_SHOW_CLOSEST)
-            && !count($collection->getItems())
-            && $collection->getSearchPoint()
-        ) {
-
-            $params = array(
-                'point'=> $collection->getSearchPoint()
-            );
-
-            $collection = Mage::getModel('ak_locator/search_point_closest')->search($params);
-        }
-
-        return $collection;
-    }
-
-
-    /**
-     * Find appropriate search class based on params passed
-     *
-     * @param array $params
-     * @return Ak_Locator_Model_Search_Abstract
-     */
-    protected function getSearchClass(Array $params = null)
-    {
-        if (is_null($params)) {
-            $params = $this->params;
-        }
-
-        if ($this->isStringSearch($params)) {
-
-            /**
-             * @TODO this needs to be rethought to be more flexible,
-             * we need to be able to override a single parameter ignoring the others,
-             * e.g replace only the s param in s=melbourne&distance=100
-             * also move to parseParams method
-             */
-            if (Mage::getStoreConfig(self::XML_SEARCH_OVERRIDES_PATH)) {
-
-                //check db for custom searches matching this one
-                $override = Mage::getModel('ak_locator/search_override')->load($params['s']);
-
-                if ($override->getParams() && $this->depth < 1) {
-                    $this->depth++;
-                    $this->params = Mage::helper('ak_locator/search')->parseQueryString($override->getParams());
-                    return $this->getSearchClass($this->params);
-                }
+        // Iterate through search handlers and run them if required
+        foreach ($this->getHandlers() as $handler) {
+            if ($handler->isValidParams($params)) {
+                $params = $handler->parseParams($params);
+                $handler->setCollection($this->getCollection())->search($params);
             }
-
-            return Mage::getModel('ak_locator/search_point_string');
-
-        } elseif ($this->isLatLongSearch($params)) {
-
-            return Mage::getModel('ak_locator/search_point_latlong');
-
-        } elseif ($this->isAreaSearch($params)) {
-
-            return Mage::getModel('ak_locator/search_area');
-
         }
+
+        // If the search is a point search and the site is configured to fallback to the closest match, find it
+        if ($this->shouldFindClosest()) {
+            $this->getClosest();
+        }
+
+        return $this->getCollection();
     }
 
 
     /**
-     * Parse the current parameters and do any necessary manipulations
+     * Do any of the handlers know how to do something with the given params
      *
      * @param array $params
-     * @return array
+     * @return bool
      */
-    protected function parseParams(Array $params)
+    public function isValidParams(array $params)
+    {
+        $params = $this->parseParams($params);
+
+        foreach ($this->getHandlers() as $handler) {
+            if ($handler->isValidParams($params)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Pre pass the search parameters to make any manipulations
+     *
+     * @param array $params
+     * @return mixed
+     */
+    protected function parseParams(array $params)
     {
         if (empty($params)) {
             $params = $this->getDefaultSearchParams();
         }
 
+        /**
+         * @TODO this needs to be rethought to be more flexible,
+         * we need to be able to override a single parameter ignoring the others,
+         * e.g replace only the s param in s=melbourne&distance=100
+         * also move to parseParams method
+         */
+        if (Mage::getStoreConfig(self::XML_SEARCH_OVERRIDES_PATH)) {
+            //check db for custom searches matching this one
+            $override = Mage::getModel('ak_locator/search_override')->load($params['s']);
+
+            if ($override->getParams()) {
+                $params = Mage::helper('ak_locator/search')->parseQueryString($override->getParams());
+            }
+        }
+
+        if (isset($params['country'])) {
+            $params['s'] .= ' '.$params['country'];
+        }
+
         //wrap the parameters in a transport object so they can be manipulated by event listeners
-        $_transportObject = new Varien_Object();
-        $_transportObject->setParams($params);
+        $transportObject = new Varien_Object();
+        $transportObject->setParams($params);
 
-        Mage::dispatchEvent('ak_locator_search_parseparams', array('transport'=>$_transportObject));
+        Mage::dispatchEvent('ak_locator_search_parseparams', array('transport'=>$transportObject));
 
-        return $_transportObject->getParams();
+        return $transportObject->getParams();
     }
 
     /**
@@ -136,7 +154,7 @@ class Ak_Locator_Model_Search extends Ak_Locator_Model_Search_Abstract
     protected function getDefaultSearchParams()
     {
         //if customer is logged in and they have an address use that
-        if (Mage::getStoreConfig(self::XML_SEARCH_USE_CUSTOMER_ADDRESS)) {
+        if ($this->shouldUseCustomerAddress()) {
 
             $session = Mage::getSingleton('customer/session');
 
@@ -166,7 +184,7 @@ class Ak_Locator_Model_Search extends Ak_Locator_Model_Search_Abstract
         }
 
         //if default params are configured use them
-        if (Mage::getStoreConfig(self::XML_SEARCH_USEDEFAULT_PATH)) {
+        if ($this->shouldUseDefault()) {
             $params = Mage::getStoreConfig(self::XML_SEARCH_DEFAULT_PARAMS);
             return Mage::helper('ak_locator/search')->parseQueryString($params);
         }
@@ -174,49 +192,150 @@ class Ak_Locator_Model_Search extends Ak_Locator_Model_Search_Abstract
 
 
     /**
-     * Is the current search a string search?
+     * Find the closest location to the last point search
+     */
+    protected function getClosest()
+    {
+        $params = array(
+            'point'=> $this->getCollection()->getSearchPoint()
+        );
+        $this->setCollection($this->getHandler('closest')->search($params));
+    }
+
+
+    /**
+     * Should we default to closest location on point searches
      *
-     * @param array $params
      * @return bool
      */
-    protected function isStringSearch(Array $params)
+    protected function shouldFindClosest()
     {
-        return isset($params['s']);
+        return ($this->getHandler('closest')
+            && Mage::getStoreConfig(self::XML_SEARCH_SHOW_CLOSEST)
+            && !count($this->getCollection()->getItems())
+            && $this->getCollection()->getSearchPoint()
+        );
+    }
+
+
+    /**
+     * Should we attempt to do a default search
+     *
+     * @return bool
+     */
+    protected function shouldUseDefault()
+    {
+        return (Mage::getStoreConfig(self::XML_SEARCH_USEDEFAULT_PATH));
+    }
+
+
+    /**
+     * Should we use the customers shipping address as the default search
+     *
+     * @return bool
+     */
+    protected function shouldUseCustomerAddress()
+    {
+        return (Mage::getStoreConfig(self::XML_SEARCH_USE_CUSTOMER_ADDRESS));
+    }
+
+
+    /**
+     * Push a handler into the call stack
+     *
+     * @param Ak_Locator_Model_Search_Handler_Interface $handler
+     * @param $code
+     * @return $this
+     */
+    public function pushHandler(Ak_Locator_Model_Search_Handler_Interface $handler, $code)
+    {
+        $this->handlers[$code] = $handler;
+
+        return $this;
+    }
+
+
+    /**
+     * Get all handlers in the call stack
+     *
+     * @return array
+     */
+    protected function getHandlers()
+    {
+        return $this->handlers;
+    }
+
+
+    /**
+     * Get as handler from the stack based on its type code
+     *
+     * @param $code
+     * @return Ak_Locator_Model_Search_Handler_Interface
+     */
+    protected function getHandler($code)
+    {
+        if (isset($this->handlers[$code])) {
+            return $this->handlers[$code];
+        }
+    }
+
+
+    /**
+     * Get the collection class that will be used to find locations
+     *
+     * @return Mage_Eav_Model_Entity_Collection_Abstract
+     */
+    public function getCollection()
+    {
+        if (!$this->_collection) {
+            $this->setCollection(
+                $this->getModel()
+                    ->getCollection()
+                    ->addAttributeToFilter('is_enabled', '1')
+            );
+        }
+
+        return $this->_collection;
+    }
+
+
+    /**
+     * Set the collection class that will be used to find locations
+     *
+     * @param Mage_Eav_Model_Entity_Collection_Abstract $collection
+     * @return $this
+     */
+    public function setCollection(Mage_Eav_Model_Entity_Collection_Abstract $collection)
+    {
+        $this->_collection = $collection;
+
+        return $this;
+    }
+
+
+    /**
+     *
+     *
+     * @return Mage_Core_Model_Abstract
+     */
+    public function getModel()
+    {
+        if (!$this->_model) {
+            $this->setModel(Mage::getModel('ak_locator/location'));
+        }
+
+        return $this->_model;
     }
 
     /**
-     * Is the current search a lat/long search?
      *
-     * @param array $params
-     * @return bool
+     * @param Mage_Core_Model_Abstract $model
+     * @return $this
      */
-    protected function isLatLongSearch(Array $params)
+    public function setModel(Mage_Core_Model_Abstract $model)
     {
-        return isset($params['lat']) && isset($params['long']);
-    }
+        $this->_model = $model;
 
-    /**
-     * Is the current search an area search?
-     *
-     * @param array $params
-     * @return bool
-     */
-    protected function isAreaSearch(Array $params)
-    {
-        return isset($params['a'])
-        || isset($params['country'])
-        || isset($params['postcode']);
-    }
-
-    /**
-     * Check if search params will return a valid search class
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function isValidParams(array $params)
-    {
-        $params = $this->parseParams($params);
-        return !is_null($this->getSearchClass($params));
+        return $this;
     }
 }

@@ -19,7 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-class Ak_Locator_Model_Search_Area extends Ak_Locator_Model_Search_Abstract
+class Ak_Locator_Model_Search_Handler_Area extends Ak_Locator_Model_Search_Handler_Abstract
 {
     const TYPE = 'area';
 
@@ -31,13 +31,9 @@ class Ak_Locator_Model_Search_Area extends Ak_Locator_Model_Search_Abstract
      * @return Ak_Locator_Model_Resource_Location_Collection
      * @throws Exception
      */
-    public function search(Array $params)
+    public function search(array $params)
     {
-        if (!isset($params['a'])
-            && !isset($params['country'])
-            && !isset($params['administrative_area'])
-            && !isset($params['postcode'])
-        ) {
+        if (!$this->isValidParams($params)) {
             throw new Exception('At least one valid search parameter must be passed');
         }
      
@@ -45,6 +41,46 @@ class Ak_Locator_Model_Search_Area extends Ak_Locator_Model_Search_Abstract
         $collection->setSearch($this);
 
         return $collection;
+    }
+
+    /**
+     * Make any manipulations to parameters required by this handler
+     *
+     * @param array $params
+     * @return array
+     */
+    public function parseParams(array $params)
+    {
+        if (isset($params['a']) && !isset($params['administrative_area'])) {
+            $params['administrative_area'] = $params['a'];
+        }
+
+        if (isset($params['c']) && !isset($params['country'])) {
+            $params['country'] = $params['c'];
+        }
+
+        return $params;
+    }
+
+
+    /**
+     * Validate params
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function isValidParams(array $params)
+    {
+        if (isset($params['a'])
+            || isset($params['c'])
+            || isset($params['country'])
+            || isset($params['administrative_area'])
+            || isset($params['postcode'])
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -56,12 +92,8 @@ class Ak_Locator_Model_Search_Area extends Ak_Locator_Model_Search_Abstract
      */
     public function areaSearch($params)
     {
-        $collection = $this->getSearchCollection();
+        $collection = $this->getCollection();
 
-        if (isset($params['a'])) {
-            $params['administrative_area'] = $params['a'];
-        }
-        
         if (isset($params['country'])) {
             $collection->addAttributeToFilter('country', $params['country']);
         }

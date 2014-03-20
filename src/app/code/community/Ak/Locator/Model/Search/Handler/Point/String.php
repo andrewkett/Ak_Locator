@@ -19,7 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point_Abstract
+class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Search_Handler_Point_Abstract
 {
     const XML_SEARCH_APIKEY_PATH = "locator_settings/google_maps/api_key";
     const XML_SEARCH_SHOULDAPPEND_PATH = "locator_settings/search/append_string_to_search";
@@ -42,9 +42,9 @@ class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point
      * @return Ak_Locator_Model_Resource_Location_Collection
      * @throws Exception
      */
-    public function search(Array $params)
+    public function search(array $params)
     {
-        if (!isset($params['s'])) {
+        if (!$this->isValidParams($params)) {
             throw new Exception('A search string must be passed to perform a string search');
         }
 
@@ -55,6 +55,22 @@ class Ak_Locator_Model_Search_Point_String extends Ak_Locator_Model_Search_Point
 
         return $collection;
 
+    }
+
+
+    /**
+     * Validate params
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function isValidParams(array $params)
+    {
+        if (isset($params['s']) && $params['s'] != '') {
+            return true;
+        }
+
+        return false;
     }
 
 

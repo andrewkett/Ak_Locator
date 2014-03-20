@@ -19,7 +19,7 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-class Ak_Locator_Model_Search_Point_Latlong extends Ak_Locator_Model_Search_Point_Abstract
+class Ak_Locator_Model_Search_Handler_Point_Latlong extends Ak_Locator_Model_Search_Handler_Point_Abstract
 {
     const TYPE = 'latlong';
 
@@ -33,7 +33,7 @@ class Ak_Locator_Model_Search_Point_Latlong extends Ak_Locator_Model_Search_Poin
      */
     public function search(Array $params)
     {
-        if (!isset($params['lat']) || !isset($params['long'])) {
+        if (!$this->isValidParams($params)) {
             throw new Exception('Both latitude and longitude values are required to do a lat/long search');
         }
 
@@ -44,4 +44,21 @@ class Ak_Locator_Model_Search_Point_Latlong extends Ak_Locator_Model_Search_Poin
 
         return $collection;
     }
+
+
+    /**
+     * Validate params
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function isValidParams(array $params)
+    {
+        if (isset($params['lat']) && $params['lat'] != '' && isset($params['long']) && $params['long'] != '') {
+            return true;
+        }
+
+        return false;
+    }
+
 }

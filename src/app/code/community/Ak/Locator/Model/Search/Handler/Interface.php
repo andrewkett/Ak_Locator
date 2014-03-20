@@ -19,7 +19,12 @@
  * @package    Ak_Locator
  * @author     Andrew Kett
  */
-interface Ak_Locator_Model_Search_Interface
+interface Ak_Locator_Model_Search_Handler_Interface
 {
+
     public function search(array $params);
+
+    public function parseParams(array $params);
+
+    public function isValidParams(array $params);
 }
