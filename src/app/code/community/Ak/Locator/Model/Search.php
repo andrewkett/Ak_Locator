@@ -133,7 +133,7 @@ class Ak_Locator_Model_Search
             }
         }
 
-        if (isset($params['country'])) {
+        if (isset($params['s']) && isset($params['country'])) {
             $params['s'] .= ' '.$params['country'];
         }
 
