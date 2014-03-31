@@ -71,11 +71,11 @@ class Ak_Locator_Model_Search_Handler_Area extends Ak_Locator_Model_Search_Handl
      */
     public function isValidParams(array $params)
     {
-        if (isset($params['a'])
-            || isset($params['c'])
-            || isset($params['country'])
-            || isset($params['administrative_area'])
-            || isset($params['postcode'])
+        if ((isset($params['a']) && $params['a'] != '')
+            || (isset($params['c']) && $params['c'] != '')
+            || (isset($params['country']) && $params['country'] != '')
+            || (isset($params['administrative_area']) && $params['administrative_area'] != '')
+            || (isset($params['postcode']) && $params['postcode'] != '')
         ) {
             return true;
         }
