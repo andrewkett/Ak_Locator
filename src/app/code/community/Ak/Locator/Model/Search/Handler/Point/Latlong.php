@@ -60,5 +60,4 @@ class Ak_Locator_Model_Search_Handler_Point_Latlong extends Ak_Locator_Model_Sea
 
         return false;
     }
-
 }
