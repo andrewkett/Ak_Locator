@@ -48,12 +48,21 @@
 
 
             Event.observe(el, 'submit', function (event) {
-                if ("" !== el.serialize().toQueryParams().s) {
-                    self.startLoader();
-                    self.search.findLocations(el.serialize(), function () {
-                        self.stopLoader();
-                    });
+
+                var params = el.serialize().toQueryParams();
+
+                //unset empty parameters
+                for (var key in params) {
+                    if (params.hasOwnProperty(key) && params[key] != 'undefined' && params[key] == '') {
+                        delete params[key];
+                    }
                 }
+
+                self.startLoader();
+                self.search.findLocations(params, function () {
+                    self.stopLoader();
+                });
+
                 Event.stop(event);
             });
         },

@@ -1,23 +1,61 @@
 <div class="loc-srch">
-  <h4>Search</h4>
-  <form class="loc-srch-form" action="<?php echo Mage::getURL('') ?>locator/search/">
-    <?php if($this->showSearchFilter()): ?>
-      Postcode or suburb: <input id='locator-autocomplete' name="s" type="text" class="loc-srch-s input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
-    <?php endif; ?>
-         <!--  <?php if($this->showSearchFilter()): ?>
-      Postcode: <input name="s" type="text" class="input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
-    <?php endif; ?> -->
+    <h4>Search</h4>
+    <form class="loc-srch-form" action="<?php echo Mage::getURL('') ?>locator/search/">
 
-    <?php if($this->showDistanceFilter()): ?>
-      within <input name="distance" type="number" value="<?php echo $this->getCurrentDistance($this->getRequest()); ?>" class="loc-srch-dis" />Km
-     <?php endif; ?>
-    <button type="submit" class="btn">submit</button>
+        <?php
+        //@todo get from config
+        $countries = array(
+            'Australia', "New Zealand"
+        );
+        $param = $this->getRequest()->getParam('country');
 
-    <span class="loc-loader loader loader-med"></span>
-  </form>
+        if (isset($param)) {
+            $selected = $this->getRequest()->getParam('country');
+        } else {
+            //if no parameters are passed from the url, see if we can get them from config
+            $defaultsearch = Mage::helper('ak_locator/search')->parseQueryString(Mage::getStoreConfig('locator_settings/search/default_search_params'));
+            if (isset($defaultsearch['country'])) {
+                $selected = $defaultsearch['country'];
+            }
+        }
+        ?>
+
+        <select id="loc-search-country" class="loc-srch-country" name="country">
+            <?php foreach ($countries as $country) : ?>
+                <option <?php if($country == @$selected){ echo 'selected="selected"';} ?>><?php echo $country; ?></option>
+            <?php endforeach; ?>
+        </select>
 
 
+<!--        <select name="a">-->
+<!--          <option value="">Any State</option>-->
+<!--          <option value="victoria">Victoria</option>-->
+<!--          <option value="new south wales">New South Wales</option>-->
+<!--        </select>-->
 
+        <input id='locator-autocomplete' name="s" type="text" class="loc-srch-s input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb (optional)') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
+
+
+        <button type="submit" class="btn">search</button>
+
+        <span class="loc-loader loader loader-med"></span>
+    </form>
+
+
+<!--    <form class="loc-srch-form" action="--><?php //echo Mage::getURL('') ?><!--locator/search/">-->
+<!--        --><?php //if($this->showSearchFilter()): ?>
+<!--          Postcode or suburb: <input id='locator-autocomplete' name="s" type="text" class="loc-srch-s input-text required-entry" placeholder="--><?php //echo $this->__('Enter a postcode or suburb') ?><!--" value="--><?php //echo $this->getRequest()->getParam('s'); ?><!--" />-->
+<!--        --><?php //endif; ?>
+<!---->
+<!--        --><?php //if($this->showDistanceFilter()): ?>
+<!--          within <input name="distance" type="number" value="--><?php //echo $this->getCurrentDistance($this->getRequest()); ?><!--" class="loc-srch-dis" />Km-->
+<!--         --><?php //endif; ?>
+<!--        <button type="submit" class="btn">search</button>-->
+<!---->
+<!--        <span class="loc-loader loader loader-med"></span>-->
+<!--    </form>-->
+<!---->
+<!---->
   or
   <?php
   // This is just an example of how the theme level can be used to link to different types of searches

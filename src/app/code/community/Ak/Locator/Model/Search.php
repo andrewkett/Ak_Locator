@@ -141,10 +141,6 @@ class Ak_Locator_Model_Search
             }
         }
 
-        if (isset($params['s']) && isset($params['country'])) {
-            $params['s'] .= ' '.$params['country'];
-        }
-
         //wrap the parameters in a transport object so they can be manipulated by event listeners
         $transportObject = new Varien_Object();
         $transportObject->setParams($params);

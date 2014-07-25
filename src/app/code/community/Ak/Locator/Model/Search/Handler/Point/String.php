@@ -50,7 +50,7 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
             throw new Exception('A search string must be passed to perform a string search');
         }
 
-        $point = $this->stringToPoint($params['s']);
+        $point = $this->stringToPoint($this->createSearchString($params));
 
         $collection = $this->pointToLocations($point, @$params['distance']);
         $collection->setSearch($this);
@@ -59,6 +59,25 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
 
     }
 
+
+    protected function createSearchString (array $params)
+    {
+
+        $query = $params['s'];
+
+        if (isset($params['a'])) {
+            $query .= ' '.$params['a'];
+        }
+
+        if (isset($params['country'])) {
+            $query .= ' '.$params['country'];
+        }
+
+        $appendText = (Mage::getStoreConfig(self::XML_SEARCH_SHOULDAPPEND_PATH))?Mage::getStoreConfig(self::XML_SEARCH_APPENDTEXT_PATH):'';
+        $query .= ' '.$appendText;
+
+        return $query;
+    }
 
     /**
      * Validate params
@@ -89,8 +108,6 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
     {
         $cache = $this->getCache();
 
-        $appendText = (Mage::getStoreConfig(self::XML_SEARCH_SHOULDAPPEND_PATH))?Mage::getStoreConfig(self::XML_SEARCH_APPENDTEXT_PATH):'';
-        $query = $query.' '.$appendText;
         $this->log('geocoding '.$query);
 
         if (!$this->_isCacheEnabled() || !$result = unserialize($cache->load(self::CACHE_TAG.'_'.$query))) {
