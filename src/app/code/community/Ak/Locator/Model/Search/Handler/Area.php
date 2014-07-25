@@ -94,15 +94,15 @@ class Ak_Locator_Model_Search_Handler_Area extends Ak_Locator_Model_Search_Handl
     {
         $collection = $this->getCollection();
 
-        if (isset($params['country'])) {
+        if (isset($params['country']) && $params['country'] != '') {
             $collection->addAttributeToFilter('country', $params['country']);
         }
 
-        if (isset($params['administrative_area'])) {
+        if (isset($params['administrative_area']) && $params['administrative_area'] != '') {
             $collection->addAttributeToFilter('administrative_area', $params['administrative_area']);
         }
 
-        if (isset($params['postcode'])) {
+        if (isset($params['postcode']) && $params['postcode'] != '') {
             $collection->addAttributeToFilter('postcode', $params['postcode']);
         }
 
