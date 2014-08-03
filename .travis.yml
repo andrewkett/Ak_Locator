@@ -7,12 +7,13 @@ php:
   - 5.3
 
 before_script:
-  - cp -r ./src/* ./
-  - wget -O modgit https://raw.github.com/jreinke/modgit/master/modgit
-  - chmod +x modgit
-  - sudo mv modgit /usr/local/bin
-  - modgit init
-  - modgit clone -t 1.7.0.2 magento https://github.com/andrewkett/magento-mirror.git
+  - bash < <(wget -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
+  - git clone https://github.com/andrewkett/magento-mirror.git web
+  - mkdir web/.modman
+  - mkdir web/.modman/Ak_Locator
+  - rsync -av --progress ./ ./web/.modman/Ak_Locator --exclude web
+  - cd web
+  - modman deploy
   - wget -O magento-sample-data-1.6.1.0.zip http://www.magentocommerce.com/downloads/assets/1.6.1.0/magento-sample-data-1.6.1.0.zip
   - unzip -q magento-sample-data-1.6.1.0.zip
   - mysql -e 'CREATE DATABASE IF NOT EXISTS `magento_travis`;'
