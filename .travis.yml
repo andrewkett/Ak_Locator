@@ -24,7 +24,6 @@ before_script:
   - ./modman deploy --copy --force Ak_LocatorDev
   - rm -rf var/cache/*
 script:
-  - php shell/indexer.php reindexall #just reindex everything for now until tests are built
   - php shell/locator/installsampledata.php
   - php shell/indexer.php reindexall #just reindex everything for now until tests are built
 after_script:
