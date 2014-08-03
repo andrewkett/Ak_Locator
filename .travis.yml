@@ -14,7 +14,7 @@ before_script:
   - cd web
   - wget https://raw.githubusercontent.com/colinmollenhour/modman/master/modman
   - chmod +x ./modman
-  - ./modman deploy
+  - ./modman deploy Ak_Locator
   - wget -O magento-sample-data-1.6.1.0.zip http://www.magentocommerce.com/downloads/assets/1.6.1.0/magento-sample-data-1.6.1.0.zip
   - unzip -q magento-sample-data-1.6.1.0.zip
   - mysql -e 'CREATE DATABASE IF NOT EXISTS `magento_travis`;'
