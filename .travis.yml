@@ -1,30 +1,45 @@
 language: php
 
 env:
-  - DB=mysql
+#  - MAGENTO_VERSION="1.5.0.1"
+#  - MAGENTO_VERSION="1.6.0.0"
+#  - MAGENTO_VERSION="1.6.1.0"
+#  - MAGENTO_VERSION="1.6.2.0"
+  - MAGENTO_VERSION="1.7.0.0"
+  - MAGENTO_VERSION="1.7.0.1"
+  - MAGENTO_VERSION="1.7.0.2"
+  - MAGENTO_VERSION="1.8.0.0"
+  - MAGENTO_VERSION="1.8.1.0"
+  - MAGENTO_VERSION="1.9.0.0"
+  - MAGENTO_VERSION="1.9.0.1"
 
 php:
   - 5.3
 
+before_install:
+
 before_script:
-  - git clone https://github.com/andrewkett/magento-mirror.git web
-  - mkdir web/.modman
-  - mkdir web/.modman/Ak_Locator
-  - rsync -av --progress ./ ./web/.modman/Ak_Locator --exclude web
-  - cd web
-  - wget https://raw.githubusercontent.com/colinmollenhour/modman/master/modman
-  - chmod +x ./modman
-  - ./modman deploy --copy --force Ak_Locator
-  - wget -O magento-sample-data-1.6.1.0.zip http://www.magentocommerce.com/downloads/assets/1.6.1.0/magento-sample-data-1.6.1.0.zip
-  - unzip -q magento-sample-data-1.6.1.0.zip
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS `magento_travis`;'
-  - mysql -uroot magento_travis < magento-sample-data-1.6.1.0/magento_sample_data_for_1.6.1.0.sql
-  - php -f install.php -- --license_agreement_accepted yes --locale en_AU --timezone Australia/Melbourne --default_currency AUD --db_host localhost --db_name magento_travis --db_user root --db_pass "" --url http://travis.magento.local/ --skip_url_validation yes --use_rewrites yes --use_secure no --secure_base_url --use_secure_admin no --admin_firstname Andrew --admin_lastname Kett --admin_email admin@example.com --admin_username admin --admin_password password123
-  - git clone https://github.com/andrewkett/Ak_LocatorDev.git .modman/Ak_LocatorDev
-  - ./modman deploy --copy --force Ak_LocatorDev
-  - rm -rf var/cache/*
+  - CURR_DIR=$(pwd)
+
+  #move locator extension to new folder
+  - mkdir $CURR_DIR/locator
+  - rsync -a $CURR_DIR/ $CURR_DIR/locator --exclude $CURR_DIR/locator --exclude $CURR_DIR/mageci --exclude $CURR_DIR/phpunit --exclude $CURR_DIR/magento
+
+  #install mage ci
+  - git clone git://github.com/EcomDev/MageCI.git $CURR_DIR/mageci/
+
+  #install modman
+  - wget https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -O $CURR_DIR/mageci/bin/modman
+  - chmod +x $CURR_DIR/mageci/bin/modman
+
+  #install magento
+  - $CURR_DIR/mageci/bin/mage-ci install magento $MAGENTO_VERSION magento_test -c -t -r http://mage-ci.ecomdev.org
+
+  #install php unit
+  - git clone git://github.com/EcomDev/EcomDev_PHPUnit.git -b dev $CURR_DIR/phpunit/
+  - $CURR_DIR/mageci/bin/mage-ci install-module magento $CURR_DIR/phpunit
+
+  #install locator to magento directory
+  - $CURR_DIR/mageci/bin/mage-ci install-module magento $CURR_DIR/locator
 script:
-  - php shell/locator/installsampledata.php
-  - php shell/indexer.php reindexall #just reindex everything for now until tests are built
-after_script:
-  - curl localhost:9200/locator/search
+  - $CURR_DIR/mageci/bin/mage-ci phpunit magento
