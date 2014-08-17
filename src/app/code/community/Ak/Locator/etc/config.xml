@@ -250,6 +250,7 @@
                 <use_customer_address>0</use_customer_address>
                 <show_search_point>1</show_search_point>
                 <show_closest_on_noresults>0</show_closest_on_noresults>
+                <log_geocoding>0</log_geocoding>
             </search>
             <seo>
                 <search_meta_title>Location Search</search_meta_title>

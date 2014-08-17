@@ -54,11 +54,14 @@ class Ak_Locator_Model_Search_Handler_Point_Latlong extends Ak_Locator_Model_Sea
      */
     public function isValidParams(array $params)
     {
+        //lat and long must be set
         if (isset($params['lat']) && $params['lat'] != '' && isset($params['long']) && $params['long'] != '') {
-            return true;
+            //and numeric
+            if (is_numeric($params['lat']) && is_numeric($params['long'])) {
+                return true;
+            };
         }
 
         return false;
     }
-
 }

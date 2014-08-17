@@ -25,6 +25,8 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
     const XML_SEARCH_SHOULDAPPEND_PATH = "locator_settings/search/append_string_to_search";
     const XML_SEARCH_APPENDTEXT_PATH = "locator_settings/search/append_string";
 
+    const XML_SEARCH_LOG_GEO = "locator_settings/search/log_geocoding";
+
     const TYPE = 'string';
 
     const CACHE_ID = 'locator_geo';
@@ -48,7 +50,7 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
             throw new Exception('A search string must be passed to perform a string search');
         }
 
-        $point = $this->stringToPoint($params['s']);
+        $point = $this->stringToPoint($this->createSearchString($params));
 
         $collection = $this->pointToLocations($point, @$params['distance']);
         $collection->setSearch($this);
@@ -57,6 +59,25 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
 
     }
 
+
+    protected function createSearchString (array $params)
+    {
+
+        $query = $params['s'];
+
+        if (isset($params['a'])) {
+            $query .= ' '.$params['a'];
+        }
+
+        if (isset($params['country'])) {
+            $query .= ' '.$params['country'];
+        }
+
+        $appendText = (Mage::getStoreConfig(self::XML_SEARCH_SHOULDAPPEND_PATH))?Mage::getStoreConfig(self::XML_SEARCH_APPENDTEXT_PATH):'';
+        $query .= ' '.$appendText;
+
+        return $query;
+    }
 
     /**
      * Validate params
@@ -87,8 +108,7 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
     {
         $cache = $this->getCache();
 
-        $appendText = (Mage::getStoreConfig(self::XML_SEARCH_SHOULDAPPEND_PATH))?Mage::getStoreConfig(self::XML_SEARCH_APPENDTEXT_PATH):'';
-        $query = $query.' '.$appendText;
+        $this->log('geocoding '.$query);
 
         if (!$this->_isCacheEnabled() || !$result = unserialize($cache->load(self::CACHE_TAG.'_'.$query))) {
             $key = Mage::getStoreConfig(self::XML_SEARCH_APIKEY_PATH);
@@ -96,6 +116,9 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
             try {
                 $geocoder = new GoogleGeocode($key);
                 $result = $geocoder->read($query);
+
+                $this->log('result '.print_r($result, 1));
+
                 $cache->save(serialize($result), self::CACHE_TAG.'_'.$query, array(self::CACHE_TAG));
 
             } catch (Exception $e) {
@@ -106,6 +129,8 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
 
                 throw $e;
             }
+        } else {
+            $this->log('result from cache '.print_r($result, 1));
         }
 
         return $result;
@@ -137,5 +162,13 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
             $this->_isCacheEnabled = Mage::app()->useCache(self::CACHE_ID);
         }
         return $this->_isCacheEnabled;
+    }
+
+    protected function log($message, $level = Zend_Log::DEBUG, $file = 'locator_geocoder.log')
+    {
+        if (Mage::getStoreConfig(self::XML_SEARCH_LOG_GEO)) {
+            Mage::log($message, $level, $file);
+        }
+
     }
 }

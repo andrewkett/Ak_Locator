@@ -46,8 +46,10 @@ class Ak_Locator_Model_Search
         // Loop through configured handlers and push them into handler stack
         foreach (Mage::app()->getConfig()->getNode('global')->xpath('ak_locator/search_handlers/*') as $handlerConfig) {
             if ($handlerConfig->enabled == '1') {
+                /**
+                 * @var Ak_Locator_Model_Search_Handler_Abstract $handler
+                 */
                 $handler = Mage::getModel($handlerConfig->namespace);
-
                 if ($handler) {
                     $this->pushHandler($handler, $handlerConfig->getName());
                 }
@@ -71,6 +73,9 @@ class Ak_Locator_Model_Search
 
         // Iterate through search handlers and run them if required
         foreach ($this->getHandlers() as $handler) {
+            /**
+             * @var Ak_Locator_Model_Search_Handler_Abstract $handler
+             */
             if ($handler->isValidParams($params)) {
                 $params = $handler->parseParams($params);
                 $handler->setCollection($this->getCollection())->search($params);
@@ -97,6 +102,9 @@ class Ak_Locator_Model_Search
         $params = $this->parseParams($params);
 
         foreach ($this->getHandlers() as $handler) {
+            /**
+             * @var Ak_Locator_Model_Search_Handler_Abstract $handler
+             */
             if ($handler->isValidParams($params)) {
                 return true;
             }
@@ -131,10 +139,6 @@ class Ak_Locator_Model_Search
             if ($override->getParams()) {
                 $params = Mage::helper('ak_locator/search')->parseQueryString($override->getParams());
             }
-        }
-
-        if (isset($params['s']) && isset($params['country'])) {
-            $params['s'] .= ' '.$params['country'];
         }
 
         //wrap the parameters in a transport object so they can be manipulated by event listeners
