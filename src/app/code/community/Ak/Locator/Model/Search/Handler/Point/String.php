@@ -117,7 +117,7 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
                 $geocoder = new GoogleGeocode($key);
                 $result = $geocoder->read($query);
 
-                $this->log('result '.print_r($result, 1));
+                $this->log('result '.$this->formatLogOutput($result));
 
                 $cache->save(serialize($result), self::CACHE_TAG.'_'.$query, array(self::CACHE_TAG));
 
@@ -130,12 +130,28 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
                 throw $e;
             }
         } else {
-            $this->log('result from cache '.print_r($result, 1));
+            $this->log('result from cache '.$this->formatLogOutput($result));
         }
 
         return $result;
     }
 
+    /**
+     * Format result for logging
+     *
+     * @param Geometry $result
+     * @return string
+     */
+    protected function formatLogOutput(Geometry $result)
+    {
+        switch (get_class($result)) {
+            case "Point":
+                return 'lat: '.$result->coords[1].', long:'.$result->coords[0];
+            default:
+                return 'unknown result format';
+        }
+
+    }
 
     /**
      *
@@ -164,7 +180,7 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
         return $this->_isCacheEnabled;
     }
 
-    protected function log($message, $level = Zend_Log::DEBUG, $file = 'locator_geocoder.log')
+    protected function log($message, $level = Zend_Log::DEBUG, $file = 'locator_geocoding.log')
     {
         if (Mage::getStoreConfig(self::XML_SEARCH_LOG_GEO)) {
             Mage::log($message, $level, $file);

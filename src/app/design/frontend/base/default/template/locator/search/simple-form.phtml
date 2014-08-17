@@ -5,7 +5,9 @@
         <?php
         //@todo get from config
         $countries = array(
-            'Australia', "New Zealand"
+            'Australia' => 'Australia',
+            'New Zealand' => 'New Zealand',
+            'Other' => ''
         );
         $param = $this->getRequest()->getParam('country');
 
@@ -21,8 +23,8 @@
         ?>
 
         <select id="loc-search-country" class="loc-srch-country" name="country">
-            <?php foreach ($countries as $country) : ?>
-                <option <?php if($country == @$selected){ echo 'selected="selected"';} ?>><?php echo $country; ?></option>
+            <?php foreach ($countries as $country => $value) : ?>
+                <option <?php if($country == @$selected ){ echo 'selected="selected"';} ?> value="<?php echo $value; ?>"><?php echo $country; ?></option>
             <?php endforeach; ?>
         </select>
 
