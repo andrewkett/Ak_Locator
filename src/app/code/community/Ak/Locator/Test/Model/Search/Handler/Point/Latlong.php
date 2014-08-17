@@ -56,4 +56,27 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
         $params = array('lat'=>'lat', 'long'=>'long');
         $this->assertFalse($this->_model->isValidParams($params));
     }
+
+
+    /**
+     * @test
+     */
+    public function testValidArgumentSearch()
+    {
+        $params = array('lat'=>-37.814207400000, 'long'=>144.964045100000);
+        $result = $this->_model->search($params);
+        $this->assertInstanceOf('Ak_Locator_Model_Resource_Location_Collection', $result);
+    }
+
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidArgumentSearch()
+    {
+        $params = array('s'=>'3141 australia');
+        $this->_model->search($params);
+    }
+
 }

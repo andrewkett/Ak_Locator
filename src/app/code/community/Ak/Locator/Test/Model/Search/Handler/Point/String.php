@@ -43,4 +43,16 @@ class Ak_Locator_Test_Model_Search_Handler_Point_String extends EcomDev_PHPUnit_
 
         $this->assertFalse($this->_model->isValidParams($params));
     }
+
+
+
+
+//    public function testValidSearch()
+//    {
+//
+//        $params = array('s'=>'123 test street');
+//
+//        $this->assertFalse($this->_model->search($params));
+//
+//    }
 }
