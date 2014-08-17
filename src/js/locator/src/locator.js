@@ -113,7 +113,10 @@
 
             this.settings = {
                 maxZoom : 15,
-                baseUrl : Locator.defaultSearchSettings.baseUrl
+                baseUrl : Locator.defaultSearchSettings.baseUrl,
+                markerIcon : 'M25,0C11.191,0,0,11.194,0,25c0,23.87,25,55,25,55s25-31.13,25-55C50,11.194,38.807,0,25,0z M25,38.8c-7.457,0-13.5-6.044-13.5-13.5S17.543,11.8,25,11.8c7.455,0,13.5,6.044,13.5,13.5S32.455,38.8,25,38.8z',
+                markerColour : '#3399cc',
+                crosshairIcon: 'M27.5,56.738V62h9v-5.307c10.207-1.9,18.24-9.968,20.09-20.193h5.16v-9h-5.16C54.74,17.275,46.707,9.208,36.5,7.307V2h-9v5.262C17.174,9.077,9.025,17.192,7.16,27.5H2v9h5.16C9.025,46.808,17.174,54.923,27.5,56.738z M31.875,13.875C41.869,13.875,50,22.006,50,32c0,9.994-8.131,18.125-18.125,18.125S13.75,41.994,13.75,32C13.75,22.006,21.881,13.875,31.875,13.875z'
             };
 
 
@@ -146,7 +149,9 @@
 
                 self.markers.point = new google.maps.Marker({
                     position: loc,
-                    map: self.map
+                    icon: self.getCrosshairImage(),
+                    map: self.map,
+                    zIndex: 0
                 });
 
                 latlngbounds.extend( loc );
@@ -316,12 +321,33 @@
          * @returns {google.maps.MarkerImage}
          */
         getMarkerImage: function(){
-            return new google.maps.MarkerImage(
-                '/skin/frontend/base/default/locator/images/pin.png',
-                new google.maps.Size(40, 50),
-                new google.maps.Point(0, 0),
-                new google.maps.Point(20, 50)
-            );
+
+            return {
+                    path: this.settings.markerIcon,
+                    scale:.5,
+                    strokeWeight: 1,
+                    strokeColor: '#666',
+                    strokeOpacity:.5,
+                    fillColor: this.settings.markerColour,
+                    fillOpacity: 1
+                };
+        },
+
+
+        /**
+         * Get a google maps marker for point of search crosshair
+         */
+        getCrosshairImage: function ()
+        {
+            return {
+                path: this.settings.crosshairIcon,
+                scale: 0.4,
+                strokeWeight: 0,
+                strokeColor: 'black',
+                strokeOpacity: 0,
+                fillColor: '#676157',
+                fillOpacity: 1
+            };
         },
 
         /**

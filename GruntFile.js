@@ -13,13 +13,16 @@ module.exports = function(grunt) {
                     sourceMapName: 'src/js/locator/locator.js.map'
                 },
                 files: {
-                    'src/js/locator/locator.min.js': ['src/js/locator/locator.js']
+                    'src/js/locator/locator.min.js': [
+                        'src/js/locator/src/history.js',
+                        'src/js/locator/src/locator.js'
+                    ]
                 }
             }
         },
 
         watch: {
-            files: "./src/js/locator/locator.js",
+            files: "./src/js/locator/src/**",
             tasks: ["uglify"]
 
         }
