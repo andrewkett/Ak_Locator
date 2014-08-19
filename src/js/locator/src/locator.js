@@ -338,6 +338,7 @@
                     strokeColor: '#666',
                     strokeOpacity:.5,
                     fillColor: this.settings.markerColour,
+                    anchor: new google.maps.Point(25,75),
                     fillOpacity: 1
                 };
         },
@@ -355,7 +356,8 @@
                 strokeColor: 'black',
                 strokeOpacity: 0,
                 fillColor: '#676157',
-                fillOpacity: 1
+                fillOpacity: 1,
+                anchor: new google.maps.Point(31, 31)
             };
         },
 
