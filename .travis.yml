@@ -1,7 +1,7 @@
 language: php
 
 env:
-  - MAGENTO_VERSION="1.5.0.1"
+ # - MAGENTO_VERSION="1.5.0.1"
 #  - MAGENTO_VERSION="1.6.0.0"
 #  - MAGENTO_VERSION="1.6.1.0"
   - MAGENTO_VERSION="1.6.2.0"
@@ -24,7 +24,7 @@ before_script:
   - CURR_DIR=$(pwd)
 
   #move locator extension to new folder
-  - mkdir $CURR_DIR/locator
+  #- mkdir $CURR_DIR/locator
   - rsync -a $CURR_DIR/ $CURR_DIR/locator --exclude $CURR_DIR/locator --exclude $CURR_DIR/mageci --exclude $CURR_DIR/phpunit --exclude $CURR_DIR/magento
 
   #install mage ci
@@ -43,5 +43,12 @@ before_script:
 
   #install locator to magento directory
   - $CURR_DIR/mageci/bin/mage-ci install-module magento $CURR_DIR/locator
+
+  - cp ./.travis/composer.json magento
+  - cd magento
+  - composer install --prefer-dist
 script:
-  - $CURR_DIR/mageci/bin/mage-ci phpunit magento
+
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - phpunit --coverage-clover=coverage.clover
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

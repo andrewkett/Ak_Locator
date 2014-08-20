@@ -1,6 +1,6 @@
 <?php
 
-class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit_Test_Case
+class Ak_Locator_Test_Model_Search_Handler_Point_Closest extends EcomDev_PHPUnit_Test_Case
 {
     /**
      * @var Ak_Locator_Model_Search_Handler_Point_Latlong
@@ -13,7 +13,7 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
     protected function setUp()
     {
         parent::setUp();
-        $this->_model = Mage::getModel('ak_locator/search_handler_point_latlong');
+        $this->_model = Mage::getModel('ak_locator/search_handler_point_closest');
     }
 
     /**
@@ -21,7 +21,7 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
      */
     public function testInstance()
     {
-        $this->assertInstanceOf('Ak_Locator_Model_Search_Handler_Point_Latlong', $this->_model);
+        $this->assertInstanceOf('Ak_Locator_Model_Search_Handler_Point_Closest', $this->_model);
     }
 
     /**
@@ -29,10 +29,7 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
      */
     public function testValidParams()
     {
-        $params = array('lat'=>-37.814207400000, 'long'=>144.964045100000);
-        $this->assertTrue($this->_model->isValidParams($params));
-
-        $params = array('lat'=>'-37.814207400000', 'long'=>'144.964045100000');
+        $params = array('point'=> new Point(-37.814207400000, 144.964045100000));
         $this->assertTrue($this->_model->isValidParams($params));
     }
 
@@ -41,19 +38,13 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
      */
     public function testInvalidParams()
     {
-        $params = array('country'=>'australia');
+        $params = array('something' => 'australia');
         $this->assertFalse($this->_model->isValidParams($params));
 
-        $params = array('lat'=>-37.814207400000);
+        $params = array('point' => 'here');
         $this->assertFalse($this->_model->isValidParams($params));
 
-        $params = array('long'=>144.964045100000);
-        $this->assertFalse($this->_model->isValidParams($params));
-
-        $params = array('lat'=>'-37.81420740.0000', 'long'=>'144.964045100000');
-        $this->assertFalse($this->_model->isValidParams($params));
-
-        $params = array('lat'=>'lat', 'long'=>'long');
+        $params = array('point' => 144.964045100000);
         $this->assertFalse($this->_model->isValidParams($params));
     }
 
@@ -63,7 +54,7 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
      */
     public function testValidArgumentSearch()
     {
-        $params = array('lat'=>-37.814207400000, 'long'=>144.964045100000);
+        $params = array('point'=> new Point(-37.814207400000, 144.964045100000));
         $result = $this->_model->search($params);
         $this->assertInstanceOf('Ak_Locator_Model_Resource_Location_Collection', $result);
     }
@@ -75,7 +66,16 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
      */
     public function testInvalidArgumentSearch()
     {
-        $params = array('s'=>'3141 australia');
+        $params = array('test'=>'test');
+        $this->_model->search($params);
+
+        $params = array('point'=>'here');
+        $this->_model->search($params);
+
+        $params = array('point'=>1);
+        $this->_model->search($params);
+
+        $params = array('point'=> new StdClass());
         $this->_model->search($params);
     }
 

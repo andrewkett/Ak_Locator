@@ -1,0 +1,16 @@
+{
+    "name": "andrewkett/locator",
+    "minimum-stability":"dev",
+    "require": {
+        "phayes/geophp": "*"
+    },
+    "authors":[
+        {
+            "name":"Andrew Kett"
+        }
+    ],
+    "extra":{
+        "magento-root-dir" : "./",
+        "magento-force" : "true"
+    }
+}

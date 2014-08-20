@@ -29,12 +29,12 @@ class Ak_Locator_Model_Search_Handler_Point_Latlong extends Ak_Locator_Model_Sea
      * @param Array $params Array of search params
      *
      * @return Ak_Locator_Model_Resource_Location_Collection
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function search(Array $params)
     {
         if (!$this->isValidParams($params)) {
-            throw new Exception('Both latitude and longitude values are required to do a lat/long search');
+            throw new InvalidArgumentException('Both latitude and longitude values are required to do a lat/long search');
         }
 
         $point = new Point($params['long'], $params['lat']);
