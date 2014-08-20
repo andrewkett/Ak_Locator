@@ -47,7 +47,7 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
     public function search(array $params)
     {
         if (!$this->isValidParams($params)) {
-            throw new Exception('A search string must be passed to perform a string search');
+            throw new InvalidArgumentException('A search string must be passed to perform a string search');
         }
 
         $point = $this->stringToPoint($this->createSearchString($params));

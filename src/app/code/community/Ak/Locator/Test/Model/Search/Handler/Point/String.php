@@ -45,14 +45,26 @@ class Ak_Locator_Test_Model_Search_Handler_Point_String extends EcomDev_PHPUnit_
     }
 
 
+    /**
+     * @test
+     */
+    public function testValidArgumentSearch()
+    {
+        $params = array('s'=>'3141 australia');
+        $result = $this->_model->search($params);
+        $this->assertInstanceOf('Ak_Locator_Model_Resource_Location_Collection', $result);
+    }
 
 
-//    public function testValidSearch()
-//    {
-//
-//        $params = array('s'=>'123 test street');
-//
-//        $this->assertFalse($this->_model->search($params));
-//
-//    }
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidArgumentSearch()
+    {
+
+        $params = array('a'=>'3141 australia');
+        $this->_model->search($params);
+    }
+
 }
