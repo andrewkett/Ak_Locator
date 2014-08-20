@@ -66,5 +66,4 @@ class Ak_Locator_Test_Model_Search_Handler_Point_String extends EcomDev_PHPUnit_
         $params = array('a'=>'3141 australia');
         $this->_model->search($params);
     }
-
 }
