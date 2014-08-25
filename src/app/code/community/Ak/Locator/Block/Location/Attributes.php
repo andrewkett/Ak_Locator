@@ -1,9 +1,11 @@
 <?php
 class Ak_Locator_Block_Location_Attributes extends Mage_Core_Block_Template
 {
-  
 
-    function getLocation()
+    /**
+     * @return mixed
+     */
+    public function getLocation()
     {
         if (!$this->getData('location')) {
             $this->setData('location', Mage::registry('location'));

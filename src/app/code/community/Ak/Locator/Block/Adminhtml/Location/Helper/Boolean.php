@@ -8,7 +8,7 @@ class Ak_Locator_Block_Adminhtml_Location_Helper_Boolean extends Varien_Data_For
      *
      * @param array $attributes
      */
-    public function __construct($attributes=array())
+    public function __construct($attributes = array())
     {
         parent::__construct($attributes);
         $this->setValues(array(

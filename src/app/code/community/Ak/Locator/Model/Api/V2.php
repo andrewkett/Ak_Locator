@@ -1,12 +1,15 @@
 <?php
 
-class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api {
+class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api
+{
 
     /**
      * @param int|string $locationId
      * @return array
+     * @throws Exception
      */
-    public function retrieve($locationId) {
+    public function retrieve($locationId)
+    {
 
         try {
             if (is_null($locationId)) {
@@ -22,12 +25,14 @@ class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api {
         return $result;
     }
 
-    /**
-     * @param array
-     * @return array
-     */
-    public function add($dataArray) {
 
+    /**
+     * @param $dataArray
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function add($dataArray)
+    {
         try {
             if (is_null($dataArray)) {
                 throw new Exception(Mage::helper('ak_locator/location')->__("Data cannot be null"));
@@ -37,21 +42,20 @@ class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api {
             $model->setIsEnabled(1);
             $errors = $model->validate();
             
-              if (is_array($errors)) {
-                     
-                    $strErrors = array();
-                    foreach($errors as $code => $error) {
-                        if ($error === true) {
-                            $error = Mage::helper('catalog')->__('Attribute "%s" is invalid.', $code);
-                        }
-                        $strErrors[] = $error;
+            if (is_array($errors)) {
+                $strErrors = array();
+                foreach ($errors as $code => $error) {
+                    if ($error === true) {
+                        $error = Mage::helper('catalog')->__('Attribute "%s" is invalid.', $code);
                     }
-                    throw new Exception(Mage::helper('ak_locator/location')->__(implode("\n", $strErrors)));
-                   // $this->_fault('transaction_error', implode("\n", $strErrors));
-                }else{
-                    $result =$model->save();
-                    return $model->getData();
-                }  
+                    $strErrors[] = $error;
+                }
+                throw new Exception(Mage::helper('ak_locator/location')->__(implode("\n", $strErrors)));
+               // $this->_fault('transaction_error', implode("\n", $strErrors));
+            } else {
+                $model->save();
+                return $model->getData();
+            }
                        
             
         } catch (Mage_Core_Exception $e) {
@@ -60,14 +64,17 @@ class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api {
       
     }
 
+
     /**
-     * @param array
-     * @return boolean
+     * @param int $locationId
+     * @param $dataArray
+     * @return bool
+     * @throws Exception
      */
-    public function update($locationId, $dataArray) {
-
-
+    public function update($locationId, $dataArray)
+    {
         try {
+
             if (is_null($dataArray) && is_null($locationId)) {
                 throw new Exception(Mage::helper('ak_locator/location')->__("Data cannot be null"));
             }
@@ -75,6 +82,7 @@ class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api {
             $model = Mage::getModel('ak_locator/location');
             $updateDate = $model->load($locationId);
             $existingdata = $updateDate->getData();
+
             if ($updateDate->getId()) {
                 $model->setData((array) $dataArray);
                 $model->setIsEnabled($existingdata['is_enabled']);
@@ -84,7 +92,7 @@ class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api {
                 if (is_array($errors)) {
                      
                     $strErrors = array();
-                    foreach($errors as $code => $error) {
+                    foreach ($errors as $code => $error) {
                         if ($error === true) {
                             $error = Mage::helper('catalog')->__('Attribute "%s" is invalid.', $code);
                         }
@@ -92,7 +100,7 @@ class Ak_Locator_Model_Api_V2 extends Ak_Locator_Model_Api {
                     }
                     throw new Exception(Mage::helper('ak_locator/location')->__(implode("\n", $strErrors)));
                    // $this->_fault('transaction_error', implode("\n", $strErrors));
-                }else{
+                } else {
                     $model->save();
                     return true;
                 }

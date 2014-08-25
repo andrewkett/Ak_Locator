@@ -1,7 +1,10 @@
 <?php
 
+/**
+ * Class Ak_Locator_Block_Adminhtml_Location_Helper_Image
+ */
 class Ak_Locator_Block_Adminhtml_Location_Helper_Image extends Ak_Locator_Block_Adminhtml_Location_Helper_File
-{   
+{
     
     /**
      * Return Delete CheckBox Label
@@ -48,7 +51,8 @@ class Ak_Locator_Block_Adminhtml_Location_Helper_Image extends Ak_Locator_Block_
                 'onclick'   => "imagePreview('{$imageId}'); return false;",
             );
 
-            $html = sprintf('%s%s</a> ',
+            $html = sprintf(
+                '%s%s</a> ',
                 $this->_drawElementHtml('a', $link, false),
                 $this->_drawElementHtml('img', $image)
             );
