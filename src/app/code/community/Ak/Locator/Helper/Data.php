@@ -14,7 +14,7 @@
  * @link      http://andrewkett.github.io/Ak_Locator/
  */
 
-class Ak_Locator_Helper_Data extends Mage_Core_Helper_Abstract
+class Ak_Locator_Helper_Data extends Ak_Locator_Helper_Abstract
 {
     const BROWSER_CACHE_CONFIG_PATH = 'locator_settings/search/leverage_browser_caching';
 
@@ -87,5 +87,19 @@ class Ak_Locator_Helper_Data extends Mage_Core_Helper_Abstract
             );
         }
         return $path;
+    }
+    
+    /**
+     * Retrieve attribute hidden fields
+     *
+     * @return array
+     */
+    public function getAttributeHiddenFields()
+    {
+        if (Mage::registry('attribute_type_hidden_fields')) {
+            return Mage::registry('attribute_type_hidden_fields');
+        } else {
+            return array();
+        }
     }
 }

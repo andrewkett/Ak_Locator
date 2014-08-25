@@ -274,7 +274,26 @@
 
                     </fields>
                 </seo>
-
+                 <store_import translate="label">
+                    <label>Import</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <import_geocode_enabled>
+                            <label>Enable geocode for Import</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Enabling will give administrators the ability to fill latitude/longitude details automatically during Import</comment>
+                        </import_geocode_enabled>
+                    </fields>
+                </store_import>    
             </groups>
         </locator_settings>
     </sections>

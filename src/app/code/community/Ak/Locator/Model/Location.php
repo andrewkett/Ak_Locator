@@ -38,6 +38,13 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
 
     protected $_canAffectOptions = false;
 
+    /**
+     * Assoc array of location attributes
+     *
+     * @var array
+     */
+    protected $_attributes;
+    
     public function _construct()
     {
         $this->_init('ak_locator/location');
@@ -136,4 +143,40 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
     {
         return $this->getUrlModel()->formatUrlKey($str);
     }
+    
+    /**
+     * Retrieve all location attributes
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        if ($this->_attributes === null) {
+            $this->_attributes = $this->_getResource()
+            ->loadAllAttributes($this)
+            ->getSortedAttributes();
+        }
+        return $this->_attributes;
+    }
+    
+    /**
+     * Get loction attribute model object
+     *
+     * @param   string $attributeCode
+     * @return  Ak_Location_Model_Attribute | null
+     */
+    public function getAttribute($attributeCode)
+    {
+        $this->getAttributes();
+        if (isset($this->_attributes[$attributeCode])) {
+            return $this->_attributes[$attributeCode];
+        }
+        return null;
+    }
+    
+    
+    public function validate(){
+    	return $this->_getResource()->validate($this);
+    }
+    
 }

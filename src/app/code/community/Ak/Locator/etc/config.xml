@@ -18,7 +18,7 @@
 <config>
   <modules>
     <Ak_Locator>
-        <version>0.0.0.6</version>
+        <version>0.0.0.7</version>
     </Ak_Locator>
   </modules>
   <global>
@@ -148,7 +148,30 @@
               </closest>
           </search_handlers>
       </ak_locator>
-
+       <importexport module="importexport">                       
+            <export_entities>
+                <ak_locator_location translate="label">
+                    <model_token>ak_locator/export_location</model_token>
+                    <label>Locations</label>
+                </ak_locator_location>                
+            </export_entities>  
+            <import_entities>               
+                <ak_locator_location translate="label">
+                    <model_token>ak_locator/import_location</model_token>
+                    <label>Locations</label>
+                </ak_locator_location>
+            </import_entities>                    
+       </importexport>
+       <events>
+            <ak_locator_location_attribute_before_save>
+                <observers>
+                    <ak_locator_location>
+                        <class>ak_locator/observer</class>
+                        <method>locationAttributeBeforeSave</method>
+                    </ak_locator_location>
+                </observers>
+            </ak_locator_location_attribute_before_save>            
+       </events>      
   </global>
   <adminhtml>
      <menu>
@@ -161,6 +184,11 @@
                     <action>adminhtml/locator</action>
                     <sort_order>30</sort_order>
                   </locations>
+                  <attributes>
+                    <title>Manage Attributes</title>
+                    <action>adminhtml/location_attribute</action>
+                    <sort_order>40</sort_order>
+                  </attributes>
                 </children>
           </ak_locator>
         </menu>

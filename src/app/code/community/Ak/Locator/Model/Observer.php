@@ -57,4 +57,34 @@ class Ak_Locator_Model_Observer
             }
         }
     }
+    
+    //attrbutes events
+    /**
+     * Before save observer for location attribute
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Ak_Locator_Model_Observer
+     */
+    public function locationAttributeBeforeSave(Varien_Event_Observer $observer)
+    {
+        $attribute = $observer->getEvent()->getAttribute();
+        if ($attribute instanceof Ak_Locator_Model_Attribute && $attribute->isObjectNew()) {
+            /**
+             * Check for maximum attribute_code length
+             */
+            $attributeCodeMaxLength = Mage_Eav_Model_Entity_Attribute::ATTRIBUTE_CODE_MAX_LENGTH - 9;
+            $validate = Zend_Validate::is($attribute->getAttributeCode(), 'StringLength', array(
+                'max' => $attributeCodeMaxLength
+            ));
+            if (!$validate) {
+                throw Mage::exception('Mage_Eav',
+                    Mage::helper('eav')->__('Maximum length of attribute code must be less then %s symbols', $attributeCodeMaxLength)
+                );
+            }
+        }
+
+        return $this;
+    }
+    
+    
 }

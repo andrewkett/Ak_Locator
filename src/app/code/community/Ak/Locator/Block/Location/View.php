@@ -80,10 +80,13 @@ class Ak_Locator_Block_Location_View extends Mage_Core_Block_Template
                                          ->setData('locations', $this->getNearbyLocations())
                                          ->setTemplate('locator/location/others.phtml');
 
-
+        $attributesBlock = $this->getLayout()->createBlock('ak_locator/location_attributes')
+                                         ->setData('location', $location)
+                                         ->setTemplate('locator/location/attributes.phtml');
         $this->setChild('others', $nearbyBlock);
         $this->setChild('info', $listBlock);
         $this->setChild('map', $mapBlock);
+        $this->setChild('attributes', $attributesBlock);
 
         return parent::_prepareLayout();
     }

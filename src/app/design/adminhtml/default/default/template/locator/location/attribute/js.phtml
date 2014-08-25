@@ -1,0 +1,192 @@
+<script type="text/javascript">
+//<![CDATA[
+function saveAndContinueEdit(){
+    editForm.submit($('edit_form').action+'back/edit/');
+}
+
+var show_option_panel           = false;
+var attribute_validate_filters  = <?php echo $this->getValidateFiltersJson();?>;
+var attribute_filter_types      = <?php echo $this->getFilteTypesJson();?>;
+
+function toggleApplyVisibility(select) {
+    if ($(select).value == 1) {
+        $(select).next('select').removeClassName('no-display');
+        $(select).next('select').removeClassName('ignore-validate');
+
+    } else {
+        $(select).next('select').addClassName('no-display');
+        $(select).next('select').addClassName('ignore-validate');
+        var options = $(select).next('select').options;
+        for( var i=0; i < options.length; i++) {
+            options[i].selected = false;
+        }
+    }
+}
+
+function bindAttributeInputType()
+{
+    switchDefaultValueField();
+}
+
+function switchFilterSelect(id, vals, dict)
+{
+    if ($(id)) {
+        if (vals) {
+            var value = $(id).value;
+            $(id).up(1).show();
+            for (var i = $(id).length - 1; i >= 0; i--) {
+                if (i != 0) {
+                    $(id).remove(i);
+                }
+            }
+            vals.each(function(e, index){
+                $(id).options[index + 1] = new Option(dict[e], e);
+                if (e == value) {
+                    $(id).options[index + 1].selected = true;
+                }
+            }.bind(this));
+        } else {
+            $(id).up(1).hide();
+        }
+    }
+}
+
+function switchInputOutputFilterSelect(id, vals, dict)
+{
+    switchFilterSelect(id, vals, dict);
+    if ($(id)) {
+        if (typeof(vals[0]) != 'undefined' && vals[0] == 'date' && $(id).options.length > 1) {
+            $(id).options[0].hide();
+            $(id).options[1].selected = true;
+        } else {
+            $(id).options[0].show();
+        }
+    }
+}
+
+function switchDefaultValueField()
+{
+    if (!$('frontend_input')) {
+        return;
+    }
+
+    var currentValue = $('frontend_input').value;
+
+    var show_default_value_text     = false;
+    var show_default_value_textarea = false;
+    var show_default_value_date     = false;
+    var show_default_value_yesno    = false;
+
+    show_option_panel               = false;
+    var panel_default_value_type    = null;
+
+    var show_multiline_count        = false;
+    var show_min_text_length        = false;
+    var show_max_text_length        = false;
+    var show_max_file_size          = false;
+    var show_file_extensions        = false;
+    var show_max_image_width        = false;
+    var show_max_image_heght        = false;
+
+    var select_filter_types         = false;
+    var select_validate_filters     = false;
+
+    switch (currentValue) {
+        <?php foreach ($this->getAttributeInputTypes() as $type => $prop):?>
+        case '<?php echo $type?>':
+            <?php foreach ($prop['validate_types'] as $vt):?>
+            show_<?php echo $vt?> = true;
+            <?php endforeach;?>
+            <?php if ($type == 'multiline'):?>
+            show_multiline_count = true;
+            <?php endif;?>
+            <?php if ($prop['manage_options']):?>
+            show_option_panel = true;
+            panel_default_value_type = '<?php echo $prop['option_default']?>';
+            <?php endif;?>
+            <?php if ($prop['default_value']):?>
+            show_default_value_<?php echo $prop['default_value']?> = true;
+            <?php endif;?>
+            <?php if ($prop['filter_types']):?>
+            select_filter_types = <?php echo Mage::helper('core')->jsonEncode($prop['filter_types'])?>;
+            <?php endif;?>
+            <?php if ($prop['validate_filters']):?>
+            select_validate_filters = <?php echo Mage::helper('core')->jsonEncode($prop['validate_filters'])?>;
+            <?php endif;?>
+            break;
+        <?php endforeach;?>
+    }
+
+    switchFilterSelect('input_validation', select_validate_filters, attribute_validate_filters);
+    switchInputOutputFilterSelect('input_filter', select_filter_types, attribute_filter_types);
+
+    setRowVisibility('default_value_text', show_default_value_text);
+    setRowVisibility('default_value_textarea', show_default_value_textarea);
+    setRowVisibility('default_value_date', show_default_value_date);
+    setRowVisibility('default_value_yesno', show_default_value_yesno);
+
+    setRowVisibility('multiline_count', show_multiline_count);
+    if ($('multiline_count')) {
+        var use_default_multiline_count = ($$('[name="use_default[]"][value="multiline_count"]:checked').length > 0);
+        if (show_multiline_count) {
+            $('multiline_count').disabled = use_default_multiline_count;
+        } else {
+            $('multiline_count').disabled = true;
+        }
+    }
+    setRowVisibility('min_text_length', show_min_text_length);
+    setRowVisibility('max_text_length', show_max_text_length);
+    setRowVisibility('max_file_size', show_max_file_size);
+    setRowVisibility('file_extensions', show_file_extensions);
+    setRowVisibility('max_image_width', show_max_image_width);
+    setRowVisibility('max_image_heght', show_max_image_heght);
+    setRowVisibility('date_range_min', show_default_value_date);
+    setRowVisibility('date_range_max', show_default_value_date);
+
+    var panel = $('matage-options-panel');
+    if (show_option_panel) {
+        panel.show();
+        var elems = document.getElementsByName('default[]');
+        for (var i = 0; i < elems.length; i++) {
+            elems[i].type = panel_default_value_type;
+        }
+        optionDefaultInputType = panel_default_value_type;
+    } else {
+        panel.hide();
+    }
+}
+
+function setRowVisibility(id, isVisible)
+{
+    if ($(id)) {
+        var tr = $(id).up(1);
+
+        if (isVisible) {
+            tr.show();
+        } else {
+            tr.blur();
+            tr.hide();
+        }
+    }
+}
+
+function updateRequriedOptions()
+{
+    if (show_option_panel && $F('is_required') == 1) {
+        $('option-count-check').addClassName('required-options-count');
+    } else {
+        $('option-count-check').removeClassName('required-options-count');
+    }
+}
+
+if($('frontend_input')){
+    Event.observe($('frontend_input'), 'change', updateRequriedOptions);
+    Event.observe($('frontend_input'), 'change', bindAttributeInputType);
+}
+
+if ($('is_required')) {
+    Event.observe($('is_required'), 'change', updateRequriedOptions);
+}
+bindAttributeInputType();
+//]]>
+</script>

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<config>
+    <api>
+        <resources>
+            <ak_locator translate="title" module="ak_locator">
+                <title>Ak_Locator_Api</title>
+                <acl>locator</acl>
+                <model>ak_locator/api</model>
+                <methods>                    
+                    <retrieve translate="title" module="ak_locator">
+                        <title>Retrieve Stores</title>
+                        <acl>locator/retrieve</acl>
+                    </retrieve>                    
+                    <add translate="title" module="ak_locator">
+                        <title>Add Store</title>
+                        <acl>locator/add</acl>
+                    </add>
+                    <remove translate="title" module="ak_locator">
+                        <title>Remove Store</title>
+                        <acl>locator/remove</acl>
+                    </remove>
+                    <update translate="title" module="ak_locator">
+                        <title>Update Store</title>
+                        <acl>locator/update</acl>
+                    </update>
+                    <listall translate="title" module="ak_locator">
+                        <title>Listall Store</title>
+                        <acl>locator/listall</acl>
+                    </listall>
+                </methods>
+                
+                <faults module="ak_locator">
+                    <location_not_found>
+                        <code>100</code>
+                        <message>Location is not found.</message>
+                    </location_not_found>
+                    <locationid_not_found>
+                        <code>101</code>
+                        <message>Location ID is not found.</message>
+                    </locationid_not_found>
+                    <dataset_empty>
+                        <code>102</code>
+                        <message>Dataset is Empty.</message>
+                    </dataset_empty>
+                    <transaction_error>
+                        <code>103</code>
+                        <message>Transaction process fail.</message>
+                    </transaction_error>
+                    <locations_not_found>
+                        <code>104</code>
+                        <message>Empty Records.</message>
+                    </locations_not_found>   
+                </faults>
+                
+            </ak_locator>
+        </resources>
+        
+        <resources_alias>
+            <event>location</event>
+        </resources_alias>
+        <v2>
+            <resources_function_prefix>
+                <ak_locator>locationVersion</ak_locator>
+            </resources_function_prefix>
+        </v2>
+        
+        <acl>
+            <resources>
+                <locator translate="title" module="ak_locator">
+                    <title>Locator</title>
+                    <sort_order>2000</sort_order>                    
+                    <retrieve translate="title" module="ak_locator">
+                        <title>Retrieve</title>
+                    </retrieve>                    
+                    <add translate="title" module="ak_locator">
+                        <title>Add</title>
+                    </add>
+                    <remove translate="title" module="ak_locator">
+                        <title>Remove</title>
+                    </remove>
+                    <update translate="title" module="ak_locator">
+                        <title>Update</title>
+                    </update>
+                    <listall translate="title" module="ak_locator">
+                        <title>ListAll</title>
+                    </listall>
+                </locator>
+            </resources>
+        </acl>
+    </api>
+</config>

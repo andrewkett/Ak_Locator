@@ -28,6 +28,7 @@ class Ak_Locator_Block_Adminhtml_Location_Edit_Tabs extends Mage_Adminhtml_Block
             ),
             'location_details' => array(
                 'title',
+                'location_key',
                 'is_enabled'
             ),
             'location_seo' => array(
