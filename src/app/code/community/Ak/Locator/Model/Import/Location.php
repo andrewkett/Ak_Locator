@@ -500,6 +500,8 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                         }
                     }
                 }
+
+                $rowData['geocoded'] = 1;
             }
         } catch (Exception $ex) {
             $this->addRowError(self::ERROR_GEOCODE, $rowNum, $storeTitle);
