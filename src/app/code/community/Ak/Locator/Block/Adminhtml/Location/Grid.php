@@ -32,8 +32,8 @@ class Ak_Locator_Block_Adminhtml_Location_Grid extends Mage_Adminhtml_Block_Widg
             ->addAttributeToSelect('geocoded')
             ->addAttributeToSelect('address')
             ->addAttributeToSelect('postal_code')
-            ->addAttributeToSelect('country');
-            
+            ->addAttributeToSelect('country')
+            ->addAttributeToSelect('is_enabled');
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }

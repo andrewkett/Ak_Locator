@@ -47,8 +47,7 @@ class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit extends Mage_Adminhtml_
                 $frontendLabel = $frontendLabel[0];
             }
             return Mage::helper('ak_locator')->__('Edit Location Attribute "%s"', $this->escapeHtml($frontendLabel));
-        }
-        else {
+        } else {
             return Mage::helper('ak_locator')->__('New Location Attribute');
         }
     }

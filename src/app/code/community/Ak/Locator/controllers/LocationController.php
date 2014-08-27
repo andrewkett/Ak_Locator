@@ -28,7 +28,7 @@ class Ak_Locator_LocationController extends Mage_Core_Controller_Front_Action
         $this->loadLayout();
 
         //if there are no matching locations forward to the 404 page
-        if (!$this->getLayout()->getBlock('view')->getLocation()) {
+        if (!$this->getLayout()->getBlock('view')->getLocation()){
             $this->_forward('noresults');
             return;
         }

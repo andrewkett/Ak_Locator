@@ -89,10 +89,10 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
 
     public function saveAction()
     {
-        if ($data = $this->getRequest()->getPost())
+        if ($data = $this->getRequest()->getPost()) 
         {
             $model = Mage::getModel('ak_locator/location');
-            $id = (int) $this->getRequest()->getParam('id');
+            $id = (int) $this->getRequest()->getParam('id');           
             $formCode = 'location_create';
             if ($id) {
                 $model->load($id);
@@ -173,7 +173,7 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
         if ($this->getRequest()->getParam('file')) {
             // download file
             $file   = Mage::helper('core')->urlDecode($this->getRequest()->getParam('file'));
-        } elseif ($this->getRequest()->getParam('image')) {
+        } else if ($this->getRequest()->getParam('image')) {
             // show plain image
             $file   = Mage::helper('core')->urlDecode($this->getRequest()->getParam('image'));
             $plain  = true;
@@ -225,7 +225,7 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
             $this->getResponse()->sendHeaders();
 
             while (false !== ($buffer = $ioFile->streamRead())) {
-                $this->getResponse()->setBody($buffer);
+                echo $buffer;
             }
         } else {
             $name = pathinfo($fileName, PATHINFO_BASENAME);
@@ -234,5 +234,8 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
                 'value' => $fileName
             ));
         }
+
+        exit();
     }
+
 }

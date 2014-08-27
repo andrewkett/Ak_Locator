@@ -11,10 +11,9 @@ class Ak_Locator_Block_Adminhtml_Location_Edit_Tab_Abstract extends Mage_Adminht
             foreach ($tab as $att) {
                 $used[$att] = $att;
             }
-        }
-
-        foreach ($this->getLocationForm()->getAttributes() as $att) {
-            if (!isset($used[$att->getAttributeCode()])) {
+        }            
+        foreach ($this->getLocationForm()->getAttributes() as $att) {            
+            if (!isset($used[$att->getAttributeCode()])) {                
                 $tabStructure['location_details'][] = $att->getAttributeCode();
             }
         }
@@ -26,7 +25,7 @@ class Ak_Locator_Block_Adminhtml_Location_Edit_Tab_Abstract extends Mage_Adminht
     {
         
         $formCode = 'location_edit';
-        if (Mage::registry('location_isnew')){
+        if (Mage::registry('location_isnew')) {
             $formCode = 'location_create';
         }
         

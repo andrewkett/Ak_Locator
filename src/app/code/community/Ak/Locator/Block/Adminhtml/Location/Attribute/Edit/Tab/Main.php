@@ -5,14 +5,12 @@
  * @category   Ak
  * @package    Ak_Locator
  */
-class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Tab_Main
-    extends Mage_Eav_Block_Adminhtml_Attribute_Edit_Main_Abstract
-    implements Mage_Adminhtml_Block_Widget_Tab_Interface
+class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Tab_Main extends Mage_Eav_Block_Adminhtml_Attribute_Edit_Main_Abstract implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
     /**
      * Preparing global layout
      *
-     * @return Mage_Core_Block_Abstract
+     * @return Mage_Coere_Block_Abstract
      */
     protected function _prepareLayout()
     {
@@ -24,7 +22,7 @@ class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Tab_Main
         return $result;
     }
 
-    /**
+   /**
      * Adding location form elements for edit form
      *
      * @return Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Tab_Main
@@ -55,9 +53,8 @@ class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Tab_Main
         $newClassName = sprintf('maximum-length-%d', Mage_Eav_Model_Entity_Attribute::ATTRIBUTE_CODE_MAX_LENGTH - 9);
         $class        = str_replace($oldClassName, $newClassName, $element->getClass());
         $element->setClass($class);
-        $note = 'For internal use. Must be unique with no spaces. Maximum length of attribute code must be less then %s symbols';
         $element->setNote(
-            Mage::helper('eav')->__($note, Mage_Eav_Model_Entity_Attribute::ATTRIBUTE_CODE_MAX_LENGTH - 9)
+            Mage::helper('eav')->__('For internal use. Must be unique with no spaces. Maximum length of attribute code must be less then %s symbols', Mage_Eav_Model_Entity_Attribute::ATTRIBUTE_CODE_MAX_LENGTH - 9)
         );
 
         $fieldset->addField('multiline_count', 'text', array(

@@ -52,7 +52,7 @@ class Ak_Locator_Model_Resource_Location extends Mage_Eav_Model_Entity_Abstract
         $result = $adapter->fetchOne($select, $bind);
         if ($result) {
             throw Mage::throwException(
-                Mage::helper('ak_locator')->__('This Location Key already exists')               
+                Mage::helper('ak_locator')->__('This Location Key already exists')
             );
         }
       

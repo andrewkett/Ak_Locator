@@ -172,61 +172,50 @@
                         </show_closest_on_noresults>
 
                         <show_search_point>
-                            <label>Show crosshair icon for point of search</label>
+                            <label>Show marker for point of search</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>137</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment>If the search was a point search e.g lat/long, postcode/suburb, show the point of the search as a crosshair icon</comment>
+                            <comment>If the search was a point search e.g lat/long, postcode/suburb, show the point of the search as a different marker pin</comment>
                         </show_search_point>
 
-                        <!--<use_places_autocomplete>-->
-                            <!--<label>Use Google Places Autocomplete</label>-->
-                            <!--<frontend_type>select</frontend_type>-->
-                            <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
-                            <!--<sort_order>140</sort_order>-->
-                            <!--<show_in_default>1</show_in_default>-->
-                            <!--<show_in_website>1</show_in_website>-->
-                            <!--<show_in_store>1</show_in_store>-->
-                        <!--</use_places_autocomplete>-->
-
-                        <!--<overrides_enabled>-->
-                            <!--<label>Enable search override feature</label>-->
-                            <!--<frontend_type>select</frontend_type>-->
-                            <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
-                            <!--<sort_order>150</sort_order>-->
-                            <!--<show_in_default>1</show_in_default>-->
-                            <!--<show_in_website>1</show_in_website>-->
-                            <!--<show_in_store>1</show_in_store>-->
-                            <!--<comment>Enabling will give administrators the ability to override a search string with different search parameters. e.g replace s=home with lat=312313&amp;long=23490320</comment>-->
-                        <!--</overrides_enabled>-->
-
-                        <!--<leverage_browser_caching>-->
-                            <!--<label>Allow browser to cache ajax search results</label>-->
-                            <!--<frontend_type>select</frontend_type>-->
-                            <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
-                            <!--<sort_order>160</sort_order>-->
-                            <!--<show_in_default>1</show_in_default>-->
-                            <!--<show_in_website>1</show_in_website>-->
-                            <!--<show_in_store>1</show_in_store>-->
-                            <!--<comment>If enabled ajax search results will be cached in the browser. This is feature is experimental and not recommended</comment>-->
-                        <!--</leverage_browser_caching>-->
-
-
-                        <log_geocoding>
-                            <label>Log geocoding data</label>
+                        <use_places_autocomplete>
+                            <label>Use Google Places Autocomplete</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>170</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment>If enabled all geocoding data will be logged to locator_geocoder.log</comment>
-                        </log_geocoding>
+                        </use_places_autocomplete>
+
+                        <overrides_enabled>
+                            <label>Enable search override feature</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enabling will give administrators the ability to override a search string with different search parameters. e.g replace s=home with lat=312313&amp;long=23490320</comment>
+                        </overrides_enabled>
+
+                        <leverage_browser_caching>
+                            <label>Allow browser to cache ajax search results</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>If enabled ajax search results will be cached in the browser. This is feature is experimental and not recommended</comment>
+                        </leverage_browser_caching>                                             
                     </fields>
                 </search>
+                
                 <seo>
                     <label>SEO</label>
                     <frontend_type>text</frontend_type>

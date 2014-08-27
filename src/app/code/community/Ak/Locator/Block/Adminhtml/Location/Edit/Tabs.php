@@ -70,6 +70,7 @@ class Ak_Locator_Block_Adminhtml_Location_Edit_Tabs extends Mage_Adminhtml_Block
                             ->toHtml()
         ));
 
+       
         return parent::_prepareLayout();
     }
 }

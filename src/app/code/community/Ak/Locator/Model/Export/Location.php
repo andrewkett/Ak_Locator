@@ -25,7 +25,7 @@ class Ak_Locator_Model_Export_Location extends Mage_ImportExport_Model_Export_En
      */
     protected $_attributeOverrides = array(
         'created_at'                  => array('backend_type' => 'datetime'),
-        'updated_at'                  => array('backend_type' => 'datetime'),
+        'updated_at'                  => array('backend_type' => 'datetime'),        
     );
 
     /**
@@ -43,9 +43,11 @@ class Ak_Locator_Model_Export_Location extends Mage_ImportExport_Model_Export_En
      */
     protected $_permanentAttributes = array(self::COL_LOCATION_KEY, self::COL_LAT,self::COL_LON);
 
-
+   
     /**
      * Constructor.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -70,9 +72,10 @@ class Ak_Locator_Model_Export_Location extends Mage_ImportExport_Model_Export_En
                      
 
         // create export file
-        $writer->setHeaderCols(array_merge($this->_permanentAttributes, $validAttrCodes));
-
-        foreach ($collection as $item) { // go through all customers
+        $writer->setHeaderCols(array_merge(
+            $this->_permanentAttributes, $validAttrCodes            
+        ));
+        foreach ($collection as $itemId => $item) { // go through all customers
             $row = array();
 
             // go through all valid attribute codes

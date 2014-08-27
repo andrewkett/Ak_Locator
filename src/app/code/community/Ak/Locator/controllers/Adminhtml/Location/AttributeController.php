@@ -2,8 +2,7 @@
 /**
  * Controller for location Attributes Management
  */
-class Ak_Locator_Adminhtml_Location_AttributeController
-    extends Mage_Adminhtml_Controller_Action
+class Ak_Locator_Adminhtml_Location_AttributeController extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Location Entity Type instance
@@ -36,13 +35,14 @@ class Ak_Locator_Adminhtml_Location_AttributeController
             ->_setActiveMenu('ak_locator/attributes')
             ->_addBreadcrumb(
                 Mage::helper('ak_locator')->__('Location'),
-                Mage::helper('ak_locator')->__('Location'))
+                Mage::helper('ak_locator')->__('Location')
+            )
             ->_addBreadcrumb(
                 Mage::helper('ak_locator')->__('Manage Location Attributes'),
-                Mage::helper('ak_locator')->__('Manage Location Attributes'));
+                Mage::helper('ak_locator')->__('Manage Location Attributes')
+            );
         return $this;
     }
-
     /**
      * Retrieve location attribute object
      *
@@ -50,7 +50,7 @@ class Ak_Locator_Adminhtml_Location_AttributeController
      */
     protected function _initAttribute()
     {
-        $attribute = Mage::getModel('ak_locator/attribute');        
+        $attribute = Mage::getModel('ak_locator/attribute');
         return $attribute;
     }
 
@@ -98,7 +98,8 @@ class Ak_Locator_Adminhtml_Location_AttributeController
             }
             if ($attributeObject->getEntityTypeId() != $this->_getEntityType()->getId()) {
                 $this->_getSession()->addError(
-                    Mage::helper('ak_locator')->__('You cannot edit this attribute.'));
+                    Mage::helper('ak_locator')->__('You cannot edit this attribute.')
+                );
                 $this->_redirect('*/*/');
                 return;
             }
@@ -169,7 +170,7 @@ class Ak_Locator_Adminhtml_Location_AttributeController
         $data = $this->getRequest()->getPost();
         if ($this->getRequest()->isPost() && $data) {
             /* @var $attributeObject Ak_Locator_Model_Attribute */
-            $attributeObject = $this->_initAttribute()            
+            $attributeObject = $this->_initAttribute()
                 ->setEntityTypeId($this->_getEntityType()->getId());
 
             /* @var $helper Ak_Locator_Helper_Data */
@@ -179,13 +180,13 @@ class Ak_Locator_Adminhtml_Location_AttributeController
             try {
                 $data = $this->_filterPostData($data);
             } catch (Mage_Core_Exception $e) {
-                    $this->_getSession()->addError($e->getMessage());
-                    if (isset($data['attribute_id'])) {
-                        $this->_redirect('*/*/edit', array('_current' => true));
-                    } else {
-                        $this->_redirect('*/*/new', array('_current' => true));
-                    }
-                    return;
+               $this->_getSession()->addError($e->getMessage());
+               if (isset($data['attribute_id'])) {
+                 $this->_redirect('*/*/edit', array('_current' => true));
+               } else {
+                 $this->_redirect('*/*/new', array('_current' => true));
+               }
+               return;
             }
 
             $attributeId = $this->getRequest()->getParam('attribute_id');
@@ -218,12 +219,13 @@ class Ak_Locator_Adminhtml_Location_AttributeController
                     ->getDefaultGroupId($data['attribute_set_id']);
             }
             // add set
-          
+
             $defaultValueField = $helper->getAttributeDefaultValueByInput($data['frontend_input']);
-            if ($defaultValueField) {                
+            if ($defaultValueField) {
                 $data['default_value'] = $helper->stripTags(
-                    $this->getRequest()->getParam($defaultValueField));
-            }           
+                    $this->getRequest()->getParam($defaultValueField)
+                 );
+            }
             $data['validate_rules']     = $helper->getAttributeValidateRules($data['frontend_input'], $data);
 
             $validateRulesErrors = $helper->checkValidateRules($data['frontend_input'], $data['validate_rules']);
@@ -236,13 +238,14 @@ class Ak_Locator_Adminhtml_Location_AttributeController
             }
 
             $attributeObject->addData($data);
-            
             try {
-                Mage::dispatchEvent('ak_locator_location_attribute_before_save', array(
+                Mage::dispatchEvent(
+                    'ak_locator_location_attribute_before_save', array(
                     'attribute' => $attributeObject
                 ));
                 $attributeObject->save();
-                Mage::dispatchEvent('ak_locator_location_attribute_save', array(
+                Mage::dispatchEvent(
+                    'ak_locator_location_attribute_save', array(
                     'attribute' => $attributeObject
                 ));
 
@@ -251,7 +254,8 @@ class Ak_Locator_Adminhtml_Location_AttributeController
                 );
                 $this->_getSession()->setAttributeData(false);
                 if ($this->getRequest()->getParam('back', false)) {
-                    $this->_redirect('*/*/edit', array(
+                    $this->_redirect(
+                        '*/*/edit', array(
                         'attribute_id'  => $attributeObject->getId(),
                         '_current'      => true
                     ));
@@ -287,8 +291,7 @@ class Ak_Locator_Adminhtml_Location_AttributeController
         if ($attributeId) {
             $attributeObject = $this->_initAttribute()->load($attributeId);
             if ($attributeObject->getEntityTypeId() != $this->_getEntityType()->getId()
-                || !$attributeObject->getIsUserDefined())
-            {
+                || !$attributeObject->getIsUserDefined()) {
                 $this->_getSession()->addError(
                     Mage::helper('ak_locator')->__('You cannot delete this attribute.')
                 );
@@ -297,7 +300,8 @@ class Ak_Locator_Adminhtml_Location_AttributeController
             }
             try {
                 $attributeObject->delete();
-                Mage::dispatchEvent('ak_locator_location_attribute_delete', array(
+                Mage::dispatchEvent(
+                    'ak_locator_location_attribute_delete', array(
                     'attribute' => $attributeObject
                 ));
 
@@ -311,7 +315,8 @@ class Ak_Locator_Adminhtml_Location_AttributeController
                 $this->_redirect('*/*/edit', array('attribute_id' => $attributeId, '_current' => true));
                 return;
             } catch (Exception $e) {
-                $this->_getSession()->addException($e,
+                $this->_getSession()->addException(
+                    $e,
                     Mage::helper('ak_locator')->__('An error occurred while deleting the location attribute.')
                 );
                 $this->_redirect('*/*/edit', array('attribute_id' => $attributeId, '_current' => true));
