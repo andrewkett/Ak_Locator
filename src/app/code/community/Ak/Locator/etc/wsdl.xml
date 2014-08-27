@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+             name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
+            <complexType name="locationVersionEntity">
+                <all>
+                    <element name="entity_id" type="xsd:int"/>
+                    <element name="latitude" type="xsd:string"/>
+                    <element name="longitude" type="xsd:string"/>
+                    <element name="location_key" type="xsd:string"  />
+                    <element name="title" type="xsd:string"/>
+                    <element name="country" type="xsd:string"/>
+                    <element name="administrative_area" type="xsd:string"/>
+                    <element name="sub_administrative_area" type="xsd:string"/>
+                    <element name="locality" type="xsd:string"/>
+                    <element name="dependent_locality" type="xsd:string"/>
+                    <element name="postal_code" type="xsd:string"/>
+                    <element name="thoroughfare" type="xsd:string"/>
+                    <element name="premise" type="xsd:string"/>
+                    <element name="sub_premise" type="xsd:string"/>
+                    <element name="meta_title" type="xsd:string"/>
+                    <element name="address" type="xsd:string"/>
+                </all>
+            </complexType>     
+            
+            <complexType name="locationVersionEntityArray">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:locationVersionEntity[]" />
+                    </restriction>
+                </complexContent>
+            </complexType>
+            
+            <complexType name="locationVersionCreateEntity">
+                <all>
+                    
+                    <element name="latitude" minOccurs="1" type="xsd:string"/>
+                    <element name="longitude" minOccurs="1" type="xsd:string"  />
+                    <element name="location_key" minOccurs="1" type="xsd:string"  />
+                    <element name="title" minOccurs="1" type="xsd:string" />
+                    <element name="country" minOccurs="0" type="xsd:string" />
+                    <element name="administrative_area" minOccurs="0"  type="xsd:string" />
+                    <element name="sub_administrative_area" minOccurs="0" type="xsd:string" />
+                    <element name="locality" minOccurs="0" type="xsd:string" />
+                    <element name="dependent_locality" minOccurs="0" type="xsd:string" />
+                    <element name="postal_code" minOccurs="0" type="xsd:string"  />
+                    <element name="thoroughfare" minOccurs="0" type="xsd:string"  />
+                    <element name="premise" minOccurs="0" type="xsd:string" />
+                    <element name="sub_premise" minOccurs="0" type="xsd:string" />
+                    <element name="meta_title" minOccurs="0" type="xsd:string"/>
+                    <element name="address" minOccurs="0" type="xsd:string"  />
+
+                </all>
+            </complexType>
+            
+                           
+        </schema>
+    </types>
+    
+    <message name="locationVersionRetrieveRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="locationId" type="xsd:int"/>
+    </message>
+    <message name="locationVersionRetrieveResponse">
+        <part name="result" type="typens:locationVersionEntity" />
+    </message>
+    
+    <message name="locationVersionAddRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="dataArray" type="typens:locationVersionCreateEntity"/>
+    </message>
+    <message name="locationVersionAddResponse">
+        <part name="result" type="typens:locationVersionEntity" />
+    </message>
+    
+    <message name="locationVersionRemoveRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="locationId" type="xsd:int"/>
+    </message>
+    <message name="locationVersionRemoveResponse">
+        <part name="result" type="typens:boolean" />
+    </message>
+    
+    <message name="locationVersionUpdateRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="locationId" type="xsd:int"/>
+        <part name="dataArray" type="typens:locationVersionCreateEntity"/>
+    </message>
+    <message name="locationVersionUpdateResponse">
+        <part name="result" type="typens:boolean" />
+    </message>
+    
+    <message name="locationVersionListallRequest">
+        <part name="sessionId" type="xsd:string" />
+    </message>
+    <message name="locationVersionListallResponse">
+        <part name="result" type="typens:locationVersionEntityArray" />
+    </message>
+    
+    
+    
+    <portType name="{{var wsdl.handler}}PortType">     
+        <operation name="locationVersionRetrieve">
+            <documentation>Retrive Location</documentation>
+            <input message="typens:locationVersionRetrieveRequest" />
+            <output message="typens:locationVersionRetrieveResponse" />
+        </operation>
+        
+        <operation name="locationVersionAdd">
+            <documentation>Add Location</documentation>
+            <input message="typens:locationVersionAddRequest" />
+            <output message="typens:locationVersionAddResponse" />
+        </operation>
+        
+        <operation name="locationVersionRemove">
+            <documentation>Remove Location</documentation>
+            <input message="typens:locationVersionRemoveRequest" />
+            <output message="typens:locationVersionRemoveResponse" />
+        </operation>
+        
+        <operation name="locationVersionUpdate">
+            <documentation>Update Location</documentation>
+            <input message="typens:locationVersionUpdateRequest" />
+            <output message="typens:locationVersionUpdateResponse" />
+        </operation>
+        
+        <operation name="locationVersionListall">
+            <documentation>Listall Location</documentation>
+            <input message="typens:locationVersionListallRequest" />
+            <output message="typens:locationVersionListallResponse" />
+        </operation>
+        
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        
+        <operation name="locationVersionRetrieve">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        
+        <operation name="locationVersionAdd">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        
+        <operation name="locationVersionRemove">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        
+        
+        <operation name="locationVersionUpdate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        
+        <operation name="locationVersionListall">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+  
+</definitions>

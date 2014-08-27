@@ -42,5 +42,43 @@
             <block type="ak_locator/adminhtml_location_edit_tabs" name="product_tabs"></block>
         </reference>
     </adminhtml_locator_edit>
+    <!--
+     <adminhtml_location_attribute_edit>
+        <reference name="left">
+            <block type="ak_locator/adminhtml_location_attribute_edit_tabs" name="attribute_edit_tabs"></block>
+        </reference>
+        <reference name="content">
+            <block type="ak_locator/adminhtml_location_attribute_edit" name="attribute_edit_content"></block>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/template" name="locator_attribute_edit_js" template="locator/location/attribute/js.phtml"></block>
+        </reference>
+    </adminhtml_location_attribute_edit>
+-->
+
+    <adminhtml_location_attribute_index>
+        <reference name="content">
+            <block type="ak_locator/adminhtml_location_attribute" name="ak_locator_attribute" />
+        </reference>
+    </adminhtml_location_attribute_index>
+
+    <adminhtml_location_attribute_edit>        
+       <!-- <block type="enterprise_customer/adminhtml_form_renderer_fieldset_element" name="fieldset_element_renderer" template="enterprise/customer/form/renderer/fieldset/element.phtml" />-->
+        
+        <reference name="content">
+            <block type="ak_locator/adminhtml_location_attribute_edit" name="ak_locator_attribute_edit" />
+        </reference>
+        <reference name="left">
+            <block type="ak_locator/adminhtml_location_attribute_edit_tabs" name="ak_locator_attribute_edit_tabs">
+                <block type="ak_locator/adminhtml_location_attribute_edit_tab_main" name="ak_locator_attribute_edit_tab_general" />
+                <action method="addTab"><name>general</name><block>ak_locator_attribute_edit_tab_general</block></action>
+                <block type="ak_locator/adminhtml_location_attribute_edit_tab_options" name="ak_locator_attribute_edit_tab_options" />
+                <action method="addTab"><name>options</name><block>ak_locator_attribute_edit_tab_options</block></action>
+            </block>
+        </reference>
+        <reference name="js">
+            <block type="ak_locator/adminhtml_location_attribute_edit_js" template="locator/location/attribute/js.phtml" />
+        </reference>
+    </adminhtml_location_attribute_edit>
 
 </layout>

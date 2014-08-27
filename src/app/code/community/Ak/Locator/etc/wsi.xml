@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:typens="urn:{{var wsdl.name}}"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  name="{{var wsdl.name}}"
+                  targetNamespace="urn:{{var wsdl.name}}">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:{{var wsdl.name}}">
+            
+            <!--BEGIN TYPES --> 
+
+            <!--BEGIN CUSTOMER TYPES -->
+            <xsd:complexType name="locationVersionEntity">
+                <xsd:sequence>
+                    
+                    <xsd:element name="entity_id" type="xsd:int" />
+                    <xsd:element name="latitude" type="xsd:string"/>
+                    <xsd:element name="longitude" type="xsd:string"  />
+                    <xsd:element name="location_key" type="xsd:string"  />
+                    <xsd:element name="title" type="xsd:string" />
+                    <xsd:element name="country" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="administrative_area" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="sub_administrative_area" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="locality" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="dependent_locality" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="postal_code" minOccurs="0" type="xsd:string"  />
+                    <xsd:element name="thoroughfare" minOccurs="0" type="xsd:string"  />
+                    <xsd:element name="premise" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="sub_premise" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="meta_title" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="address" minOccurs="0" type="xsd:string"  />
+
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="locationVersionCreateEntity">
+                <xsd:sequence>
+                    
+                    <xsd:element name="latitude" type="xsd:string"/>
+                    <xsd:element name="longitude" type="xsd:string"  />
+                    <xsd:element name="location_key" type="xsd:string"  />
+                    <xsd:element name="title" type="xsd:string" />
+                    <xsd:element name="country" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="administrative_area" minOccurs="0"  type="xsd:string" />
+                    <xsd:element name="sub_administrative_area" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="locality" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="dependent_locality" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="postal_code" minOccurs="0" type="xsd:string"  />
+                    <xsd:element name="thoroughfare" minOccurs="0" type="xsd:string"  />
+                    <xsd:element name="premise" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="sub_premise" minOccurs="0" type="xsd:string" />
+                    <xsd:element name="meta_title" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="address" minOccurs="0" type="xsd:string"  />
+
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="locationVersionEntityArray">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="complexObjectArray" type="typens:locationVersionEntity" />
+                </xsd:sequence>
+            </xsd:complexType>
+                        
+            
+            <!--END CUSTOMER TYPES -->
+            
+            <!--BEGIN CUSTOMER PARAMS -->
+            <xsd:element name="locationVersionRetrieveRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="locationId" type="xsd:int" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            <xsd:element name="locationVersionRetrieveResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:locationVersionEntity" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            
+            <xsd:element name="locationVersionAddRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="dataArray" type="typens:locationVersionCreateEntity" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            <xsd:element name="locationVersionAddResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:locationVersionEntity" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            
+            <xsd:element name="locationVersionRemoveRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="locationId" type="xsd:int" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            <xsd:element name="locationVersionRemoveResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            
+            <xsd:element name="locationVersionUpdateRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="locationId" type="xsd:int" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="dataArray" type="typens:locationVersionCreateEntity" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            <xsd:element name="locationVersionUpdateResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            <xsd:element name="locationVersionListallRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            <xsd:element name="locationVersionListallResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:locationVersionEntityArray" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+            
+            <!--END CUSTOMER PARAMS -->
+            
+        </xsd:schema>
+    </wsdl:types>
+    
+    
+    <!-- BEGIN MESSAGES -->
+
+    <!-- BEGIN CUSTOMER MESSAGES -->
+    <wsdl:message name="locationVersionRetrieveRequest">
+        <wsdl:part name="parameters" element="typens:locationVersionRetrieveRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="locationVersionRetrieveResponse">
+        <wsdl:part name="parameters" element="typens:locationVersionRetrieveResponseParam" />
+    </wsdl:message>
+    
+    <wsdl:message name="locationVersionAddRequest">
+        <wsdl:part name="parameters" element="typens:locationVersionAddRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="locationVersionAddResponse">
+        <wsdl:part name="parameters" element="typens:locationVersionAddResponseParam" />
+    </wsdl:message>
+    
+    <wsdl:message name="locationVersionRemoveRequest">
+        <wsdl:part name="parameters" element="typens:locationVersionRemoveRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="locationVersionRemoveResponse">
+        <wsdl:part name="parameters" element="typens:locationVersionRemoveResponseParam" />
+    </wsdl:message>
+    
+    <wsdl:message name="locationVersionUpdateRequest">
+        <wsdl:part name="parameters" element="typens:locationVersionUpdateRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="locationVersionUpdateResponse">
+        <wsdl:part name="parameters" element="typens:locationVersionUpdateResponseParam" />
+    </wsdl:message>
+    
+    <wsdl:message name="locationVersionListallRequest">
+        <wsdl:part name="parameters" element="typens:locationVersionListallRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="locationVersionListallResponse">
+        <wsdl:part name="parameters" element="typens:locationVersionListallResponseParam" />
+    </wsdl:message>
+    <!-- END CUSTOMER MESSAGES -->
+
+    <!-- END MESSAGES -->
+
+
+    <wsdl:portType name="{{var wsdl.handler}}PortType">
+        <!-- BEGIN PORT TYPES -->
+        <!-- BEGIN CUSTOMER PORT TYPES -->
+        <wsdl:operation name="locationVersionRetrieve">
+            <wsdl:documentation>Retrieve</wsdl:documentation>
+            <wsdl:input message="typens:locationVersionRetrieveRequest" />
+            <wsdl:output message="typens:locationVersionRetrieveResponse" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionAdd">
+            <wsdl:documentation>Add</wsdl:documentation>
+            <wsdl:input message="typens:locationVersionAddRequest" />
+            <wsdl:output message="typens:locationVersionAddResponse" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionRemove">
+            <wsdl:documentation>Remove</wsdl:documentation>
+            <wsdl:input message="typens:locationVersionRemoveRequest" />
+            <wsdl:output message="typens:locationVersionRemoveResponse" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionUpdate">
+            <wsdl:documentation>Update</wsdl:documentation>
+            <wsdl:input message="typens:locationVersionUpdateRequest" />
+            <wsdl:output message="typens:locationVersionUpdateResponse" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionListall">
+            <wsdl:documentation>Listall</wsdl:documentation>
+            <wsdl:input message="typens:locationVersionListallRequest" />
+            <wsdl:output message="typens:locationVersionListallResponse" />
+        </wsdl:operation>
+        <!-- END CUSTOMER PORT TYPES -->
+            
+        <!-- END PORT TYPES -->
+    </wsdl:portType>
+    <wsdl:binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        
+        <!-- BEGIN BINDINGS -->
+        <!-- BEGIN CUSTOMER BINDINGS -->
+        <wsdl:operation name="locationVersionRetrieve">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionAdd">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionRemove">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionUpdate">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <wsdl:operation name="locationVersionListall">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <!-- END CUSTOMER BINDINGS -->
+        <!-- END BINDINGS -->
+    </wsdl:binding>
+</wsdl:definitions>
