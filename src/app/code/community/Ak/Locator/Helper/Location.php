@@ -14,7 +14,7 @@
  * @link      http://andrewkett.github.io/Ak_Locator/
  */
 
-class Ak_Locator_Helper_Location extends Mage_Core_Helper_Abstract
+class Ak_Locator_Helper_Location extends Ak_Locator_Helper_Abstract
 {
 
     const XML_PATH_LOCATION_URL_SUFFIX  = 'locator_settings/seo/location_url_suffix';

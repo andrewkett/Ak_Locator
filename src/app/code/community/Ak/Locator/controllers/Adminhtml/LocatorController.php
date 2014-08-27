@@ -89,19 +89,50 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
 
     public function saveAction()
     {
-        if ($data = $this->getRequest()->getPost()) {
+        if ($data = $this->getRequest()->getPost()) 
+        {
             $model = Mage::getModel('ak_locator/location');
+            $id = (int) $this->getRequest()->getParam('id');           
+            $formCode = 'location_create';
+            if ($id) {
+                $model->load($id);
+                $formCode = 'location_edit';
+            }
+            /** @var $locatorForm Ak_Locator_Model_Form */
+            $locatorForm = Mage::getModel('ak_locator/form');
+            $locatorForm->setEntity($model)
+                ->setFormCode($formCode)
+                ->ignoreInvisible(false)
+            ;
+            
+            $formData = $locatorForm->extractData($this->getRequest());
+            
+            $errors = $locatorForm->validateData($formData);
+            if ($errors !== true) {
+                foreach ($errors as $error) {
+                    Mage::getSingleton('adminhtml/session')->addError($error);
+                }
+                Mage::getSingleton('adminhtml/session')->setFormData($data);
+                $this->getResponse()->setRedirect($this->getUrl('*/locator/edit', array('id' => $model->getId())));
+                return;
+            }
+            
+            $locatorForm->compactData($formData);
+            /*
             $id = $this->getRequest()->getParam('id');
             if ($id) {
                 $model->load($id);
             }
             $model->setData($data);
-
+            */
             Mage::getSingleton('adminhtml/session')->setFormData($data);
+            
             try {
+                /*
                 if ($id) {
                     $model->setId($id);
-                }
+                }                  
+                 */
                 $model->save();
 
                 if (!$model->getId()) {
@@ -134,4 +165,77 @@ class Ak_Locator_Adminhtml_LocatorController extends Mage_Adminhtml_Controller_A
         Mage::getSingleton('adminhtml/session')->addError(Mage::helper('ak_locator')->__('No data found to save'));
         $this->_redirect('*/*/');
     }
+    
+    public function viewfileAction()
+    {
+        $file   = null;
+        $plain  = false;
+        if ($this->getRequest()->getParam('file')) {
+            // download file
+            $file   = Mage::helper('core')->urlDecode($this->getRequest()->getParam('file'));
+        } else if ($this->getRequest()->getParam('image')) {
+            // show plain image
+            $file   = Mage::helper('core')->urlDecode($this->getRequest()->getParam('image'));
+            $plain  = true;
+        } else {
+            return $this->norouteAction();
+        }
+
+        $path = Mage::getBaseDir('media') . DS . 'ak_locator_location';
+
+        $ioFile = new Varien_Io_File();
+        $ioFile->open(array('path' => $path));
+        $fileName   = $ioFile->getCleanPath($path . $file);
+        $path       = $ioFile->getCleanPath($path);
+
+        if ((!$ioFile->fileExists($fileName) || strpos($fileName, $path) !== 0)
+            && !Mage::helper('core/file_storage')->processStorageFile(str_replace('/', DS, $fileName))
+        ) {
+            return $this->norouteAction();
+        }
+
+        if ($plain) {
+            $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+            switch (strtolower($extension)) {
+                case 'gif':
+                    $contentType = 'image/gif';
+                    break;
+                case 'jpg':
+                    $contentType = 'image/jpeg';
+                    break;
+                case 'png':
+                    $contentType = 'image/png';
+                    break;
+                default:
+                    $contentType = 'application/octet-stream';
+                    break;
+            }
+
+            $ioFile->streamOpen($fileName, 'r');
+            $contentLength = $ioFile->streamStat('size');
+            $contentModify = $ioFile->streamStat('mtime');
+
+            $this->getResponse()
+                ->setHttpResponseCode(200)
+                ->setHeader('Pragma', 'public', true)
+                ->setHeader('Content-type', $contentType, true)
+                ->setHeader('Content-Length', $contentLength)
+                ->setHeader('Last-Modified', date('r', $contentModify))
+                ->clearBody();
+            $this->getResponse()->sendHeaders();
+
+            while (false !== ($buffer = $ioFile->streamRead())) {
+                echo $buffer;
+            }
+        } else {
+            $name = pathinfo($fileName, PATHINFO_BASENAME);
+            $this->_prepareDownloadResponse($name, array(
+                'type'  => 'filename',
+                'value' => $fileName
+            ));
+        }
+
+        exit();
+    }
+
 }

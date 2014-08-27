@@ -7,6 +7,7 @@
             <depends>
                 <Mage_Core />
                 <Mage_Eav />
+                <Mage_Api />
             </depends>
         </Ak_Locator>
     </modules>
