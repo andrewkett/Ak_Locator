@@ -25,7 +25,8 @@ class Ak_Locator_Block_Adminhtml_Location_Helper_File extends Varien_Data_Form_E
             $this->addClass('required-file');
         }
 
-        $element = sprintf('<input id="%s" name="%s" %s />%s%s',
+        $element = sprintf(
+            '<input id="%s" name="%s" %s />%s%s',
             $this->getHtmlId(),
             $this->getName(),
             $this->serialize($this->getHtmlAttributes()),

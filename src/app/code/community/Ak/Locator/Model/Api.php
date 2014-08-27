@@ -1,12 +1,14 @@
 <?php
 
-class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
+class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract
+{
 
     /**
      * @param int|string $locationId
      * @return array
      */
-    public function retrieve($locationId) {
+    public function retrieve($locationId)
+    {
 
         if ($locationId != "") {
             $eventCollection = Mage::getModel('ak_locator/location')->getCollection()
@@ -31,7 +33,8 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
      * @param array
      * @return array
      */
-    public function add($dataArray) {
+    public function add($dataArray)
+    {
 
         if (isset($dataArray) && !empty($dataArray)) {
             $model = Mage::getModel('ak_locator/location');
@@ -39,7 +42,7 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
             $model->setIsEnabled(1);
             $errors = $model->validate();
             try {
-                 if (is_array($errors)) {
+                if (is_array($errors)){ 
                      
                     $strErrors = array();
                     foreach($errors as $code => $error) {
@@ -50,12 +53,9 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
                     }
                     throw new Exception(Mage::helper('ak_locator/location')->__(implode("\n", $strErrors)));
                    // $this->_fault('transaction_error', implode("\n", $strErrors));
-                }else{
+                } else{
                     $model->save();
-                }              
-             
-                
-                
+                }                   
             } catch (Exception $ex) {
                 $this->_fault('transaction_error', $ex->getMessage());
             }
@@ -69,7 +69,8 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
      * @param int $locationId
      * @return boolean
      */
-    public function remove($locationId) {
+    public function remove($locationId)
+    {
 
         if ($locationId != "") {
             try {
@@ -96,7 +97,8 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
      * @param array
      * @return boolean
      */
-    public function update($locationId, $dataArray) {
+    public function update($locationId, $dataArray)
+    {
 
         if ($locationId != "" && isset($dataArray)) {
             try {
@@ -110,20 +112,19 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
                        $model->setIsEnabled($existingdata['is_enabled']);
                        $model->setId($locationId);
                        $errors = $model->validate();
-                       if (is_array($errors)) {
-                     
+                    if (is_array($errors)) {                     
                             $strErrors = array();
-                            foreach($errors as $code => $error) {
+                        foreach($errors as $code => $error) {
                                 if ($error === true) {
                                     $error = Mage::helper('catalog')->__('Attribute "%s" is invalid.', $code);
                                 }
                                 $strErrors[] = $error;
-                            }
+                        }
                             throw new Exception(Mage::helper('ak_locator/location')->__(implode("\n", $strErrors)));
                            // $this->_fault('transaction_error', implode("\n", $strErrors));
-                        }else{
+                    } else {
                             $model->save();
-                        }   
+                    }   
 
                         
                 } else {
@@ -141,7 +142,8 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
     /**
      * @return array
      */
-    public function listall() {
+    public function listall()
+    {
 
         try {
 
@@ -166,7 +168,8 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
      * @param array
      * @return array
      */
-    protected function _unsetUnwanted($data) {
+    protected function _unsetUnwanted($data)
+    {
 
         unset($data['meta_description']);
         unset($data['is_enabled']);
@@ -178,5 +181,4 @@ class Ak_Locator_Model_Api extends Mage_Api_Model_Resource_Abstract {
 
         return $data;
     }
-
 }

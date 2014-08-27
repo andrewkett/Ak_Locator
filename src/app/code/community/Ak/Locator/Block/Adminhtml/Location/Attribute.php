@@ -9,7 +9,6 @@
 
 class Ak_Locator_Block_Adminhtml_Location_Attribute extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-
     public function __construct()
     {
         $this->_blockGroup = 'ak_locator';
@@ -18,5 +17,4 @@ class Ak_Locator_Block_Adminhtml_Location_Attribute extends Mage_Adminhtml_Block
         $this->_addButtonLabel = Mage::helper('ak_locator')->__('Add New Attribute');
         parent::__construct();
     }
-
 }

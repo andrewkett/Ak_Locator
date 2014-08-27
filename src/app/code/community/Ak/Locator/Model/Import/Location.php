@@ -24,16 +24,16 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
     
     /**
      * Error codes.
-     */
+     */    
    
     const ERROR_DUPLICATE_LOCATION_KEY = 'duplicateLocationKey';
     const ERROR_LOCATION_KEY_IS_EMPTY  = 'locationKeyIsEmpty';
     const ERROR_ROW_IS_ORPHAN          = 'rowIsOrphan';
-    const ERROR_VALUE_IS_REQUIRED      = 'valueIsRequired';
+    const ERROR_VALUE_IS_REQUIRED      = 'valueIsRequired';    
     const ERROR_LOCATION_KEY_NOT_FOUND = 'locationKeyNotFound';
     const ERROR_GEOCODE                = 'geocodeError';
     const ERROR_GEOCODE_RET            =  'geocodeErrorRet';
-    
+    const ERROR_COORDINATES            = 'coordinatesError'; 
 
     /**
      * attributes parameters.
@@ -62,14 +62,16 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
      * @var array
      */
     
-    protected $_messageTemplates = array (
+    protected $_messageTemplates = array(        
+       
         self::ERROR_DUPLICATE_LOCATION_KEY  => 'Location Key is duplicated in import file',
         self::ERROR_LOCATION_KEY_IS_EMPTY   => 'Location Key is not specified',
         self::ERROR_ROW_IS_ORPHAN           => 'Orphan rows that will be skipped due default row errors',
-        self::ERROR_VALUE_IS_REQUIRED       => "Required attribute '%s' has an empty value",
+        self::ERROR_VALUE_IS_REQUIRED       => "Required attribute '%s' has an empty value",        
         self::ERROR_LOCATION_KEY_NOT_FOUND  => 'Location Key  is not found',
         self::ERROR_GEOCODE                 => '%s could not be geocoded due to errors',
-        self::ERROR_GEOCODE_RET             => 'Following errors was returned for %s'
+        self::ERROR_GEOCODE_RET             => 'Following errors was returned for %s',
+        self::ERROR_COORDINATES             =>  'Coordindate (Latitude/Latitude) value required'  
     );
 
     /**
@@ -103,10 +105,12 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
      * @var array
      */
     protected $_permanentAttributes = array(self::COL_LOCATION_KEY, self::COL_LAT,self::COL_LON);
-
+   
 
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -137,7 +141,8 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
             if ($idToDelete) {
                 $this->_connection->query(
                     $this->_connection->quoteInto(
-                        "DELETE FROM `{$this->_entityTable}` WHERE `entity_id` IN (?)", $idToDelete
+                        "DELETE FROM `{$this->_entityTable}` WHERE `entity_id` IN (?)", 
+                        $idToDelete
                     )
                 );
             }
@@ -156,7 +161,7 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
         if (Mage_ImportExport_Model_Import::BEHAVIOR_DELETE == $this->getBehavior()) {
             $this->_deleteLocations();
         } else {
-            $this->_saveLocations();
+            $this->_saveLocations();            
         }
         return true;
     }
@@ -228,14 +233,14 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
             foreach ($bunch as $rowNum => $rowData) {
                               
                 //prepare
-                $rowData = $this->_prepareRow($rowData, $rowNum);
+                $rowData = $this->_prepareRow($rowData,$rowNum);
                                 
                 if (!$this->validateRow($rowData, $rowNum, false)) {
                     continue;
                 }
                 
                 // entity table data
-                $entityRow = array(
+                $entityRow = array(                    
                     'created_at' => empty($rowData['created_at'])
                                     ? now() : gmstrftime($strftimeFormat, strtotime($rowData['created_at'])),
                     'updated_at' => now()
@@ -245,13 +250,15 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                 if (isset($oldLocationsToLower[$locationKeyToLower])) { // edit
                     $entityId = $oldLocationsToLower[$locationKeyToLower];
                     $entityRow['entity_id']        = $entityId;
-                    $entityRow['latitude']         = $rowData[self::COL_LAT];
-                    $entityRow['longitude']        = $rowData[self::COL_LON];
+                    if (isset($rowData[self::COL_LAT]))
+                        $entityRow['latitude']  = $rowData[self::COL_LAT];
+                    if (isset($rowData[self::COL_LON]))
+                        $entityRow['longitude']  = $rowData[self::COL_LON];
                     $entityRowsUp[] = $entityRow;
                 } else { // create
                     $entityId                      = $nextEntityId++;
-                    $entityRow['entity_id']        = $entityId;
-                    $entityRow['location_key']     = $rowData[self::COL_LOCATION_KEY];
+                    $entityRow['entity_id']        = $entityId;                    
+                    $entityRow['location_key']     = $rowData[self::COL_LOCATION_KEY];                    
                     $entityRow['latitude']         = $rowData[self::COL_LAT];
                     $entityRow['longitude']        = $rowData[self::COL_LON];
                     $entityRowsIn[]                = $entityRow;
@@ -265,7 +272,7 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                         $attribute  = $resource->getAttribute($attrCode);
                         $backModel  = $attribute->getBackendModel();
                         $attrParams = $this->_attributes[$attrCode];
-                        if ($value != null) {
+                        if ($value != null ) {    
                             if ('select' == $attrParams['type']) {
                                 $value = $attrParams['options'][strtolower($value)];
                             } elseif ('datetime' == $attrParams['type']) {
@@ -274,7 +281,7 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                                 $attribute->getBackend()->beforeSave($resource->setData($attrCode, $value));
                                 $value = $resource->getData($attrCode);
                             }
-                        }
+                        }   
                         $attributes[$attribute->getBackend()->getTable()][$entityId][$attrParams['id']] = $value;
 
                         // restore 'backend_model' to avoid default setting
@@ -327,10 +334,15 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
             $this->_connection->insertMultiple($this->_entityTable, $entityRowsIn);
         }
         if ($entityRowsUp) {
+            $cols  = array('updated_at', 'created_at');
+            if (isset($entityRowsUp['latitude']))
+                $array_push ($cols, 'latitude');
+            if (isset($entityRowsUp['longitude']))
+                $array_push ($cols, 'longitude');
             $this->_connection->insertOnDuplicate(
                 $this->_entityTable,
                 $entityRowsUp,
-                array('updated_at', 'created_at','latitude','longitude')
+                $cols
             );
         }
         return $this;
@@ -364,16 +376,16 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
         return 'ak_locator_location';
     }
 
-
+    
 
     /**
      * Validate data row.
      *
      * @param array $rowData
-     * @param $rowNum
-     * @param bool $prepareRow
-     * @return bool
+     * @param int $rowNum
+     * @return boolean
      */
+        
     public function validateRow(array $rowData, $rowNum, $prepareRow = true)
     {
         static $locationKey   = null; // locationKey is remembered through all location rows
@@ -399,28 +411,51 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                 $this->addRowError(self::ERROR_LOCATION_KEY_NOT_FOUND, $rowNum);
             }
         } elseif (strlen(trim($rowData[self::COL_LOCATION_KEY]))) { // new location block begins
-            //prepare row if upadate or insert
-            if ($prepareRow) {
+             //prepare row if upadate or insert
+             if ($prepareRow){
                 $rowData = $this->_prepareRow($rowData, $rowNum);
-            }
+             }
         
-            if (isset($newLocationsToLower[$locationKeyToLower])) {
-                $this->addRowError(self::ERROR_DUPLICATE_LOCATION_KEY, $rowNum);
-            }
-            $this->_newLocations[$locationKey] = false;
+             if (isset($newLocationsToLower[$locationKeyToLower])) {
+                 $this->addRowError(self::ERROR_DUPLICATE_LOCATION_KEY, $rowNum);
+             }
+                          
+             if (!isset($rowData[self::COL_LAT]) || !isset($rowData[self::COL_LON]) 
+                        || empty($rowData[self::COL_LAT]) || empty($rowData[self::COL_LON]) ){
+                 
+                 $coordinateError = false;
+                 //old location
+                 if (isset($oldLocationsToLower[$locationKeyToLower])){                     
+                     $cols = array_keys($rowData);
+                     if ((in_array(self::COL_LAT,$cols) && empty($rowData[self::COL_LAT]) )
+                        || (in_array(self::COL_LON,$cols) && empty($rowData[self::COL_LON])) ){
+                            $coordinateError = true;
+                     }
+                 }
+                 else{
+                     //new location
+                     $coordinateError = true;
+                 }
+                 
+                 if ($coordinateError){
+                     $this->addRowError(self::ERROR_COORDINATES, $rowNum);
+                 }
+             }
+             
+             $this->_newLocations[$locationKey] = false;
 
-            // check simple attributes
-            foreach ($this->_attributes as $attrCode => $attrParams) {
-                if (in_array($attrCode, $this->_ignoredAttributes)) {
+             // check simple attributes
+             foreach ($this->_attributes as $attrCode => $attrParams) {
+                 if (in_array($attrCode, $this->_ignoredAttributes)) {
                      continue;
-                }
-                if (isset($rowData[$attrCode]) && strlen($rowData[$attrCode])) {
+                 }
+                 if (isset($rowData[$attrCode]) && strlen($rowData[$attrCode])) {
                      $this->isAttributeValid($attrCode, $attrParams, $rowData, $rowNum);
-                } elseif ($attrParams['is_required'] && !isset($oldLocationsToLower[$locationKeyToLower])) {
+                 } elseif ($attrParams['is_required'] && !isset($oldLocationsToLower[$locationKeyToLower])) {
                      $this->addRowError(self::ERROR_VALUE_IS_REQUIRED, $rowNum, $attrCode);
-                }
-            }
-
+                 }
+             }
+           
             if (isset($this->_invalidRows[$rowNum])) {
                 $locationKey = false; // mark row as invalid for next address rows
             }
@@ -430,23 +465,23 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
             } elseif (false === $locationKey) { //  row is invalid
                 $this->addRowError(self::ERROR_ROW_IS_ORPHAN, $rowNum);
             }
-        }
+        }     
         return !isset($this->_invalidRows[$rowNum]);
     }
     
-    protected function geocode($rowData, $rowNum)
+    protected function geocode($rowData,$rowNum)
     {
-        if (empty($rowData['address'])) {
+        if (empty($rowData['address'])){
             return $rowData;
         }
         $storeTitle = '';
-
-        try {
-            if (isset($rowData['title'])) {
+        try 
+        {        
+            if (isset($rowData['title'])){
                 $storeTitle = $rowData['title'];
             }
             
-            $geocodeAddr = null;
+            $geocodeAddr   = null;        
             $_userAddress = $rowData['address'];
                         
             $string = str_replace(" ", "+", urlencode($_userAddress));
@@ -456,32 +491,33 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
             $cacheKey = "GEOCODE_" . $api_url;
             
             if (false !== ($geocode = $cache->load($cacheKey))) {
-                $geocodeAddr = unserialize($geocode);
+                $geocodeAddr = unserialize($geocode);                
             } else {
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $api_url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                $response = json_decode(curl_exec($ch), true);
+                $response = json_decode(curl_exec($ch), true);          
                
                 if ($response['status'] == 'OK') {
                     $geocodeAddr  = array();
                     $geocodeAddr['address_components'] = $response['results'][0]['address_components'];
                     $geocodeAddr['geometry']           = $response['results'][0]['geometry'];
-                    $geocodeAddr['formatted_address']  = $response['results'][0]['formatted_address'];
-                    $cache->save(serialize($geocodeAddr), $cacheKey);
-                } else {
+                    $geocodeAddr['formatted_address']  = $response['results'][0]['formatted_address'];                                                                     
+                    $cache->save(serialize($geocodeAddr), $cacheKey);                    
+                }
+                else{
                     $msg = $response['error_message']?$response['error_message']:$response['status'];
                     $msg = $storeTitle.' : '.$msg;
-                    $this->addRowError(self::ERROR_GEOCODE_RET, $rowNum, $msg);
+                    $this->addRowError(self::ERROR_GEOCODE_RET, $rowNum,$msg);
                 }
             }
-            if ($geocodeAddr) {
-                $rowData['address']   = $geocodeAddr['formatted_address'];
-                $rowData['latitude']  = $geocodeAddr['geometry']['location']['lat'];
-                $rowData['longitude'] =  $geocodeAddr['geometry']['location']['lng'];
-
-                //address components
-                $components = array(
+            if ($geocodeAddr){               
+               $rowData['address']   = $geocodeAddr['formatted_address'];
+               $rowData['latitude']  = $geocodeAddr['geometry']['location']['lat'];
+               $rowData['longitude'] =  $geocodeAddr['geometry']['location']['lng'];
+                    
+               //address components 
+               $components = array(
                                     'sub_premise'             => 'subpremise',
                                     'premise'                 => 'street_number',
                                     'thoroughfare'            => 'route',
@@ -493,18 +529,16 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                                     'postal_code'             => 'postal_code'
                 );
                
-                foreach ($components as $colKey => $geoKey) {
-                    foreach ($geocodeAddr['address_components'] as $addressComponent) {
-                        if ($addressComponent['types'][0] == $geoKey) {
-                            $rowData[$colKey] = $addressComponent['long_name'];
-                        }
+                foreach($components as $colKey => $geoKey ){
+                    foreach($geocodeAddr['address_components'] as $addressComponent){
+                       if ($addressComponent['types'][0] == $geoKey ){
+                           $rowData[$colKey] = $addressComponent['long_name'];
+                       } 
                     }
-                }
-
-                $rowData['geocoded'] = 1;
+                }                   
             }
         } catch (Exception $ex) {
-            $this->addRowError(self::ERROR_GEOCODE, $rowNum, $storeTitle);
+            $this->addRowError(self::ERROR_GEOCODE, $rowNum,$storeTitle);            
         }
         return $rowData;
     }
@@ -513,23 +547,25 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
     protected function _cleanRow($rowData)
     {
         $row = array();
-        foreach ($rowData as $key => $value) {
+        foreach ($rowData as $key => $value){
             $value = trim($value);
-            if (strtolower($value) == 'null') {
+            if (strtolower($value) == 'null'){
                 $row[$key] = null;
-            } else if (strlen($value)) {
-                $row[$key] = $value;
             }
+            elseif (strlen($value)){
+                $row[$key] = $value;
+            }            
         }
         return $row;
     }
     
-    protected function _prepareRow($rowData, $rowNum){
+    protected function _prepareRow($rowData,$rowNum)
+    {
         $rowData = $this->_cleanRow($rowData);
         
         //geo code if enabled
-        if (Mage::getStoreConfig('locator_settings/store_import/import_geocode_enabled')) {
-            $rowData = $this->geocode($rowData, $rowNum);
+        if (Mage::getStoreConfig('locator_settings/store_import/import_geocode_enabled')){
+            $rowData = $this->geocode($rowData,$rowNum);
         }
         
         return $rowData;
@@ -543,7 +579,54 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
      */
  
     protected function _prepareRowForDb(array $rowData)
-    {
+    {         
         return $rowData;
+    }
+    
+    /**
+     * Validate data.
+     *
+     * @throws Exception
+     * @return Mage_ImportExport_Model_Import_Entity_Abstract
+     */
+    public function validateData()
+    {
+        if (!$this->_dataValidated) {
+            
+            $checkingCols = $this->_permanentAttributes;
+            
+            if (Mage::getStoreConfig('locator_settings/store_import/import_geocode_enabled')){
+                //remove latitude and longitude from checking
+                $checkingCols = array_slice($checkingCols, 0, 1);
+            }
+            // does all permanent columns exists?
+            if (($colsAbsent = array_diff($checkingCols, $this->_getSource()->getColNames()))) {
+                Mage::throwException(
+                    Mage::helper('importexport')->__('Can not find required columns: %s', implode(', ', $colsAbsent))
+                );
+            }
+
+            // initialize validation related attributes
+            $this->_errors = array();
+            $this->_invalidRows = array();
+
+            // check attribute columns names validity
+            $invalidColumns = array();
+
+            foreach ($this->_getSource()->getColNames() as $colName) {
+                if (!preg_match('/^[a-z][a-z0-9_]*$/', $colName) && !$this->isAttributeParticular($colName)) {
+                    $invalidColumns[] = $colName;
+                }
+            }
+            if ($invalidColumns) {
+                Mage::throwException(
+                    Mage::helper('importexport')->__('Column names: "%s" are invalid', implode('", "', $invalidColumns))
+                );
+            }
+            $this->_saveValidatedBunches();
+
+            $this->_dataValidated = true;
+        }
+        return $this;
     }
 }

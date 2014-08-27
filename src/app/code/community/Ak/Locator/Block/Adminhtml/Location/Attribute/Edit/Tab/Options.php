@@ -5,9 +5,7 @@
  * @category   Ak
  * @package    Ak_Location
  */
-class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Tab_Options
-    extends Mage_Eav_Block_Adminhtml_Attribute_Edit_Options_Abstract
-    implements Mage_Adminhtml_Block_Widget_Tab_Interface
+class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Tab_Options extends Mage_Eav_Block_Adminhtml_Attribute_Edit_Options_Abstract implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
     /**
      * Return Tab label

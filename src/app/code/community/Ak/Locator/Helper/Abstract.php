@@ -216,7 +216,7 @@ abstract class Ak_Locator_Helper_Abstract extends Mage_Core_Helper_Abstract
 
         if (is_null($inputType)) {
             return $inputTypes;
-        } else if (isset($inputTypes[$inputType])) {
+        } elseif (isset($inputTypes[$inputType])) {
             return $inputTypes[$inputType];
         }
         return array();
@@ -329,7 +329,7 @@ abstract class Ak_Locator_Helper_Abstract extends Mage_Core_Helper_Abstract
             }
              //transform date validate rules to timestamp
             if ($inputType === 'date') {
-                foreach(array('date_range_min', 'date_range_max') as $dateRangeBorder) {
+                foreach(array('date_range_min', 'date_range_max') as $dateRangeBorder){
                     if (isset($rules[$dateRangeBorder])) {
                         $date = new Zend_Date($rules[$dateRangeBorder], $this->getDateFormat());
                         $rules[$dateRangeBorder] = $date->getTimestamp();

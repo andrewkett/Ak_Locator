@@ -77,14 +77,13 @@ class Ak_Locator_Model_Observer
                 'max' => $attributeCodeMaxLength
             ));
             if (!$validate) {
-                throw Mage::exception('Mage_Eav',
-                    Mage::helper('eav')->__('Maximum length of attribute code must be less then %s symbols', $attributeCodeMaxLength)
+                throw Mage::exception(
+                        'Mage_Eav',
+                        Mage::helper('eav')->__('Maximum length of attribute code must be less then %s symbols', $attributeCodeMaxLength)
                 );
             }
         }
 
         return $this;
     }
-    
-    
 }

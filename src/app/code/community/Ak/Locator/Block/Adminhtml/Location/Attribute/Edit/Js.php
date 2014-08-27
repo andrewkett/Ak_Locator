@@ -6,7 +6,8 @@
  * @license     http://www.magentocommerce.com/license/enterprise-edition
  */
 
-class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Js extends Mage_Adminhtml_Block_Template
+class Ak_Locator_Block_Adminhtml_Location_Attribute_Edit_Js
+    extends Mage_Adminhtml_Block_Template
 {
     /**
      * Retrieve allowed Input Validate Filters in JSON format
