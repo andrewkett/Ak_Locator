@@ -4,7 +4,7 @@
         <ul>
             <?php foreach($this->getLocations() as $location): ?>
                 <li class="loc-nearby-item">
-                    <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
+                    <article itemscope itemtype="http://schema.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
                         <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
                         <address itemprop="address"><?php echo $location->getAddress() ?></address>
                         <p>Approx <?php echo round($location->getDistance(),1); ?>km from this location</p>
