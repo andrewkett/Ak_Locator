@@ -104,7 +104,13 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
      */
     protected $_permanentAttributes = array(self::COL_LOCATION_KEY, self::COL_LAT,self::COL_LON);
 
+    
+    /**
+     * @var array
+     */
+    protected $_ignoredAttributes = array();
 
+    
     /**
      * Constructor
      */
