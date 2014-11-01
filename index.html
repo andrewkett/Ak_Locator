@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Magento Store Locator by andrewkett</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Magento Store Locator</h1>
+        <p>A store locator extension for Magento</p>
+
+        <p class="view"><a href="https://github.com/andrewkett/Ak_Locator">View the Project on GitHub <small>andrewkett/Ak_Locator</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/andrewkett/Ak_Locator/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/andrewkett/Ak_Locator/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/andrewkett/Ak_Locator">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="magento-store-locator" class="anchor" href="#magento-store-locator"><span class="octicon octicon-link"></span></a>Magento Store Locator</h1>
+
+<p>A store locator extension for Magento.</p>
+
+<p><a href="https://travis-ci.org/andrewkett/Ak_Locator"><img src="https://travis-ci.org/andrewkett/Ak_Locator.png?branch=master" alt="Build Status"></a> <a href="https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/?branch=master"><img src="https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/badges/coverage.png?b=master" alt="Code Coverage"></a> <a href="https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/"><img src="https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/badges/quality-score.png?s=ed69380af3f8cae9103d253d27e7c193fbe02914" alt="Scrutinizer Quality Score"></a> <a href="https://www.versioneye.com/user/projects/5309b07fec1375bb1b000013"><img src="https://www.versioneye.com/user/projects/5309b07fec1375bb1b000013/badge.png" alt="Dependency Status"></a></p>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Locations built with Magentos EAV system</li>
+<li>Google Maps used for frontend display and search geocoding</li>
+<li>Configurable search settings</li>
+<li>Extensible code</li>
+</ul>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation.</h2>
+
+<p>This extension can be installed with both modman and composer, however composer is the recommended method of installation</p>
+
+<h3>
+<a name="using-composer" class="anchor" href="#using-composer"><span class="octicon octicon-link"></span></a>Using composer</h3>
+
+<p>add a composer.json file to your root directory</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+    <span class="s2">"repositories"</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="s2">"type"</span><span class="o">:</span><span class="s2">"composer"</span><span class="p">,</span>
+          <span class="s2">"url"</span><span class="o">:</span><span class="s2">"http://packages.firegento.com"</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s2">"require"</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">"andrewkett/locator"</span> <span class="o">:</span> <span class="s2">"@stable"</span>
+    <span class="p">},</span>
+    <span class="s2">"extra"</span><span class="o">:</span><span class="p">{</span>
+        <span class="s2">"magento-root-dir"</span><span class="o">:</span><span class="s2">"./"</span><span class="p">,</span>
+        <span class="s2">"magento-force"</span><span class="o">:</span><span class="s2">"true"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>then</p>
+
+<pre><code>composer.phar install
+</code></pre>
+
+<h3>
+<a name="download-and-install-manually" class="anchor" href="#download-and-install-manually"><span class="octicon octicon-link"></span></a>Download and install manually.</h3>
+
+<p><a href="https://github.com/andrewkett/Ak_Locator/archive/master.zip">https://github.com/andrewkett/Ak_Locator/archive/master.zip</a></p>
+
+<p>When installing manually, the <a href="https://github.com/phayes/geoPHP">geoPHP</a> library to the lib directory manually</p>
+
+<h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>Once installed you will need to add a <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key">google maps API key</a> in the Locator Settings configuration tab.</p>
+
+<h2>
+<a name="licence" class="anchor" href="#licence"><span class="octicon octicon-link"></span></a>Licence</h2>
+
+<p><a href="http://opensource.org/licenses/osl-3.0.php">OSL - Open Software Licence 3.0</a></p>
+
+<h2>
+<a name="copyright" class="anchor" href="#copyright"><span class="octicon octicon-link"></span></a>Copyright</h2>
+
+<p>(c) 2014 Andrew Kett</p>
+
+<p>Disclaimer: This extension is now reasonably stable and has been used in many production websites, however it is provided "as is" and there are no guarantees that it will work for your website.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/andrewkett">andrewkett</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-40277084-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
