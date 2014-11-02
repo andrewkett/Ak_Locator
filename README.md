@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/andrewkett/Ak_Locator.png?branch=master)](https://travis-ci.org/andrewkett/Ak_Locator) [![Code Coverage](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/?branch=master) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/badges/quality-score.png?s=ed69380af3f8cae9103d253d27e7c193fbe02914)](https://scrutinizer-ci.com/g/andrewkett/Ak_Locator/) [![Dependency Status](https://www.versioneye.com/user/projects/5309b07fec1375bb1b000013/badge.png)](https://www.versioneye.com/user/projects/5309b07fec1375bb1b000013)
 
 
-This extension provides the ability to add physical stores to your website, and provides the ability for an end user to find your stores using a geolocation search.
+This extension provides the ability to add physical stores to your Magento website, and for an end user to find your stores using a geolocation search.
 
 ## Features
 
