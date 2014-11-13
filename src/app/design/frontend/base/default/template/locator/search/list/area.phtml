@@ -27,7 +27,7 @@
                 $i++;
         ?>
             <li class="loc-ls-item">
-                <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
+                <article itemscope itemtype="http://schema.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
                     <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
                     <address itemprop="address"><?php echo $location->getAddress() ?></address>
                     <a itemprop="url" href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>

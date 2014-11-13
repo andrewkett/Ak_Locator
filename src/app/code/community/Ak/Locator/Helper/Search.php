@@ -29,7 +29,10 @@ class Ak_Locator_Helper_Search extends Mage_Core_Helper_Abstract
         $params = array();
         foreach ($queryParts as $param) {
             $item = explode('=', $param);
-            $params[$item[0]] = $item[1];
+            
+            if (isset($item[0]) && isset($item[1])) {
+                $params[$item[0]] = $item[1];
+            }
         }
 
         return $params;
