@@ -286,6 +286,10 @@
                 <search_meta_desc>Find a Location</search_meta_desc>
                 <location_url_suffix>.html</location_url_suffix>
             </seo>
+            <import>
+                <geocode_enabled>0</geocode_enabled>
+                <geocode_valid_location_types>ROOFTOP,RANGE_INTERPOLATED</geocode_valid_location_types>
+            </import>
         </locator_settings>
 
         <rewrite_matchers>

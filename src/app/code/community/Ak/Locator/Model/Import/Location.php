@@ -33,6 +33,9 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
     const ERROR_LOCATION_KEY_NOT_FOUND = 'locationKeyNotFound';
     const ERROR_GEOCODE                = 'geocodeError';
     const ERROR_GEOCODE_RET            =  'geocodeErrorRet';
+
+    const XML_IMPORT_GEO_ENABLED = "locator_settings/import/geocode_enabled";
+    const XML_IMPORT_VALID_LOCATIONTYPES = "locator_settings/import/geocode_valid_location_types";
     
 
     /**
@@ -69,7 +72,7 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
         self::ERROR_VALUE_IS_REQUIRED       => "Required attribute '%s' has an empty value",
         self::ERROR_LOCATION_KEY_NOT_FOUND  => 'Location Key  is not found',
         self::ERROR_GEOCODE                 => '%s could not be geocoded due to errors',
-        self::ERROR_GEOCODE_RET             => 'Following errors was returned for %s'
+        self::ERROR_GEOCODE_RET             => 'Error geocoding %s'
     );
 
     /**
@@ -440,7 +443,7 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
         return !isset($this->_invalidRows[$rowNum]);
     }
     
-    protected function geocode($rowData, $rowNum)
+    protected function geocode($rowData, $rowNum, $depth = 0)
     {
         if (empty($rowData['address'])) {
             return $rowData;
@@ -454,12 +457,12 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
             
             $geocodeAddr = null;
             $_userAddress = $rowData['address'];
-                        
-            $string = str_replace(" ", "+", urlencode($_userAddress));
-            $api_url = "http://maps.googleapis.com/maps/api/geocode/json?address=" . $string . "&sensor=false";
 
-            $cache = Mage::app()->getCache();
-            $cacheKey = "GEOCODE_" . $api_url;
+            $string = str_replace(" ", "+", urlencode($_userAddress));
+            $api_url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $string . "&sensor=false";
+
+            $cache = Mage::app()->getCache('locator_geo');
+            $cacheKey = "LOCATOR_IMPORT_GEO_" . $string;
             
             if (false !== ($geocode = $cache->load($cacheKey))) {
                 $geocodeAddr = unserialize($geocode);
@@ -468,7 +471,7 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                 curl_setopt($ch, CURLOPT_URL, $api_url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 $response = json_decode(curl_exec($ch), true);
-               
+
                 if ($response['status'] == 'OK') {
                     $geocodeAddr  = array();
                     $geocodeAddr['address_components'] = $response['results'][0]['address_components'];
@@ -476,8 +479,20 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                     $geocodeAddr['formatted_address']  = $response['results'][0]['formatted_address'];
                     $cache->save(serialize($geocodeAddr), $cacheKey);
                 } else {
-                    $msg = $response['error_message']?$response['error_message']:$response['status'];
+                    $msg = @$response['error_message']?$response['error_message']:$response['status'];
                     $msg = $storeTitle.' : '.$msg;
+
+                    // Handle Google throttling
+                    // If we hit the max requests per second, wait 2 seconds and then try again
+                    if ($response['status'] === 'OVER_QUERY_LIMIT') {
+                        if ($depth > 10) {
+                            Mage::log('max retry depth hit');
+                            die();
+                        }
+                        sleep(2);
+                        Mage::log('limit hit, sleeping');
+                        $this->geocode($rowData, $rowNum, $depth+1);
+                    }
                     $this->addRowError(self::ERROR_GEOCODE_RET, $rowNum, $msg);
                 }
             }
@@ -510,8 +525,18 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
                 $rowData['geocoded'] = 1;
             }
         } catch (Exception $ex) {
+            Mage::log($ex->getMessage());
             $this->addRowError(self::ERROR_GEOCODE, $rowNum, $storeTitle);
         }
+
+        $types = explode(',', Mage::getStoreConfig(self::XML_IMPORT_VALID_LOCATIONTYPES));
+
+        //If the response location type isnt in our valid types array treat this as invalid
+        if (!in_array($geocodeAddr['geometry']['location_type'], $types)) {
+            $msg = $storeTitle.' : could not find accurate location';
+            $this->addRowError(self::ERROR_GEOCODE_RET, $rowNum, $msg);
+        }
+
         return $rowData;
     }
  
@@ -523,18 +548,19 @@ class Ak_Locator_Model_Import_Location extends Mage_ImportExport_Model_Import_En
             $value = trim($value);
             if (strtolower($value) == 'null') {
                 $row[$key] = null;
-            } else if (strlen($value)) {
+            } elseif (strlen($value)) {
                 $row[$key] = $value;
             }
         }
         return $row;
     }
     
-    protected function _prepareRow($rowData, $rowNum){
+    protected function _prepareRow($rowData, $rowNum)
+    {
         $rowData = $this->_cleanRow($rowData);
         
-        //geo code if enabled
-        if (Mage::getStoreConfig('locator_settings/store_import/import_geocode_enabled')) {
+        //geocode if enabled
+        if (Mage::getStoreConfig(self::XML_IMPORT_GEO_ENABLED)) {
             $rowData = $this->geocode($rowData, $rowNum);
         }
         
