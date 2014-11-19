@@ -49,21 +49,54 @@
 
             Event.observe(el, 'submit', function (event) {
 
-                var params = el.serialize().toQueryParams();
+                var params = self.getParams();
 
-                //unset empty parameters
-                for (var key in params) {
-                    if (params.hasOwnProperty(key) && params[key] != 'undefined' && params[key] == '') {
-                        delete params[key];
-                    }
+                if (self.isValid()) {
+                    self.submit(params);
                 }
 
-                self.startLoader();
-                self.search.findLocations(params, function () {
-                    self.stopLoader();
-                });
-
                 Event.stop(event);
+            });
+        },
+
+
+        /**
+         * validate form, none by default
+         * @returns {boolean}
+         */
+        isValid: function () {
+            return true;
+        },
+
+
+        /**
+         * get the form parameters
+         *
+         * @returns {*}
+         */
+        getParams: function() {
+            var params = this.el.serialize().toQueryParams();
+
+            //unset empty parameters
+            for (var key in params) {
+                if (params.hasOwnProperty(key) && params[key] != 'undefined' && params[key] == '') {
+                    delete params[key];
+                }
+            }
+
+            return params;
+        },
+
+
+        /**
+         * Submit search form
+         * @param params
+         */
+        submit: function(params) {
+            var self = this;
+            self.startLoader();
+            self.search.findLocations(params, function () {
+                self.stopLoader();
             });
         },
 
@@ -281,7 +314,7 @@
          */
         loadInfoWindows: function(){
             var self = this,
-            ids = [];
+                ids = [];
 
             for (var key in self.infowindows) {
                 if (self.infowindows.hasOwnProperty(key)) {
@@ -332,15 +365,15 @@
         getMarkerImage: function(){
 
             return {
-                    path: this.settings.markerIcon,
-                    scale:.5,
-                    strokeWeight: 1,
-                    strokeColor: '#666',
-                    strokeOpacity:.5,
-                    fillColor: this.settings.markerColour,
-                    anchor: new google.maps.Point(25,75),
-                    fillOpacity: 1
-                };
+                path: this.settings.markerIcon,
+                scale:.5,
+                strokeWeight: 1,
+                strokeColor: '#666',
+                strokeOpacity:.5,
+                fillColor: this.settings.markerColour,
+                anchor: new google.maps.Point(25,75),
+                fillOpacity: 1
+            };
         },
 
 
