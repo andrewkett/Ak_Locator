@@ -69,7 +69,7 @@ class Ak_Locator_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup
             $attributeId = $attributeIds[$location][$attributeCode];
             $attribute['system'] = isset($attribute['system']) ? $attribute['system'] : true;
             $attribute['visible'] = isset($attribute['visible']) ? $attribute['visible'] : true;
-            if ($attribute['system'] != true || $attribute['visible'] != false) {
+            if ($attribute['system'] !== true || $attribute['visible'] !== false) {
                 $usedInForms = array(
                     'location_create',
                     'location_edit'

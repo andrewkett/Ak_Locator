@@ -271,7 +271,7 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
                 );
 
                 foreach ($enterpriseData as $data) {
-                    if ($data == '' || $data == null) {
+                    if ($data === '' || $data === null) {
                         //can't save this one as the data isn't correct
                         Mage::log('Cannot create rewrite as data is bad, data: ' . print_r($enterpriseData, 1));
                         return;

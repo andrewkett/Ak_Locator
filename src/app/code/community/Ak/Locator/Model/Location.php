@@ -51,7 +51,7 @@ class Ak_Locator_Model_Location extends Mage_Core_Model_Abstract
      */
     public function getDirectionsLink()
     {
-        if (null == $this->getData('directions_link')) {
+        if (null === $this->getData('directions_link')) {
             $this->setDirectionsLink();
         }
 

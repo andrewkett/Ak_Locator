@@ -261,7 +261,7 @@ class Ak_Locator_Model_Url
         $lastEntityId = 0;
         $process = true;
 
-        while ($process == true) {
+        while ($process === true) {
             $locations = $this->getResource()->getLocationsByStore($storeId, $lastEntityId);
             if (!$locations) {
                 $process = false;

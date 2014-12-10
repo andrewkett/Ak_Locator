@@ -32,7 +32,7 @@ abstract class Ak_Locator_Model_Search_Handler_Point_Abstract extends Ak_Locator
      */
     protected function pointToLocations(Point $point, $radius = null)
     {
-        if (null==$radius) {
+        if (null === $radius) {
             $radius = (int)Mage::getStoreConfig('locator_settings/search/default_search_distance');
         }
 
