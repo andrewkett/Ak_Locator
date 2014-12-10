@@ -483,7 +483,6 @@ class Ak_Locator_Model_Resource_Url extends Mage_Core_Model_Resource_Db_Abstract
     protected function _getLocations($locationIds, $storeId, $entityId, &$lastEntityId)
     {
         $locations = array();
-        $websiteId = Mage::app()->getStore($storeId)->getWebsiteId();
         $adapter = $this->_getReadAdapter();
         if ($locationIds !== null) {
             if (!is_array($locationIds)) {
