@@ -52,11 +52,16 @@ When installing manually, the [geoPHP](https://github.com/phayes/geoPHP) library
 
 Once installed you will need to add a [google maps API key](https://developers.google.com/maps/documentation/javascript/tutorial#api_key) in the Locator Settings configuration tab.
 
+## How to Contribute
+
+- Fork and edit
+- Test locally
+- Submit pull request for consideration
 
 ## Licence
 [OSL - Open Software Licence 3.0](http://opensource.org/licenses/osl-3.0.php)
 
 ## Copyright
-(c) 2014 Andrew Kett
+(c) 2015 Andrew Kett
 
-Disclaimer: This extension is now reasonably stable and has been used in many production websites, however it is provided "as is" and there are no guarantees that it will work for your website.
+Disclaimer: This extension is now reasonably stable and has been used in production websites, however it is provided "as is" and there are no guarantees that it will work for your site.
