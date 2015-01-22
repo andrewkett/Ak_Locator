@@ -1,6 +1,7 @@
 <?php
 
-class Ak_Locator_Test_Model_Search_Handler_Abstract extends EcomDev_PHPUnit_Test_Case {
+class Ak_Locator_Test_Model_Search_Handler_Abstract extends EcomDev_PHPUnit_Test_Case
+{
 
     /**
      * @var Ak_Locator_Model_Search_Handler_Point_Area

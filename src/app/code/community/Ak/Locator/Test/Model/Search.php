@@ -52,5 +52,4 @@ class Ak_Locator_Test_Model_Search extends EcomDev_PHPUnit_Test_Case
         $params = array('point'=> new Point(-37.814207400000, 144.964045100000));
         $this->assertInstanceOf('Ak_Locator_Model_Resource_Location_Collection', $this->_model->search($params));
     }
-
 }
