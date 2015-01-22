@@ -54,4 +54,14 @@ class Ak_Locator_Test_Model_Search_Handler_Area extends EcomDev_PHPUnit_Test_Cas
         $params = array('s'=>'australia');
         $this->assertFalse($this->_model->isValidParams($params));
     }
+
+
+    /**
+     * @test
+     */
+    public function testParseParams()
+    {
+        $params = array('s'=>'australia');
+        $this->assertInternalType('array', $this->_model->parseParams($params));
+    }
 }
