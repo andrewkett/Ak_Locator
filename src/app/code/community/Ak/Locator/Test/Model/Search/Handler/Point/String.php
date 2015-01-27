@@ -62,8 +62,16 @@ class Ak_Locator_Test_Model_Search_Handler_Point_String extends EcomDev_PHPUnit_
      */
     public function testInvalidArgumentSearch()
     {
-
         $params = array('a'=>'3141 australia');
         $this->_model->search($params);
+    }
+
+    /**
+     * @test
+     */
+    public function testParseParams()
+    {
+        $params = array('s'=>'australia');
+        $this->assertInternalType('array', $this->_model->parseParams($params));
     }
 }

@@ -31,10 +31,18 @@ class Ak_Locator_Test_Helper_Search extends EcomDev_PHPUnit_Test_Case
     public function testParseQuery()
     {
 
-        $params = $this->_helper->parseQueryString('lat=-37.814207400000&long=144.964045100000');
+        $string = 'lat=-37.814207400000&long=144.964045100000';
 
-        $this->assertInternalType('array', $params);
+        $result = $this->_helper->parseQueryString($string);
+        $expected = array('lat'=>'-37.814207400000', 'long'=>'144.964045100000');
 
-        array('lat'=>'-37.814207400000', 'long'=>'144.964045100000');
+        $this->assertInternalType('array', $result);
+
+        $this->assertArrayHasKey('lat', $result);
+        $this->assertArrayHasKey('long', $result);
+
+        $this->assertEquals(json_encode($expected), json_encode($result));
+
+
     }
 }

@@ -126,19 +126,8 @@ class Ak_Locator_Model_Search
             $params = $this->getDefaultSearchParams();
         }
 
-        /**
-         * @TODO this needs to be rethought to be more flexible,
-         * we need to be able to override a single parameter ignoring the others,
-         * e.g replace only the s param in s=melbourne&distance=100
-         * also move to parseParams method
-         */
-        if (Mage::getStoreConfig(self::XML_SEARCH_OVERRIDES_PATH)) {
-            //check db for custom searches matching this one
-            $override = Mage::getModel('ak_locator/search_override')->load($params['s']);
-
-            if ($override->getParams()) {
-                $params = Mage::helper('ak_locator/search')->parseQueryString($override->getParams());
-            }
+        if ($this->shouldParseOverrides()) {
+            $params = $this->parseOverrides($params);
         }
 
         //wrap the parameters in a transport object so they can be manipulated by event listeners
@@ -241,6 +230,43 @@ class Ak_Locator_Model_Search
     protected function shouldUseCustomerAddress()
     {
         return (Mage::getStoreConfig(self::XML_SEARCH_USE_CUSTOMER_ADDRESS));
+    }
+
+
+    /**
+     * Should parameters be parsed with db overrides
+     * @return mixed
+     */
+    protected function shouldParseOverrides()
+    {
+        return (Mage::getStoreConfig(self::XML_SEARCH_OVERRIDES_PATH));
+    }
+
+
+    /**
+     * parse search params with db overrides
+     *
+     * @param array $params
+     * @return array
+     */
+    protected function parseOverrides(array $params)
+    {
+        /**
+         * @TODO this needs to be rethought to be more flexible,
+         * we need to be able to override a single parameter ignoring the others,
+         * e.g replace only the s param in s=melbourne&distance=100
+         * also move to parseParams method
+         */
+
+        //check db for custom searches matching this one
+        $override = Mage::getModel('ak_locator/search_override')->load($params['s']);
+
+        if ($override->getParams()) {
+            return Mage::helper('ak_locator/search')->parseQueryString($override->getParams());
+        }
+
+        return $params;
+
     }
 
 

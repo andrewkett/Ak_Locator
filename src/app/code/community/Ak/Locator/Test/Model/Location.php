@@ -24,6 +24,11 @@ class Ak_Locator_Test_Model_Location extends EcomDev_PHPUnit_Test_Case
         $this->assertInstanceOf('Ak_Locator_Model_Location', $this->_model);
     }
 
+    public function testDefaultDirectionLink()
+    {
+        $this->assertInternalType('string', $this->_model->getDirectionsLink());
+    }
+
 
 //    /**
 //     * @test

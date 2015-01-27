@@ -78,4 +78,14 @@ class Ak_Locator_Test_Model_Search_Handler_Point_Latlong extends EcomDev_PHPUnit
         $params = array('s'=>'3141 australia');
         $this->_model->search($params);
     }
+
+
+    /**
+     * @test
+     */
+    public function testParseParams()
+    {
+        $params = array('s'=>'australia');
+        $this->assertInternalType('array', $this->_model->parseParams($params));
+    }
 }
