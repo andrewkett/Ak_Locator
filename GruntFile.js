@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.initConfig({
         uglify: {
@@ -23,8 +24,14 @@ module.exports = function(grunt) {
 
         watch: {
             files: "./src/js/locator/src/**",
-            tasks: ["uglify"]
+            tasks: ["uglify","concat"]
 
+        },
+        concat: {
+            dist: {
+                src: ['src/js/locator/src/history.js', 'src/js/locator/src/locator.js'],
+                dest: 'src/js/locator/locator.js'
+            }
         }
     });
 

@@ -10,7 +10,7 @@
 
     <adminhtml_locator_index>
         <reference name="head">
-          <action method="addJs"><script>locator/locator.js</script></action>
+          <action method="addJs"><script>locator/locator.min.js</script></action>
         </reference>
         <reference name="content">
             <block type="ak_locator/adminhtml_location" name="location" />
@@ -28,7 +28,7 @@
     <adminhtml_locator_edit>
 
         <reference name="head">
-          <action method="addJs"><script>locator/locator.js</script></action>
+          <action method="addJs"><script>locator/locator.min.js</script></action>
         </reference>
 
         <update handle="editor"/>
