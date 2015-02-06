@@ -18,12 +18,6 @@ class Ak_Locator_Block_Search_Infowindow extends Mage_Core_Block_Template
 {
     protected $_location;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setTemplate('locator/search/no-results.phtml');
-    }
-
     public function getLocation()
     {
         if (!isset($this->_location)) {

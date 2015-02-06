@@ -1,0 +1,44 @@
+<div class="loc-srch">
+    <h4>Search</h4>
+    <form class="loc-srch-form" action="<?php echo Mage::getURL('') ?>locator/search/">
+
+
+        <select name="a">
+            <option value="">Any State</option>
+            <option value="victoria">Victoria</option>
+            <option value="new south wales">New South Wales</option>
+            <option value="queensland">Queensland</option>
+            <option value="western australia">Western Australia</option>
+            <option value="northern territory">Northern Territory</option>
+            <option value="south australia">South Australia</option>
+            <option value="tasmania">Tasmania</option>
+        </select>
+
+        <input id='locator-autocomplete' name="s" type="text" class="loc-srch-s input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb (optional)') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
+
+
+        <button type="submit" class="btn">search</button>
+
+        <span class="loc-loader loader loader-med"></span>
+    </form>
+
+    or
+    <?php
+    // This is just an example of how the theme level can be used to link to different types of searches
+    ?>
+    <span class="search-areas">
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?a=victoria">VIC</a>
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?a=new south wales">NSW</a>
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?a=queensland">QLD</a>
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?a=western australia">WA</a>
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?a=northern territory">NT</a>
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?a=south australia">SA</a>
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?a=tasmania">TAS</a>
+    <a class="loc-trigger" href="<?php echo Mage::getURL('') ?>locator/search/?country=australia">All Australia</a>
+  </span>
+    <br />
+
+</div>
+<script type="text/javascript">
+    var dataForm = new VarienForm('locator-search', true);
+</script>

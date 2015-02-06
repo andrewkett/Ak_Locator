@@ -25,8 +25,8 @@
 
         <reference name="content">
             <block type="ak_locator/search" name="search" as="search" template="locator/search/search.phtml">
-                <block type="ak_locator/search_form" name="form" as="form" />
-                <block type="ak_locator/search_noresults" name="empty" as="empty" />
+                <block type="ak_locator/search_form" name="form" as="form" template="locator/search/form-simple.phtml" />
+                <block type="ak_locator/search_noresults" name="empty" as="empty" template="locator/search/no-results.phtml" />
             </block>
         </reference>
 
@@ -47,8 +47,8 @@
 
         <reference name="content">
             <block type="ak_locator/search" name="search" as="search" template="locator/search/search.phtml">
-                <block type="ak_locator/search_form" name="form" as="form" />
-                <block type="ak_locator/search_noresults" name="empty" as="empty" />
+                <block type="ak_locator/search_form" name="form" as="form" template="locator/search/form-australia.phtml" />
+                <block type="ak_locator/search_noresults" name="empty" as="empty" template="locator/search/no-results.phtml" />
             </block>
         </reference>
 

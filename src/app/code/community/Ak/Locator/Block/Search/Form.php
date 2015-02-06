@@ -21,23 +21,29 @@ class Ak_Locator_Block_Search_Form extends Mage_Core_Block_Template
     const XML_PATH_SHOW_SEARCH = "locator_settings/search/show_search_filter";
     const XML_PATH_SHOW_DISTANCE = "locator_settings/search/show_distance_filter";
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setTemplate('locator/search/simple-form.phtml');
-    }
 
-
+    /**
+     * @return bool
+     */
     public function showSearchFilter()
     {
         return Mage::getStoreConfig(self::XML_PATH_SHOW_SEARCH);
     }
 
+
+    /**
+     * @return bool
+     */
     public function showDistanceFilter()
     {
         return Mage::getStoreConfig(self::XML_PATH_SHOW_DISTANCE);
     }
 
+
+    /**
+     * @param $request
+     * @return int
+     */
     public function getCurrentDistance($request)
     {
         if ($request->getParam('distance')) {

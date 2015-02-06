@@ -17,9 +17,5 @@
 class Ak_Locator_Block_Search_Noresults extends Mage_Core_Block_Template
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setTemplate('locator/search/no-results.phtml');
-    }
+
 }
