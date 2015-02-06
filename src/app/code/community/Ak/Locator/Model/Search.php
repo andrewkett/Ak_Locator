@@ -157,13 +157,13 @@ class Ak_Locator_Model_Search
                 $addressId = $session->getCustomer()->getDefaultBilling();
 
                 $address = Mage::getModel('customer/address')->load($addressId);
-                $street = $address->getStreet();
+                $street = implode(' ', $address->getStreet());
 
-                $search = @$street[0].' '.@$street[1].', '
-                                         .$address->getCity().', '
-                                         .$address->getRegion().', '
-                                         .$address->getPostcode().', '
-                                         .$address->getCountry();
+                $search = $street.', '
+                         .$address->getCity().', '
+                         .$address->getRegion().', '
+                         .$address->getPostcode().', '
+                         .$address->getCountry();
 
                 $newParams = array('s'=>$search, 'distance'=>300);
                 $searchModel = $this->getSearchClass($newParams);
