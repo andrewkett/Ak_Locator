@@ -70,6 +70,20 @@ class Ak_Locator_Test_Model_Search extends EcomDev_PHPUnit_Test_Case
 
     /**
      * @test
+     * @loadFixture testLatLongSearchDistance
+     */
+    public function testClosest()
+    {
+        $params = array(
+            'point'=> new Point(144.964045100000, -37.814207400000)
+        );
+
+        $this->assertEquals(1, $this->_model->search($params)->count());
+    }
+
+
+    /**
+     * @test
      * @loadFixture
      */
     public function testLatLongSearchEnabled()

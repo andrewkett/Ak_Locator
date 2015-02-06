@@ -128,12 +128,17 @@
 
 
     function setAddress(result){
+
+
+        $$('.form-list input').each(function(el){
+            el.setValue('');
+        });
+
         latField.setValue(result.geometry.location.lat());
         longField.setValue(result.geometry.location.lng());
 
         $('address').setValue(result.formatted_address);
 
-        //@todo need to clear old values first so they aren't carried through to new address
         components = result.address_components
         $('geocoded').setValue(1);
 
