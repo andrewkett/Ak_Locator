@@ -1,0 +1,12 @@
+eav:
+  ak_locator_location:
+    - entity_id: 1
+        title: Test Location
+        name: Test Location
+        latitude: -37.81420740.0000
+        longitude: 144.964045100000
+        is_enabled: 1
+    - entity_id: 2
+        latitude: -37.798571000000
+        longitude: 144.976710000000
+        is_enabled: 1
