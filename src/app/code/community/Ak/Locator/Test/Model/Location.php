@@ -36,7 +36,6 @@ class Ak_Locator_Test_Model_Location extends EcomDev_PHPUnit_Test_Case
      */
     public function testSetDirectionLinkNoParams()
     {
-
         $this->_model->load(1);
         $this->_model->setDirectionsLink();
 
@@ -45,12 +44,10 @@ class Ak_Locator_Test_Model_Location extends EcomDev_PHPUnit_Test_Case
         $parts = parse_url($link);
         parse_str($parts['query'], $queryParams);
 
-
         $this->assertInternalType('string', $link);
         $this->assertStringStartsWith('http://maps.google.com/', $link);
         $this->assertEquals('@-37.814207400000,144.964045100000', $queryParams['daddr']);
     }
-
 
 
     /**
@@ -66,9 +63,7 @@ class Ak_Locator_Test_Model_Location extends EcomDev_PHPUnit_Test_Case
         $this->_model->setDirectionsLink($params);
 
         $link = $this->_model->getDirectionsLink();
-
         $parts = parse_url($link);
-
         parse_str($parts['query'], $queryParams);
 
         $this->assertInternalType('string', $link);

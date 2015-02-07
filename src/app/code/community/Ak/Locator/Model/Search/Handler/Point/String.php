@@ -52,7 +52,12 @@ class Ak_Locator_Model_Search_Handler_Point_String extends Ak_Locator_Model_Sear
 
         $point = $this->stringToPoint($this->createSearchString($params));
 
-        $collection = $this->pointToLocations($point, @$params['distance']);
+        if (isset($params['distance'])) {
+            $collection = $this->pointToLocations($point, $params['distance']);
+        } else {
+            $collection = $this->pointToLocations($point);
+        }
+
         $collection->setSearch($this);
 
         return $collection;
