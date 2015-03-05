@@ -18,7 +18,7 @@
 <config>
   <modules>
     <Ak_Locator>
-        <version>0.0.0.6</version>
+        <version>0.1.4</version>
     </Ak_Locator>
   </modules>
   <global>
