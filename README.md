@@ -46,7 +46,7 @@ composer.phar install
 
 [https://github.com/andrewkett/Ak_Locator/archive/master.zip](https://github.com/andrewkett/Ak_Locator/archive/master.zip)
 
-When installing manually, the [geoPHP](https://github.com/phayes/geoPHP) library to the lib directory manually.
+When installing manually, the [geoPHP](https://github.com/phayes/geoPHP) library must be added to the lib directory manually.
 
 ## Configuration
 
