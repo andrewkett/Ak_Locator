@@ -181,6 +181,8 @@ class Ak_Locator_Model_Search
             $params = Mage::getStoreConfig(self::XML_SEARCH_DEFAULT_PARAMS);
             return Mage::helper('ak_locator/search')->parseQueryString($params);
         }
+        
+        return array();
     }
 
 
